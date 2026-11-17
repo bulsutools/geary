@@ -373,4 +373,85 @@ Test body.
     expect(failed).toBe(true);
     expect(combinedOutput.toLowerCase()).toMatch(/invalid|category|enum|schema/);
   });
+
+  test('TC-E2E-06: emits canonical, Open Graph, Twitter, JSON-LD, sitemap, robots.txt, and 404 noindex', async ({
+    page,
+    request,
+  }) => {
+    const robotsRes = await request.get('/robots.txt');
+    expect(robotsRes.status()).toBe(200);
+    const robotsText = await robotsRes.text();
+    expect(robotsText).toContain('User-agent: *');
+    expect(robotsText).toContain('Sitemap:');
+    expect(robotsText).toContain('sitemap-index.xml');
+
+    const sitemapIndexRes = await request.get('/sitemap-index.xml');
+    expect(sitemapIndexRes.status()).toBe(200);
+    const sitemapIndexXml = await sitemapIndexRes.text();
+    expect(sitemapIndexXml).toContain('sitemap-0.xml');
+
+    const sitemap0Res = await request.get('/sitemap-0.xml');
+    expect(sitemap0Res.status()).toBe(200);
+    const sitemap0Xml = await sitemap0Res.text();
+    expect(sitemap0Xml).toContain('/articles/latin-honors-and-gwa');
+    expect(sitemap0Xml).toContain('/categories/organizations');
+    expect(sitemap0Xml).not.toContain('/404');
+
+    const ogImgRes = await request.get('/og-image.png');
+    expect(ogImgRes.status()).toBe(200);
+
+    await page.goto('/');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/.+\/$/);
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
+      'content',
+      /\/og-image\.png$/,
+    );
+    await expect(page.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary_large_image',
+    );
+    const homeLd = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((els) => els.map((el) => JSON.parse(el.textContent ?? '{}')));
+    expect(homeLd.some((d) => d['@type'] === 'WebSite')).toBe(true);
+
+    await page.goto('/categories/academics');
+    const catLd = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((els) => els.map((el) => JSON.parse(el.textContent ?? '{}')));
+    expect(catLd.some((d) => d['@type'] === 'BreadcrumbList')).toBe(true);
+
+    await page.goto('/articles/latin-honors-and-gwa');
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      /\/articles\/latin-honors-and-gwa\/?$/,
+    );
+    await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
+    await expect(page.locator('meta[property="article:modified_time"]')).toHaveAttribute(
+      'content',
+      /^\d{4}-\d{2}-\d{2}T/,
+    );
+    await expect(page.locator('meta[property="article:section"]')).toHaveAttribute(
+      'content',
+      'Academics',
+    );
+    await expect(page.locator('meta[property="article:tag"]')).toHaveAttribute(
+      'content',
+      'Graduation & Honors',
+    );
+    await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
+      'content',
+      /Latin honors.*Geary BulSU Student Guide/,
+    );
+    const articleLd = await page
+      .locator('script[type="application/ld+json"]')
+      .evaluateAll((els) => els.map((el) => JSON.parse(el.textContent ?? '{}')));
+    expect(articleLd.some((d) => d['@type'] === 'Article')).toBe(true);
+    expect(articleLd.some((d) => d['@type'] === 'BreadcrumbList')).toBe(true);
+
+    await page.goto('/404.html');
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
+    await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+  });
 });
