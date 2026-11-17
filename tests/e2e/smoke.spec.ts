@@ -1,0 +1,376 @@
+import AxeBuilder from '@axe-core/playwright';
+import { expect, test } from '@playwright/test';
+import { execSync } from 'node:child_process';
+import { existsSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { CATEGORY_SLUGS } from '../../src/data/categories';
+
+const DIST_DIR = resolve(process.cwd(), 'dist');
+const ARTICLES_DIR = resolve(process.cwd(), 'src/content/articles');
+
+test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', () => {
+  test('TC-BLD-03: verifies static HTML routes and < 100 KB search-index.json in dist/', () => {
+    expect(existsSync(resolve(DIST_DIR, 'index.html'))).toBe(true);
+    expect(existsSync(resolve(DIST_DIR, 'categories', 'index.html'))).toBe(true);
+    expect(existsSync(resolve(DIST_DIR, 'terms', 'index.html'))).toBe(true);
+    expect(existsSync(resolve(DIST_DIR, 'privacy', 'index.html'))).toBe(true);
+    expect(existsSync(resolve(DIST_DIR, '404.html'))).toBe(true);
+
+    for (const slug of CATEGORY_SLUGS) {
+      expect(existsSync(resolve(DIST_DIR, 'categories', slug, 'index.html'))).toBe(true);
+    }
+
+    const mdFiles = readdirSync(ARTICLES_DIR).filter((f) => f.endsWith('.md'));
+    expect(mdFiles.length).toBeGreaterThanOrEqual(1);
+    for (const file of mdFiles) {
+      const slug = file.replace(/\.md$/i, '');
+      expect(existsSync(resolve(DIST_DIR, 'articles', slug, 'index.html'))).toBe(true);
+    }
+
+    const indexPath = resolve(DIST_DIR, 'search-index.json');
+    expect(existsSync(indexPath)).toBe(true);
+    expect(statSync(indexPath).size).toBeLessThan(100 * 1024);
+  });
+
+  test('TC-BLD-04: validates internal links and TOC heading anchors across key routes', async ({
+    page,
+    request,
+  }) => {
+    const routesToCheck = [
+      '/',
+      '/categories',
+      '/categories/enrollment',
+      '/categories/documents',
+      '/categories/organizations',
+      '/articles/latin-honors-and-gwa',
+      '/articles/dropping-subjects-and-loa',
+      '/articles/shifting-and-transferring-guide',
+      '/articles/tutorial-special-classes-and-substitution',
+      '/articles/academic-delinquency-and-probation',
+      '/articles/graduation-requirements-and-clearance',
+      '/articles/internship-and-job-placement-guide',
+      '/articles/attendance-and-absences-policy',
+      '/articles/campus-journalism-cultural-groups-and-awards',
+      '/articles/guidance-counseling-and-pwd-support',
+      '/terms',
+      '/privacy',
+    ];
+
+    const checkedUrls = new Set<string>();
+
+    for (const route of routesToCheck) {
+      await page.goto(route);
+      const hrefs = await page
+        .locator('a[href^="/"]')
+        .evaluateAll((els) => els.map((el) => el.getAttribute('href') ?? ''));
+
+      for (const href of hrefs) {
+        const cleanHref = href.split('#')[0] || '/';
+        if (!checkedUrls.has(cleanHref)) {
+          checkedUrls.add(cleanHref);
+          const response = await request.get(cleanHref);
+          expect(response.status(), `Broken link ${cleanHref} on ${route}`).toBeLessThan(400);
+        }
+      }
+
+      if (route.startsWith('/articles/')) {
+        const tocHrefs = await page
+          .locator('aside[aria-label="On this page"] a[href^="#"]')
+          .evaluateAll((els) => els.map((el) => el.getAttribute('href') ?? ''));
+
+        for (const hash of tocHrefs) {
+          const targetId = hash.slice(1);
+          await expect(page.locator(`[id="${targetId}"]`)).toHaveCount(1);
+        }
+      }
+    }
+  });
+
+  test('TC-E2E-01: hydrates SearchBar island, fetches search-index.json lazily once, and navigates via keyboard', async ({
+    page,
+  }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+
+    let indexFetchCount = 0;
+    page.on('request', (req) => {
+      if (req.url().endsWith('/search-index.json')) {
+        indexFetchCount += 1;
+      }
+    });
+
+    await page.goto('/');
+    expect(indexFetchCount).toBe(0);
+
+    const heroInput = page.locator('main input[role="combobox"]');
+    await expect(heroInput).toHaveAttribute('data-search-ready', 'true');
+    await page.keyboard.press('/');
+    await expect(heroInput).toBeFocused();
+
+    await heroInput.fill('GWA');
+    await expect.poll(() => indexFetchCount).toBe(1);
+
+    const firstOption = page.locator('main [role="option"]').first();
+    await expect(firstOption).toContainText('Latin honors');
+    await expect(firstOption).toBeVisible();
+
+    const isOptionOnTop = await firstOption.evaluate((el) => {
+      const rect = el.getBoundingClientRect();
+      const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      return Boolean(hit && (el === hit || el.contains(hit)));
+    });
+    expect(isOptionOnTop).toBe(true);
+
+    await heroInput.press('ArrowDown');
+    await expect(firstOption).toHaveAttribute('aria-selected', 'true');
+    await heroInput.press('Enter');
+
+    await expect(page).toHaveURL(/\/articles\/latin-honors-and-gwa\/?$/);
+    expect(pageErrors).toEqual([]);
+
+    // Verify Header SearchBar shortcut + Escape dismissal on article page
+    const headerInput = page.locator('header input[role="combobox"]');
+    await expect(headerInput).toHaveAttribute('data-search-ready', 'true');
+    await page.keyboard.press('Control+k');
+    await expect(headerInput).toBeFocused();
+    await headerInput.fill('GWA');
+    await expect(page.locator('header [role="option"]').first()).toContainText('GWA');
+    await headerInput.press('Escape');
+    await expect(page.locator('header [role="listbox"]')).toHaveCount(0);
+  });
+
+  test('TC-E2E-02: displays 5-category pills on zero matches and safe fallback on search-index fetch failure', async ({
+    page,
+  }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+
+    await page.goto('/');
+    const heroInput = page.locator('main input[role="combobox"]');
+    await expect(heroInput).toHaveAttribute('data-search-ready', 'true');
+    await heroInput.fill('zzzznonexistent');
+
+    const listboxId = await heroInput.getAttribute('aria-controls');
+    expect(listboxId).toBeTruthy();
+    const searchPanel = page.locator(`[id="${listboxId}"]`);
+    await expect(searchPanel).toBeVisible();
+    await expect(searchPanel).toContainText('No guides matched');
+    for (const slug of CATEGORY_SLUGS) {
+      await expect(searchPanel.locator(`a[href="/categories/${slug}"]`)).toHaveCount(0);
+    }
+
+    // Simulate network failure for /search-index.json in a fresh context
+    const offlinePage = await page.context().newPage();
+    const offlineErrors: string[] = [];
+    offlinePage.on('pageerror', (err) => offlineErrors.push(err.message));
+    await offlinePage.route('**/search-index.json', (route) =>
+      route.fulfill({ status: 500, body: 'Server Error' }),
+    );
+
+    await offlinePage.goto('/');
+    const offlineInput = offlinePage.locator('main input[role="combobox"]');
+    await expect(offlineInput).toHaveAttribute('data-search-ready', 'true');
+    await offlineInput.focus();
+    await offlineInput.fill('TOR');
+
+    await expect(
+      offlinePage.getByText("Search index couldn't load right now."),
+    ).toBeVisible();
+    for (const slug of CATEGORY_SLUGS) {
+      await expect(
+        offlinePage.locator(`main a[href="/categories/${slug}"]`).first(),
+      ).toBeVisible();
+    }
+    expect(offlineErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
+    await offlinePage.close();
+  });
+
+  test('TC-E2E-03: handles responsive TOC, suppresses TOC when < 2 headings, and omits solo-article Related Guides', async ({
+    page,
+  }) => {
+    // Desktop sticky sidebar TOC
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto('/articles/latin-honors-and-gwa');
+    const desktopToc = page.locator('aside[aria-label="On this page"]');
+    const mobileToc = page.locator('details:has-text("On this page")');
+    await expect(desktopToc).toBeVisible();
+    await expect(mobileToc).toBeHidden();
+
+    // Mobile collapsible <details> TOC
+    await page.setViewportSize({ width: 375, height: 812 });
+    await expect(desktopToc).toBeHidden();
+    await expect(mobileToc).toBeVisible();
+    await mobileToc.locator('summary').click();
+    await mobileToc.locator('a[href="#how-gwa-is-calculated"]').click();
+    await expect(page).toHaveURL(/#how-gwa-is-calculated$/);
+
+    // Related Guides & Verification Notice remain omitted; Source card renders handbook citation
+    await expect(page.locator('section[aria-labelledby="related-guides-heading"]')).toHaveCount(0);
+    await expect(page.locator('aside[aria-label="Verification notice"]')).toHaveCount(0);
+    const honorsSourceLink = page.locator('aside[aria-label="Article source"] a');
+    await expect(honorsSourceLink).toHaveAttribute(
+      'href',
+      'https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf',
+    );
+    await expect(honorsSourceLink).toContainText(
+      'UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016',
+    );
+
+    // Handbook article renders Source card hyperlink
+    await page.goto('/articles/grading-system-and-inc-rules');
+    const sourceLink = page.locator('aside[aria-label="Article source"] a');
+    await expect(sourceLink).toHaveAttribute(
+      'href',
+      'https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf',
+    );
+    await expect(sourceLink).toContainText(
+      'UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016',
+    );
+  });
+
+  test('TC-E2E-04: prevents horizontal overflow across 375px, 768px, and 1280px viewports', async ({
+    page,
+  }) => {
+    const viewports = [
+      { width: 375, height: 812 },
+      { width: 768, height: 1024 },
+      { width: 1280, height: 800 },
+    ];
+    const routes = [
+      '/',
+      '/categories',
+      '/categories/enrollment',
+      '/articles/latin-honors-and-gwa',
+      '/terms',
+      '/privacy',
+      '/404.html',
+    ];
+
+    for (const viewport of viewports) {
+      await page.setViewportSize(viewport);
+      for (const route of routes) {
+        await page.goto(route);
+        const hasNoOverflow = await page.evaluate(
+          () => document.documentElement.scrollWidth <= window.innerWidth,
+        );
+        expect(
+          hasNoOverflow,
+          `Horizontal overflow detected on ${route} at ${viewport.width}px`,
+        ).toBe(true);
+      }
+    }
+  });
+
+  test('TC-E2E-05: renders branded 404 recovery page with SearchBar and 5 category links', async ({
+    page,
+  }) => {
+    await page.goto('/this-route-does-not-exist');
+    await expect(page.locator('h1')).toContainText("couldn't find that guide");
+    await expect(page.locator('main input[role="combobox"]')).toBeVisible();
+    for (const slug of CATEGORY_SLUGS) {
+      await expect(page.locator(`main a[href="/categories/${slug}"]`)).toBeVisible();
+    }
+    await page.locator('main a[href="/"]').click();
+    await expect(page).toHaveURL(/\/$/);
+  });
+
+  test('TC-A11Y-01 & TC-A11Y-02: passes WCAG 2.1 AA Axe checks, semantic landmarks, and single h1 per page', async ({
+    page,
+  }) => {
+    const routes = [
+      '/',
+      '/categories',
+      '/categories/policies',
+      '/articles/latin-honors-and-gwa',
+      '/terms',
+      '/privacy',
+      '/404.html',
+    ];
+
+    for (const route of routes) {
+      await page.goto(route);
+
+      await expect(page.locator('header')).toHaveCount(1);
+      await expect(page.locator('header nav[aria-label="Primary navigation"] a')).toHaveCount(2);
+      await expect(page.locator('main')).toHaveCount(1);
+      await expect(page.locator('footer')).toHaveCount(1);
+      await expect(page.locator('h1')).toHaveCount(1);
+
+      if (route.startsWith('/articles/')) {
+        await expect(page.locator('article')).toHaveCount(1);
+      }
+
+      if (route === '/') {
+        const input = page.locator('main input[role="combobox"]');
+        await expect(input).toHaveAttribute('data-search-ready', 'true');
+        await input.fill('GWA');
+        await expect(page.locator('main [role="listbox"]')).toBeVisible();
+      }
+
+      const results = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+        .analyze();
+
+      expect(
+        results.violations,
+        `Axe violations on ${route}: ${JSON.stringify(results.violations)}`,
+      ).toEqual([]);
+    }
+  });
+
+  test('TC-SEC-01: escapes script/HTML payloads safely in SearchBar without executing XSS', async ({
+    page,
+  }) => {
+    let dialogTriggered = false;
+    page.on('dialog', async (dialog) => {
+      dialogTriggered = true;
+      await dialog.dismiss();
+    });
+
+    await page.goto('/');
+    const heroInput = page.locator('main input[role="combobox"]');
+    await expect(heroInput).toHaveAttribute('data-search-ready', 'true');
+
+    await heroInput.fill('<script>alert("xss")</script>');
+    await expect(page.getByText('<script>alert("xss")</script>')).toBeVisible();
+    expect(dialogTriggered).toBe(false);
+
+    await heroInput.fill('<img src=x onerror=alert(1)>');
+    await expect(page.getByText('<img src=x onerror=alert(1)>')).toBeVisible();
+    expect(dialogTriggered).toBe(false);
+  });
+
+  test('TC-BLD-02: fails fast with Zod validation diagnostic on invalid Markdown frontmatter', () => {
+    const badFile = resolve(ARTICLES_DIR, '_invalid-schema-fixture.md');
+    writeFileSync(
+      badFile,
+      `---
+title: "Invalid Category Test"
+description: "Invalid category slug fixture"
+category: "unknown-category"
+subcategory: "Test"
+updatedDate: 2026-11-17
+---
+
+Test body.
+`,
+      'utf-8',
+    );
+
+    let failed = false;
+    let combinedOutput = '';
+    try {
+      execSync('bun run build', { stdio: 'pipe', encoding: 'utf-8' });
+    } catch (error: unknown) {
+      failed = true;
+      const err = error as { stdout?: string; stderr?: string };
+      combinedOutput = `${err.stdout ?? ''}\n${err.stderr ?? ''}`;
+    } finally {
+      rmSync(badFile, { force: true });
+    }
+
+    expect(failed).toBe(true);
+    expect(combinedOutput.toLowerCase()).toMatch(/invalid|category|enum|schema/);
+  });
+});

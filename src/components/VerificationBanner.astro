@@ -1,0 +1,23 @@
+---
+import { formatArticleDate } from '../lib/articles';
+
+interface Props {
+  updatedDate: Date;
+}
+
+const { updatedDate } = Astro.props;
+---
+
+<aside
+  aria-label="Verification notice"
+  class="mt-10 rounded-xl border border-[#DEE2E6] bg-[#EEF1F4] p-4 sm:p-5 text-sm text-[#495057]"
+>
+  <p class="font-semibold text-[#181C20]">
+    Unofficial Guide — Last verified {formatArticleDate(updatedDate)}
+  </p>
+  <p class="mt-1 leading-relaxed">
+    University procedures, fees, and schedules change across Academic Years. Always verify
+    final rulings with the official BulSU Office of the Registrar, Admissions Office, OSAS,
+    or your College Dean&apos;s Office before taking action.
+  </p>
+</aside>

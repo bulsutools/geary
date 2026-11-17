@@ -1,0 +1,106 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import type { CategoryMeta } from '../data/categories';
+import { formatArticleDate, type ArticleLike } from '../lib/articles';
+
+interface Heading {
+  depth: number;
+  slug: string;
+  text: string;
+}
+
+interface Props {
+  article: ArticleLike;
+  categoryMeta: CategoryMeta;
+  headings: Heading[];
+}
+
+const { article, categoryMeta, headings } = Astro.props;
+const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const hasToc = tocHeadings.length >= 2;
+---
+
+<BaseLayout
+  title={`${article.data.title} - Geary`}
+  description={article.data.description}
+  activeCategory={categoryMeta.slug}
+>
+  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
+    <div class="mb-8 border-b border-[#DEE2E6] pb-6 max-w-[65ch]">
+      <Breadcrumbs
+        items={[
+          { label: 'Home', href: '/' },
+          { label: 'Categories', href: '/categories' },
+          { label: categoryMeta.title, href: `/categories/${categoryMeta.slug}` },
+          { label: article.data.title },
+        ]}
+      />
+
+      <h1 class="mt-8 font-[family-name:var(--font-heading)] text-[1.75rem] sm:text-[2.25rem] font-bold leading-[1.2] tracking-[-0.02em] text-[#181C20]">
+        {article.data.title}
+      </h1>
+
+      <p class="mt-3 text-base sm:text-lg leading-relaxed text-[#495057]">
+        {article.data.description}
+      </p>
+
+      <p class="mt-4 text-xs font-medium text-[#495057]">
+        Last Updated: {formatArticleDate(article.data.updatedDate)}
+      </p>
+    </div>
+
+    <div
+      class={
+        hasToc
+          ? 'lg:grid lg:grid-cols-[minmax(0,65ch)_260px] lg:gap-12 lg:items-start'
+          : 'max-w-[65ch]'
+      }
+    >
+      <div class="min-w-0">
+        <TableOfContents headings={headings} mode="mobile" />
+
+        <article class="geary-prose">
+          <slot />
+        </article>
+
+        {
+          article.data.source && (
+            <aside
+              aria-label="Article source"
+              class="mt-8 rounded-xl border border-[#DEE2E6] bg-white p-4 sm:p-5"
+            >
+              <p class="text-xs font-semibold uppercase tracking-wider text-[#495057]">
+                Source
+              </p>
+              {article.data.sourceUrl ? (
+                <a
+                  href={article.data.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="mt-1.5 inline-flex items-baseline gap-1.5 text-sm font-medium text-[#8B1538] hover:text-[#6E0F2B] hover:underline underline-offset-2 transition-colors"
+                >
+                  <span>{article.data.source}</span>
+                  <span aria-hidden="true">↗</span>
+                </a>
+              ) : (
+                <p class="mt-1.5 text-sm font-medium text-[#181C20]">
+                  {article.data.source}
+                </p>
+              )}
+            </aside>
+          )
+        }
+      </div>
+
+      {hasToc && <TableOfContents headings={headings} mode="desktop" />}
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  for (const table of document.querySelectorAll('.geary-prose table')) {
+    table.setAttribute('tabindex', '0');
+  }
+</script>
