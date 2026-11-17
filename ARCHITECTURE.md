@@ -269,7 +269,7 @@ geary/
 ├── ROADMAP.md                       # ISO 12207 Project Milestones, Backlog & Known Issues
 ├── AGENTS.md                        # Repository agent development instructions
 ├── EDITORIAL_CRITERIA.md            # Article selection & humanizer quality gate
-├── README.md                        # Starter Astro repository README
+├── README.md                        # Contributor quickstart, commands & spec index
 ├── package.json                     # Project dependencies & scripts (dev, check, build, test)
 ├── bun.lock                         # Bun deterministic dependency lockfile
 ├── bunfig.toml                      # Scopes `bun test` strictly to tests/unit/
@@ -279,6 +279,7 @@ geary/
 ├── public/                          # Static assets copied verbatim to dist/
 │   ├── favicon.ico                  # Legacy fallback favicon
 │   ├── favicon.svg                  # Minimalist Geary geometric gear icon
+│   ├── googled56ea9e672e7afb1.html  # Google Search Console ownership verification
 │   └── og-image.png                 # Shared 1200x630 Open Graph social preview card
 ├── tests/                           # Lean unit & Playwright E2E/Axe smoke tests
 │   ├── unit/
