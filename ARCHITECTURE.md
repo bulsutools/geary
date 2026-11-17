@@ -177,7 +177,7 @@ flowchart TD
 - **`@astrojs/react`:** Enables selective client hydration of `SearchBar.tsx` inside `.astro` files.
 - **`@astrojs/sitemap`:** Generates `dist/sitemap-index.xml` at build time, excluding `/404` and non-HTML utility routes.
 - **Tailwind CSS (`@tailwindcss/vite`):** Compiles utility classes and `src/styles/global.css` tokens through Astro's Vite plugin pipeline.
-- **`output: 'static'`:** Pure SSG output targeting `dist/` (default static build mode in Astro).
+- **`output: 'static'` & `build.inlineStylesheets: 'always'`:** Pure SSG output targeting `dist/` with inlined CSS to eliminate render-blocking stylesheet requests.
 
 ### 5.2 TypeScript Data Contracts
 

@@ -10,6 +10,9 @@ const site = process.env.PUBLIC_SITE_URL || 'https://geary.example.com';
 export default defineConfig({
   site,
   output: 'static',
+  build: {
+    inlineStylesheets: 'always',
+  },
   integrations: [
     react(),
     sitemap({
