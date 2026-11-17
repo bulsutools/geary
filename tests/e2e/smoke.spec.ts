@@ -423,6 +423,7 @@ Test body.
     expect(catLd.some((d) => d['@type'] === 'BreadcrumbList')).toBe(true);
 
     await page.goto('/articles/latin-honors-and-gwa');
+    await expect(page).toHaveTitle('Latin honors, GWA rules, and Gold Gear Awards');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       'href',
       /\/articles\/latin-honors-and-gwa\/?$/,
