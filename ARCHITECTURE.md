@@ -155,7 +155,7 @@ flowchart TD
 
 | Component / Module | Type & Hydration | Props / Inputs | Structural Responsibilities |
 | :--- | :--- | :--- | :--- |
-| **`src/layouts/BaseLayout.astro`** | Astro Layout (`0 KB` JS) | `title`, `description?`, `activeCategory?`, `hideHeaderSearch?` | Renders `<html lang="en">`, document metadata, global CSS import, skip-to-content link, `<Header />`, `<main>`, and `<Footer />`. |
+| **`src/layouts/BaseLayout.astro`** | Astro Layout (`0 KB` JS) | `title`, `description?`, `activeCategory?`, `activeNav?`, `headerSearchShortcut?`, `ogType?`, `ogImageAlt?`, `articleMeta?`, `noindex?`, `jsonLd?` | Renders `<html lang="en">`, document metadata, canonical `<link>`, Open Graph (`og:*`, `article:*`), Twitter cards (`twitter:image:alt`), optional JSON-LD `<script>`, robots meta, global CSS import, skip-to-content link, `<Header />`, `<main>`, and `<Footer />`. |
 | **`src/layouts/ArticleLayout.astro`** | Astro Layout (`0 KB` JS) | `article`, `categoryMeta`, `headings`, `relatedArticles` | Composes `BaseLayout`, `<Breadcrumbs />`, article metadata header, responsive grid pairing Markdown prose with `<TableOfContents />`, `<VerificationBanner />`, and up to 3 sibling `<ArticleCard />` items. |
 | **`src/components/Header.astro`** | Static Astro + `< 1 KB` toggle | `activeCategory?: CategorySlug`, `showSearch?: boolean` | Renders brand logo (`/`), category navigation links, compact `<SearchBar variant="header" client:load />`, and accessible mobile menu drawer toggle. |
 | **`src/components/Footer.astro`** | Static Astro (`0 KB` JS) | Imports `CATEGORIES` | Renders global unofficial BulSU student hub disclaimer and category directory links. |
@@ -173,7 +173,9 @@ flowchart TD
 ## 5. Integrations & Module Contracts
 
 ### 5.1 Framework Integrations (`astro.config.mjs`)
+- **`site` configuration:** Configured from `process.env.PUBLIC_SITE_URL` with a placeholder fallback (`https://geary.example.com`) so canonical URLs, Open Graph URLs, `robots.txt`, and sitemaps resolve consistently across environments.
 - **`@astrojs/react`:** Enables selective client hydration of `SearchBar.tsx` inside `.astro` files.
+- **`@astrojs/sitemap`:** Generates `dist/sitemap-index.xml` at build time, excluding `/404` and non-HTML utility routes.
 - **Tailwind CSS (`@tailwindcss/vite`):** Compiles utility classes and `src/styles/global.css` tokens through Astro's Vite plugin pipeline.
 - **`output: 'static'`:** Pure SSG output targeting `dist/` (default static build mode in Astro).
 
@@ -276,13 +278,15 @@ geary/
 ├── tsconfig.json                    # Strict TypeScript compiler configuration
 ├── public/                          # Static assets copied verbatim to dist/
 │   ├── favicon.ico                  # Legacy fallback favicon
-│   └── favicon.svg                  # Minimalist Geary geometric gear icon
+│   ├── favicon.svg                  # Minimalist Geary geometric gear icon
+│   └── og-image.png                 # Shared 1200x630 Open Graph social preview card
 ├── tests/                           # Lean unit & Playwright E2E/Axe smoke tests
 │   ├── unit/
 │   │   ├── search.test.ts           # Bun test suite for query scoring & index contract
-│   │   └── articles.test.ts         # Bun test suite for subcategory grouping helpers
+│   │   ├── articles.test.ts         # Bun test suite for subcategory grouping helpers
+│   │   └── seo.test.ts              # Bun test suite for JSON-LD builders & XSS escape
 │   └── e2e/
-│       └── smoke.spec.ts            # Playwright + Axe smoke, TOC, overflow & 404 tests
+│       └── smoke.spec.ts            # Playwright + Axe smoke, SEO, TOC, overflow & 404 tests
 └── src/
     ├── styles/
     │   └── global.css               # Tailwind import, design tokens, scoped prose styles
@@ -290,7 +294,8 @@ geary/
     │   └── categories.ts            # Canonical 7-category registry & lookup helpers
     ├── lib/
     │   ├── search.ts                # Pure query normalization & weighted scoring engine
-    │   └── articles.ts              # Subcategory grouping & sibling guide helpers
+    │   ├── articles.ts              # Subcategory grouping & sibling guide helpers
+    │   └── seo.ts                   # Pure JSON-LD builders (WebSite, Article, BreadcrumbList)
     ├── content.config.ts            # Astro Content Collection + Zod schema (`articles`)
     ├── content/
     │   └── articles/                # UTF-8 Markdown guides (26 handbook articles)
@@ -336,7 +341,8 @@ geary/
         ├── index.astro              # Home hub (Hero SearchBar, Featured Guides)
         ├── terms.astro              # Terms of Service & unofficial disclaimer page
         ├── privacy.astro            # Privacy Policy (zero-tracking static architecture)
-        ├── 404.astro                # Branded recovery page with SearchBar & categories
+        ├── 404.astro                # Branded recovery page with SearchBar & categories (`noindex`)
+        ├── robots.txt.ts            # Build-time generator referencing Astro.site sitemap
         ├── search-index.json.ts     # Build-time generator for /search-index.json
         ├── categories/
         │   ├── index.astro          # Categories directory page (7 CategoryCards)

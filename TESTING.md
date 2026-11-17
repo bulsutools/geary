@@ -169,6 +169,13 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **Verification Procedure:** Navigate to `/this-route-does-not-exist` and inspect rendered UI.
 - **Pass/Fail Acceptance Criteria:** Styled BulSUan `404` view renders with a hydrated `<SearchBar />`, links to all 5 categories, and a working `"Back to Home"` link to `/`.
 
+#### `TC-E2E-06`: SEO Metadata, Sitemap, `robots.txt`, JSON-LD & `404` `noindex`
+- **ISO 25010 Characteristic:** Functional Suitability (*Completeness*) & Compatibility
+- **Linked Requirements:** `UI-INT-01`, `SW-INT-01`
+- **Preconditions / Inputs:** Built `dist/` served via `astro preview`.
+- **Verification Procedure:** Check `<link rel="canonical">`, Open Graph (`og:title`, `og:description`, `og:type`, `og:url`, `og:image`) and Twitter `summary_large_image` tags across `/`, `/categories/academics`, and `/articles/latin-honors-and-gwa`; parse JSON-LD blocks (`WebSite`, `Article`, `BreadcrumbList`); fetch `/robots.txt`, `/sitemap-index.xml`, and `/og-image.png`; verify `/404.html` carries `<meta name="robots" content="noindex, follow">` and `/404` is excluded from sitemap.
+- **Pass/Fail Acceptance Criteria:** Every checked page has an absolute canonical URL matching `Astro.site`, valid Open Graph/Twitter metadata, parseable JSON-LD matching page type, reachable `og-image.png` and `sitemap-index.xml`, and `noindex` on `/404.html`.
+
 ---
 
 ### 3.4 Layer 4: Accessibility & Minimal Static Security Suite
