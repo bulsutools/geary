@@ -116,7 +116,7 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 - **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`. Left: **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring). Center/Right: `Home` (`/`) and `Categories` (`/categories`) links (`>= 768px`) + Header `<SearchBar variant="header" />` + accessible mobile drawer toggle (`< 768px`).
 - **Interactive States:**
   - *Default:* `text-[#495057]` navigation links, `min-h-[44px]` mobile tap target.
-  - *Hover:* `text-[#8B1538]` with `150ms` transition.
+  - *Hover:* `text-[#8B1538]` with `150ms` transition; gear SVG rotates `90deg` smoothly (`300ms ease-out`) and returns to `0deg` when unhovered.
   - *Active Route:* `text-[#8B1538] font-semibold` with pill wash `bg-[#FDF2F4]`.
   - *Focus-Visible:* `2px solid #8B1538` ring (`outline-offset-2`).
 
@@ -164,5 +164,5 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 
 1. **Keyboard & Focus Discipline:** Every interactive element uses `:focus-visible { outline: 2px solid #8B1538; outline-offset: 2px; }` (never `outline: none` without replacement). Full keyboard parity applies across search (`/`, `Ctrl+K`, `ArrowUp`, `ArrowDown`, `Enter`, `Escape`), header navigation, mobile drawer (`aria-expanded`), and native `<details>` TOC.
 2. **Minimum Touch Target (`>= 44×44px`):** Mobile header buttons, TOC `<summary>`, search close/clear triggers, and category pills preserve comfortable tap targets for one-handed phone use on campus.
-3. **Motion & Cognitive Restraint:** Transitions are restricted to subtle `150ms ease-out` color, background, and border transitions—respecting `@media (prefers-reduced-motion: reduce)` by disabling motion when requested. No auto-playing carousels, modals on load, floating chat widgets, or decorative watermarks may appear inside `<article>`.
+3. **Motion & Cognitive Restraint:** Transitions stay lightweight (`150ms–300ms` ease-out on color, border, and transform properties, plus slow ambient rotation on the home hero watermark), respecting `@media (prefers-reduced-motion: reduce)` by disabling motion when requested. No auto-playing carousels, modals on load, floating chat widgets, or decorative watermarks may appear inside `<article>`.
 4. **Progressive Clarity:** Core navigation, category browsing, and article reading remain visually stable and immediately legible before interactive controls hydrate.
