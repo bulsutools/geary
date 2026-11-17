@@ -4,9 +4,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SearchBar from '../components/SearchBar';
 import ArticleCard from '../components/ArticleCard.astro';
 import { getFeaturedArticles } from '../lib/articles';
+import { buildWebsiteJsonLd } from '../lib/seo';
 
 const allArticles = await getCollection('articles');
 const featuredArticles = getFeaturedArticles(allArticles);
+const baseOrigin = Astro.site ?? new URL(Astro.url.origin);
+const websiteJsonLd = buildWebsiteJsonLd(baseOrigin.href);
 ---
 
 <BaseLayout
@@ -14,6 +17,7 @@ const featuredArticles = getFeaturedArticles(allArticles);
   description="Centralized, simplified guides on Bulacan State University enrollment, shifting, Registrar requests, handbook policies, scholarships, and campus spots."
   activeNav="home"
   headerSearchShortcut={false}
+  jsonLd={websiteJsonLd}
 >
   <section class="relative z-20 border-b border-[#DEE2E6] bg-[#F8F9FA] py-12 sm:py-14 lg:py-16">
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">

@@ -4,6 +4,7 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import type { CategoryMeta } from '../data/categories';
 import { formatArticleDate, type ArticleLike } from '../lib/articles';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../lib/seo';
 
 interface Heading {
   depth: number;
@@ -20,12 +21,39 @@ interface Props {
 const { article, categoryMeta, headings } = Astro.props;
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length >= 2;
+const baseOrigin = Astro.site ?? new URL(Astro.url.origin);
+const articleUrl = new URL(Astro.url.pathname, baseOrigin).href;
+const jsonLd = [
+  buildArticleJsonLd({
+    title: article.data.title,
+    description: article.data.description,
+    url: articleUrl,
+    dateModified: article.data.updatedDate,
+    section: categoryMeta.title,
+    source: article.data.source,
+    sourceUrl: article.data.sourceUrl,
+  }),
+  buildBreadcrumbJsonLd([
+    { name: 'Home', url: new URL('/', baseOrigin).href },
+    { name: 'Categories', url: new URL('/categories', baseOrigin).href },
+    { name: categoryMeta.title, url: new URL(`/categories/${categoryMeta.slug}`, baseOrigin).href },
+    { name: article.data.title },
+  ]),
+];
 ---
 
 <BaseLayout
   title={`${article.data.title} - Geary`}
   description={article.data.description}
   activeCategory={categoryMeta.slug}
+  ogType="article"
+  ogImageAlt={`${article.data.title} - Geary BulSU Student Guide`}
+  articleMeta={{
+    modifiedTime: article.data.updatedDate.toISOString(),
+    section: categoryMeta.title,
+    tag: article.data.subcategory,
+  }}
+  jsonLd={jsonLd}
 >
   <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
     <div class="mb-8 border-b border-[#DEE2E6] pb-6 max-w-[65ch]">

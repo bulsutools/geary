@@ -3,6 +3,13 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import type { CategorySlug } from '../data/categories';
+import { serializeJsonLd, type JsonLdObject } from '../lib/seo';
+
+interface ArticleOgMeta {
+  modifiedTime: string;
+  section: string;
+  tag?: string;
+}
 
 interface Props {
   title: string;
@@ -10,6 +17,11 @@ interface Props {
   activeCategory?: CategorySlug;
   activeNav?: 'home' | 'categories';
   headerSearchShortcut?: boolean;
+  ogType?: 'website' | 'article';
+  ogImageAlt?: string;
+  articleMeta?: ArticleOgMeta;
+  noindex?: boolean;
+  jsonLd?: JsonLdObject | JsonLdObject[];
 }
 
 const {
@@ -18,7 +30,17 @@ const {
   activeCategory,
   activeNav,
   headerSearchShortcut = true,
+  ogType = 'website',
+  ogImageAlt = 'Geary - The Better BulSU Student Handbook preview card',
+  articleMeta,
+  noindex = false,
+  jsonLd,
 } = Astro.props;
+
+const baseOrigin = Astro.site ?? new URL(Astro.url.origin);
+const canonicalUrl = new URL(Astro.url.pathname, baseOrigin).href;
+const ogImageUrl = new URL('/og-image.png', baseOrigin).href;
+const jsonLdEntries = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 ---
 
 <!doctype html>
@@ -30,6 +52,40 @@ const {
     <link rel="icon" href="/favicon.ico" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    {!noindex && <link rel="canonical" href={canonicalUrl} />}
+
+    <meta property="og:site_name" content="Geary" />
+    <meta property="og:locale" content="en_PH" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    {
+      ogType === 'article' && articleMeta && (
+        <>
+          <meta property="article:modified_time" content={articleMeta.modifiedTime} />
+          <meta property="article:section" content={articleMeta.section} />
+          {articleMeta.tag && <meta property="article:tag" content={articleMeta.tag} />}
+        </>
+      )
+    }
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+
+    {
+      jsonLdEntries.map((entry) => (
+        <script is:inline type="application/ld+json" set:html={serializeJsonLd(entry)} />
+      ))
+    }
   </head>
   <body>
     <a
