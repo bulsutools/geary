@@ -4,7 +4,7 @@ description: "Grade 11 GWA and subject cutoffs, required SF9, residency, ITR, af
 category: "enrollment"
 subcategory: "Admission & Enrollment"
 updatedDate: 2026-11-18
-featured: true
+featured: false
 source: "BulSU Freshman Undergraduate Admissions Policy (Student Policy Development Office / UAO)"
 sourceUrl: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
 ---

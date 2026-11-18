@@ -4,7 +4,7 @@ description: "Step-by-step BulSU Leave of Absence filing, the 1-year limit, retu
 category: "enrollment"
 subcategory: "Leave & Readmission"
 updatedDate: 2026-11-18
-featured: true
+featured: false
 source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
 sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---

@@ -4,7 +4,7 @@ description: "How to claim your Official Transcript of Records, COG, name update
 category: "documents"
 subcategory: "Academic Records & Clearances"
 updatedDate: 2026-11-18
-featured: false
+featured: true
 source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
 sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---

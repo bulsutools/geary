@@ -4,7 +4,7 @@ description: "BulSU's 7 academic delinquency tiers, probation limits, load cuts,
 category: "academics"
 subcategory: "Grades & Academic Standing"
 updatedDate: 2026-11-18
-featured: true
+featured: false
 source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
 sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
