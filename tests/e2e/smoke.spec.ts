@@ -12,6 +12,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
   test('TC-BLD-03: verifies static HTML routes and < 100 KB search-index.json in dist/', () => {
     expect(existsSync(resolve(DIST_DIR, 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'categories', 'index.html'))).toBe(true);
+    expect(existsSync(resolve(DIST_DIR, 'contribute', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'terms', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'privacy', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, '404.html'))).toBe(true);
@@ -53,6 +54,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/articles/bulsu-student-publication-guide',
       '/articles/bulsu-guidance-and-counseling-guide',
       '/articles/complete-guide-to-scholarships-at-bulsu',
+      '/contribute',
       '/terms',
       '/privacy',
     ];
@@ -243,6 +245,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/categories',
       '/categories/enrollment',
       '/articles/can-i-graduate-with-honors',
+      '/contribute',
       '/terms',
       '/privacy',
       '/404.html',
@@ -284,6 +287,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/categories',
       '/categories/policies',
       '/articles/can-i-graduate-with-honors',
+      '/contribute',
       '/terms',
       '/privacy',
       '/404.html',
@@ -293,7 +297,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       await page.goto(route);
 
       await expect(page.locator('header')).toHaveCount(1);
-      await expect(page.locator('header nav[aria-label="Primary navigation"] a')).toHaveCount(2);
+      await expect(page.locator('header nav[aria-label="Primary navigation"] a')).toHaveCount(3);
       await expect(page.locator('main')).toHaveCount(1);
       await expect(page.locator('footer')).toHaveCount(1);
       await expect(page.locator('h1')).toHaveCount(1);
@@ -310,6 +314,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       }
 
       const results = await new AxeBuilder({ page })
+        .exclude('iframe[src^="https://docs.google.com/"]')
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
         .analyze();
 

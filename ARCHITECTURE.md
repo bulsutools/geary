@@ -314,6 +314,7 @@ geary/
     │   └── SearchBar.tsx            # Hydrated React island consuming /search-index.json
     └── pages/
         ├── index.astro              # Home hub (Hero SearchBar, Featured Guides)
+        ├── contribute.astro         # Community submission page with embedded Google Form
         ├── terms.astro              # Terms of Service & unofficial disclaimer page
         ├── privacy.astro            # Privacy Policy (zero-tracking static architecture)
         ├── 404.astro                # Branded recovery page with SearchBar & categories (`noindex`)

@@ -258,8 +258,8 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 ### 4.4 Layout, Navigation & Disclaimers Subsystem
 
 #### `SRS-FUNC-UI-01`: Responsive Global Header & Mobile Navigation
-- **Inputs:** Category registry (`SW-INT-01`) and active route path.
-- **Processing Logic:** Render Geary brand link (`/`), top-level category navigation on `>= 768px`, compact Header `<SearchBar />`, and an accessible hamburger toggle (`aria-expanded`, `aria-controls`) revealing category links below `768px`.
+- **Inputs:** Navigation links (`Home`, `Categories`, `Contribute`) and active route path.
+- **Processing Logic:** Render Geary brand link (`/`), top-level navigation links (`Home`, `Categories`, `Contribute`) on `>= 768px`, compact Header `<SearchBar />`, and an accessible hamburger toggle (`aria-expanded`, `aria-controls`) revealing navigation links below `768px`.
 - **Outputs:** Single-row responsive `<header>` landmark across all pages.
 - **Error Handling:** Lightweight progressive-enhancement menu toggle functions cleanly without blocking static page render.
 

@@ -72,7 +72,7 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **Preconditions / Inputs:** Successful execution of `bun run build`.
 - **Verification Procedure:** Inspect generated `dist/` output files and byte size of `dist/search-index.json`.
 - **Pass/Fail Acceptance Criteria:**
-  - `dist/index.html`, `dist/404.html`, all 5 `dist/categories/<slug>/index.html` routes, and all `dist/articles/<slug>/index.html` routes exist.
+  - `dist/index.html`, `dist/contribute/index.html`, `dist/terms/index.html`, `dist/privacy/index.html`, `dist/404.html`, all `dist/categories/<slug>/index.html` routes, and all `dist/articles/<slug>/index.html` routes exist.
   - `dist/search-index.json` is valid JSON, size is `< 100 KB`, and item count matches the published article collection count.
 
 #### `TC-BLD-04`: Internal Link & Anchor Integrity

@@ -4,7 +4,7 @@ import SearchBar from './SearchBar';
 
 interface Props {
   activeCategory?: CategorySlug;
-  activeNav?: 'home' | 'categories';
+  activeNav?: 'home' | 'categories' | 'contribute';
   headerSearchShortcut?: boolean;
 }
 
@@ -14,6 +14,7 @@ const currentSection = activeNav ?? (activeCategory ? 'categories' : undefined);
 const NAV_LINKS = [
   { label: 'Home', href: '/', key: 'home' as const },
   { label: 'Categories', href: '/categories', key: 'categories' as const },
+  { label: 'Contribute', href: '/contribute', key: 'contribute' as const },
 ];
 ---
 

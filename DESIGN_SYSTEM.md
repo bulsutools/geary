@@ -113,7 +113,7 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 ## 5. Component Specifications & Interactive States
 
 ### 5.1 Global Header & Geary Brand Mark (`Header.astro`)
-- **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`. Left: **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring). Center/Right: `Home` (`/`) and `Categories` (`/categories`) links (`>= 768px`) + Header `<SearchBar variant="header" />` + accessible mobile drawer toggle (`< 768px`).
+- **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`. Left: **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring). Center/Right: `Home` (`/`), `Categories` (`/categories`), and `Contribute` (`/contribute`) links (`>= 768px`) + Header `<SearchBar variant="header" />` + accessible mobile drawer toggle (`< 768px`).
 - **Interactive States:**
   - *Default:* `text-[#495057]` navigation links, `min-h-[44px]` mobile tap target.
   - *Hover:* `text-[#8B1538]` with `150ms` transition; gear SVG rotates `90deg` smoothly (`300ms ease-out`) and returns to `0deg` when unhovered.
