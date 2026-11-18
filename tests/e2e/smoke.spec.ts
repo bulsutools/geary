@@ -42,16 +42,17 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/categories/enrollment',
       '/categories/documents',
       '/categories/organizations',
-      '/articles/latin-honors-and-gwa',
-      '/articles/dropping-subjects-and-loa',
-      '/articles/shifting-and-transferring-guide',
-      '/articles/tutorial-special-classes-and-substitution',
-      '/articles/academic-delinquency-and-probation',
-      '/articles/graduation-requirements-and-clearance',
-      '/articles/internship-and-job-placement-guide',
-      '/articles/attendance-and-absences-policy',
-      '/articles/campus-journalism-cultural-groups-and-awards',
-      '/articles/guidance-counseling-and-pwd-support',
+      '/articles/can-i-graduate-with-honors',
+      '/articles/how-to-apply-to-bulsu',
+      '/articles/how-to-shift-programs-in-bulsu',
+      '/articles/academic-load-prerequisites-and-residency',
+      '/articles/what-happens-when-you-fail-a-subject',
+      '/articles/bulsu-graduation-requirements',
+      '/articles/how-internships-work-at-bulsu',
+      '/articles/university-attendance-policies',
+      '/articles/bulsu-student-publication-guide',
+      '/articles/bulsu-guidance-and-counseling-guide',
+      '/articles/complete-guide-to-scholarships-at-bulsu',
       '/terms',
       '/privacy',
     ];
@@ -107,11 +108,11 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     await page.keyboard.press('/');
     await expect(heroInput).toBeFocused();
 
-    await heroInput.fill('GWA');
+    await heroInput.fill('Latin Honors');
     await expect.poll(() => indexFetchCount).toBe(1);
 
     const firstOption = page.locator('main [role="option"]').first();
-    await expect(firstOption).toContainText('Latin honors');
+    await expect(firstOption).toContainText('Can I Graduate With Honors?');
     await expect(firstOption).toBeVisible();
 
     const isOptionOnTop = await firstOption.evaluate((el) => {
@@ -125,7 +126,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     await expect(firstOption).toHaveAttribute('aria-selected', 'true');
     await heroInput.press('Enter');
 
-    await expect(page).toHaveURL(/\/articles\/latin-honors-and-gwa\/?$/);
+    await expect(page).toHaveURL(/\/articles\/can-i-graduate-with-honors\/?$/);
     expect(pageErrors).toEqual([]);
 
     // Verify Header SearchBar shortcut + Escape dismissal on article page
@@ -133,8 +134,8 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     await expect(headerInput).toHaveAttribute('data-search-ready', 'true');
     await page.keyboard.press('Control+k');
     await expect(headerInput).toBeFocused();
-    await headerInput.fill('GWA');
-    await expect(page.locator('header [role="option"]').first()).toContainText('GWA');
+    await headerInput.fill('Honors');
+    await expect(page.locator('header [role="option"]').first()).toContainText('Honors');
     await headerInput.press('Escape');
     await expect(page.locator('header [role="listbox"]')).toHaveCount(0);
   });
@@ -191,7 +192,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
   }) => {
     // Desktop sticky sidebar TOC
     await page.setViewportSize({ width: 1280, height: 800 });
-    await page.goto('/articles/latin-honors-and-gwa');
+    await page.goto('/articles/can-i-graduate-with-honors');
     const desktopToc = page.locator('aside[aria-label="On this page"]');
     const mobileToc = page.locator('details:has-text("On this page")');
     await expect(desktopToc).toBeVisible();
@@ -202,8 +203,8 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     await expect(desktopToc).toBeHidden();
     await expect(mobileToc).toBeVisible();
     await mobileToc.locator('summary').click();
-    await mobileToc.locator('a[href="#how-gwa-is-calculated"]').click();
-    await expect(page).toHaveURL(/#how-gwa-is-calculated$/);
+    await mobileToc.locator('a[href="#latin-honors-gpa-cutoffs"]').click();
+    await expect(page).toHaveURL(/#latin-honors-gpa-cutoffs$/);
 
     // Related Guides & Verification Notice remain omitted; Source card renders handbook citation
     await expect(page.locator('section[aria-labelledby="related-guides-heading"]')).toHaveCount(0);
@@ -218,7 +219,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     );
 
     // Handbook article renders Source card hyperlink
-    await page.goto('/articles/grading-system-and-inc-rules');
+    await page.goto('/articles/understanding-the-bulsu-grading-system');
     const sourceLink = page.locator('aside[aria-label="Article source"] a');
     await expect(sourceLink).toHaveAttribute(
       'href',
@@ -241,7 +242,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/',
       '/categories',
       '/categories/enrollment',
-      '/articles/latin-honors-and-gwa',
+      '/articles/can-i-graduate-with-honors',
       '/terms',
       '/privacy',
       '/404.html',
@@ -282,7 +283,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/',
       '/categories',
       '/categories/policies',
-      '/articles/latin-honors-and-gwa',
+      '/articles/can-i-graduate-with-honors',
       '/terms',
       '/privacy',
       '/404.html',
@@ -304,7 +305,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       if (route === '/') {
         const input = page.locator('main input[role="combobox"]');
         await expect(input).toHaveAttribute('data-search-ready', 'true');
-        await input.fill('GWA');
+        await input.fill('Honors');
         await expect(page.locator('main [role="listbox"]')).toBeVisible();
       }
 
@@ -393,7 +394,7 @@ Test body.
     const sitemap0Res = await request.get('/sitemap-0.xml');
     expect(sitemap0Res.status()).toBe(200);
     const sitemap0Xml = await sitemap0Res.text();
-    expect(sitemap0Xml).toContain('/articles/latin-honors-and-gwa');
+    expect(sitemap0Xml).toContain('/articles/can-i-graduate-with-honors');
     expect(sitemap0Xml).toContain('/categories/organizations');
     expect(sitemap0Xml).not.toContain('/404');
 
@@ -422,11 +423,11 @@ Test body.
       .evaluateAll((els) => els.map((el) => JSON.parse(el.textContent ?? '{}')));
     expect(catLd.some((d) => d['@type'] === 'BreadcrumbList')).toBe(true);
 
-    await page.goto('/articles/latin-honors-and-gwa');
-    await expect(page).toHaveTitle('Latin honors, GWA rules, and Gold Gear Awards');
+    await page.goto('/articles/can-i-graduate-with-honors');
+    await expect(page).toHaveTitle('Can I Graduate With Honors?');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
       'href',
-      /\/articles\/latin-honors-and-gwa\/?$/,
+      /\/articles\/can-i-graduate-with-honors\/?$/,
     );
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'article');
     await expect(page.locator('meta[property="article:modified_time"]')).toHaveAttribute(
@@ -439,11 +440,11 @@ Test body.
     );
     await expect(page.locator('meta[property="article:tag"]')).toHaveAttribute(
       'content',
-      'Graduation & Honors',
+      'Internships & Graduation',
     );
     await expect(page.locator('meta[property="og:image:alt"]')).toHaveAttribute(
       'content',
-      /Latin honors.*Geary BulSU Student Guide/,
+      /Can I Graduate With Honors\?.*Geary BulSU Student Guide/,
     );
     const articleLd = await page
       .locator('script[type="application/ld+json"]')

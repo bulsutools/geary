@@ -299,33 +299,7 @@ geary/
     │   └── seo.ts                   # Pure JSON-LD builders (WebSite, Article, BreadcrumbList)
     ├── content.config.ts            # Astro Content Collection + Zod schema (`articles`)
     ├── content/
-    │   └── articles/                # UTF-8 Markdown guides (26 handbook articles)
-    │       ├── academic-delinquency-and-probation.md
-    │       ├── admission-requirements-and-bsuat.md
-    │       ├── attendance-and-absences-policy.md
-    │       ├── campus-housing-dining-and-varsity.md
-    │       ├── campus-journalism-cultural-groups-and-awards.md
-    │       ├── campus-safety-and-emergency-protocols.md
-    │       ├── clinic-and-student-insurance.md
-    │       ├── disciplinary-hearings-and-appeals.md
-    │       ├── disciplinary-offenses-and-penalties.md
-    │       ├── dropping-subjects-and-loa.md
-    │       ├── educational-trips-and-off-campus-guidelines.md
-    │       ├── examinations-and-maximum-residency.md
-    │       ├── grading-system-and-inc-rules.md
-    │       ├── graduation-requirements-and-clearance.md
-    │       ├── guidance-counseling-and-pwd-support.md
-    │       ├── id-and-dress-code-policy.md
-    │       ├── institutional-scholarships.md
-    │       ├── internship-and-job-placement-guide.md
-    │       ├── latin-honors-and-gwa.md
-    │       ├── library-borrowing-and-services.md
-    │       ├── requesting-tor-and-transfer-credentials.md
-    │       ├── shifting-and-transferring-guide.md
-    │       ├── student-events-postings-and-fundraising.md
-    │       ├── student-organization-recognition-and-advisers.md
-    │       ├── student-rights-and-grievance-process.md
-    │       └── tutorial-special-classes-and-substitution.md
+    │   └── articles/                # 30 UTF-8 handbook-verified Markdown guides
     ├── layouts/
     │   ├── BaseLayout.astro         # Global HTML shell, Header & Footer
     │   └── ArticleLayout.astro      # Constrained prose reading layout, TOC & related

@@ -1,40 +1,42 @@
-# Editorial Criteria & Handbook Audit Standard (`EDITORIAL_CRITERIA.md`)
+# Editorial Criteria & Content Standard (`EDITORIAL_CRITERIA.md`)
 
-Use these criteria before authoring or updating any Geary guide from source documents such as the *BulSU Undergraduate Student Manual (BOR Resolution No. 85, s. 2016)*.
+Use these criteria before writing or updating any Geary guide.
 
 ---
 
-## 1. Inclusion Gate (Must Satisfy All 3)
+## 1. Content Tiers & Inclusion Gate
 
-A handbook topic qualifies for a standalone Geary article only when it passes every gate below:
+Every Geary article must solve a concrete student question, task, or problem within one of three tiers:
 
-1. **Direct Student Action, Risk, or Entitlement:** The section tells an undergraduate what to do, what to submit, what deadline or threshold applies, what penalty results from non-compliance, or what campus service/right they can claim.
-2. **Verifiable Concrete Specifics:** The source supplies hard facts—numbers, grade cutoffs, fees, waiting times, signature chains, required documents, offices, or explicit exceptions—rather than abstract policy aspirations.
-3. **Cohesive Standalone Scope:** The subject resolves one unified student task or problem cleanly without needing a 4-line stub (merge small related subsections sharing one workflow or office).
+1. **Official BulSU Processes (Sourced):** Admissions, enrollment, shifting, grading (`4.00`, `INC`, `FDA`), honors, graduation, scholarships, Registrar records, campus policies, student orgs, and campus services backed by official BulSU sources (`BOR Resolution No. 85, s. 2016` or verified university advisories).
+2. **Campus Life & Local Directory:** Practical student logistics around BulSU (study spots, food near campus, printing, commuting, Wi-Fi, portal help, lost and found) grounded in verifiable student knowledge without inventing official fees, schedules, or office policies.
+3. **College Survival & Career Prep:** Actionable peer advice for freshmen, undergrads, and graduating students (contacting professors, thesis prep, internships, resumes, study habits) tailored to BulSU and Philippine college realities.
+
+**Inclusion Gate (All 3 Required):**
+- **Clear Student Intent:** Answers a real question or guides a specific task (`How to...`, `What Happens When...`, `Where to...`, `Can I...`).
+- **Substance Over Filler:** Contains concrete steps, rules, tips, checklists, or verified facts—never generic motivational fluff.
+- **Standalone Worth:** Enough depth for its own page; never ship a 3-sentence stub.
 
 ---
 
 ## 2. Exclusion Gate (Skip Outright)
 
-Do not turn these handbook sections into standalone articles:
-
-- **Internal Office Charters & Staff Mandates:** "Objectives", "Functions of the Office", and employee duty lists (e.g., internal admin duties of SAS, OSW, OSD, OSOA, CarDSI, or PPESO staff) that govern university employees rather than student actions.
-- **Ceremonial, Historical & Template Pages:** Title pages, Quality Policy, Foreword, University President's Message, University History essay, tear-sheet Acknowledgement forms, and lyrics (`BSU Hymn`, `BSU March`).
-- **Non-Procedural Statutory / Policy Preambles:** Standalone Constitutional rights lists (`Art. III` restatements), generic `Norms of Conduct` trait lists, or list-of-laws headings (`Obedience to the Laws of the Land`) that lack BulSU-specific steps, unless folded briefly into an actionable student-rights/grievance guide.
-- **Administrative Annexes Directed at HEIs/CHED:** Compliance report templates (`Annex B`/`C` forms for CHEDRO), CHED cover memorandums (`Oct 27, 2015` orientation memo), or unlabelled blank forms.
+- **Internal Staff Mandates:** Office charters, employee duties, and administrative checklists meant for university personnel rather than students.
+- **Ceremonial & Template Pages:** History essays, quality policy statements, song lyrics, tear-sheet forms, and CHED/HEI compliance annexes.
+- **Duplicate Workflows:** Never create multiple pages for the same process (e.g., separate pages for "How to File an LOA" and "How to Process a Leave of Absence", or repeating "Replacement ID" across categories). Keep one canonical guide per workflow.
+- **Micro-FAQs:** Single-answer questions (`"Is There an Age Limit for Admission?"`, `"What Is a Block Section?"`) belong inside a parent FAQ or overview guide, not as thin standalone pages.
 
 ---
 
-## 3. Merging & Splitting Guidelines
+## 3. Title, Taxonomy & Structure Rules
 
-- **Merge micro-sections:** Combine closely linked clauses into one high-utility guide (e.g., *Load Changes + Subject Substitution + Tutorial/Special Classes*; *Graduation Requirements + Commencement*; *TOR + Transfer Credentials + Name Changes*; *Medical/Dental Certificates + Student Accident Insurance*).
-- **Split overloaded chapters:** Separate distinct workflows inside large chapters (e.g., split *Offenses & Penalties* from *Hearing & Appeals Procedures*; split *Org Recognition & Advisers* from *Events, Postings & Fundraising*; split *Admissions & BSUAT* from *Shifting & Transferring*).
-- **Category & Subcategory Discipline:** Every article uses one of the 7 slugs in `src/data/categories.ts` (`enrollment`, `academics`, `documents`, `scholarships`, `policies`, `organizations`, `campus`) and matches existing `subcategory` names inside that category to avoid duplicate headings.
+- **Friendly, Search-First Titles:** Prefer plain, conversational titles matching how students search (`"How to Compute Your GWA"`, `"What Happens When You Fail a Subject?"`, `"Where to Eat Near BulSU"`). Keep titles concise (`<= 60` characters when possible) and skip stiff handbook phrasing.
+- **Category & Subcategory Discipline:** Assign each article to one of the 7 canonical slugs in `src/data/categories.ts` (`enrollment`, `academics`, `documents`, `scholarships`, `policies`, `organizations`, `campus`) and reuse existing `subcategory` headings within each category.
+- **Scannable Layout:** Open with a 1-2 sentence direct answer, then use short paragraphs, numbered steps, clean tables, and callouts (`>`).
 
 ---
 
-## 4. Quality & Voice Standard (`humanizer` + Source Card)
+## 4. Voice & Citation Standard
 
-- **Required Source Card:** Every article derived from a source document must populate both `source` and `sourceUrl` (when a public link exists) in YAML frontmatter so `ArticleLayout.astro` renders the source citation card at the end of the page.
-- **Factual Fidelity:** Keep all numbers, grade thresholds, fees, office names, waiting times, and eligibility exclusions exact to the source. Never invent missing hotline numbers, current fees omitted from the PDF, or unstated office hours.
-- **Readable Human Prose (`humanizer`):** Write directly for students using active verbs. Remove chatbot openings, restated section closers, forced triads, stock AI adjectives (`crucial`, `pivotal`, `enhance`, `ensure`, `valuable`), unnecessary bold-label bullet formatting, and em/en dashes (`—`, `–`) in prose.
+- **Peer Tone (`humanizer`):** Write like a helpful upperclassman explaining things clearly to a freshman—warm, direct, and practical. Avoid bureaucratic stiffness, chatbot intros, repeated section closers, forced triads, stock AI words (`crucial`, `pivotal`, `delve`, `enhance`, `ensure`, `valuable`), unnecessary bold-label bullet spam, and em/en dashes (`—`, `–`) in prose.
+- **Honest Sourcing:** Include `source` and `sourceUrl` frontmatter on every guide derived from official BulSU documents so `ArticleLayout.astro` renders the Source card. Omit `source`/`sourceUrl` on general survival, career, or community-curated guides rather than citing an unrelated handbook section, and never invent unverified hotlines, fees, or room numbers.
