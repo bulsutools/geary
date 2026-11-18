@@ -27,10 +27,10 @@ const ICON_PATHS: Record<CategoryMeta['icon'], string> = {
 
 <a
   href={`/categories/${category.slug}`}
-  class="group flex flex-col justify-between rounded-xl border border-[#DEE2E6] bg-white p-5 transition-colors duration-150 hover:border-[#8B1538]"
+  class="group flex flex-col justify-between rounded-xl border border-border-subtle bg-white p-5 transition-colors duration-150 hover:border-brand-crimson"
 >
   <div class="mb-4">
-    <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-[#FDF2F4] text-[#8B1538]">
+    <div class="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-crimson-wash text-brand-crimson">
       <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
         <path d={ICON_PATHS[category.icon]} />
       </svg>
@@ -38,12 +38,12 @@ const ICON_PATHS: Record<CategoryMeta['icon'], string> = {
   </div>
 
   <div class="flex items-center justify-between gap-3">
-    <h3 class="font-[family-name:var(--font-heading)] text-lg font-bold text-[#181C20] group-hover:text-[#8B1538] transition-colors duration-150">
+    <h3 class="font-heading text-lg font-bold text-ink-primary group-hover:text-brand-crimson transition-colors duration-150">
       {category.title}
     </h3>
     <span
       aria-hidden="true"
-      class="shrink-0 text-base font-semibold text-[#8B1538] group-hover:translate-x-0.5 group-hover:text-[#6E0F2B] transition-all duration-150"
+      class="shrink-0 text-base font-semibold text-brand-crimson group-hover:translate-x-0.5 group-hover:text-brand-crimson-hover transition-all duration-150"
     >
       →
     </span>

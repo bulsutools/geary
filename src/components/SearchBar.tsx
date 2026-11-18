@@ -179,7 +179,7 @@ export default function SearchBar({
           aria-hidden="true"
           viewBox="0 0 20 20"
           fill="none"
-          className={`pointer-events-none absolute text-[#636C74] ${
+          className={`pointer-events-none absolute text-ink-muted ${
             isHero ? 'left-4 h-5 w-5' : 'left-3 h-4 w-4'
           }`}
         >
@@ -215,10 +215,10 @@ export default function SearchBar({
             void ensureIndexLoaded();
           }}
           onKeyDown={handleInputKeyDown}
-          className={`w-full bg-white text-[#181C20] placeholder:text-[#636C74] border transition-colors duration-150 focus:outline-none focus:border-[#8B1538] focus:ring-2 focus:ring-[#8B1538]/20 ${
+          className={`w-full bg-white text-ink-primary placeholder:text-ink-muted border transition-colors duration-150 focus:outline-none focus:border-brand-crimson focus:ring-2 focus:ring-brand-crimson/20 ${
             isHero
-              ? 'h-[52px] rounded-xl border-[#CED4DA] pl-11 pr-14 text-base shadow-xs'
-              : 'h-10 rounded-lg border-[#CED4DA] pl-9 pr-9 sm:pr-12 text-base sm:text-sm'
+              ? 'h-[52px] rounded-xl border-border-strong pl-11 pr-14 text-base shadow-xs'
+              : 'h-10 rounded-lg border-border-strong pl-9 pr-9 sm:pr-12 text-base sm:text-sm'
           }`}
         />
 
@@ -232,7 +232,7 @@ export default function SearchBar({
               setIsOpen(false);
               inputRef.current?.focus();
             }}
-            className={`inline-flex items-center justify-center rounded-md text-[#495057] hover:bg-[#EEF1F4] hover:text-[#181C20] transition-colors ${
+            className={`inline-flex items-center justify-center rounded-md text-ink-secondary hover:bg-surface-subtle hover:text-ink-primary transition-colors ${
               isHero ? 'absolute right-2.5 h-8 w-8' : 'absolute right-1.5 h-7 w-7'
             }`}
           >
@@ -244,7 +244,7 @@ export default function SearchBar({
           enableGlobalShortcut && (
             <kbd
               aria-hidden="true"
-              className={`pointer-events-none hidden sm:inline-flex items-center justify-center rounded border border-[#DEE2E6] bg-[#EEF1F4] font-mono text-xs font-medium text-[#495057] ${
+              className={`pointer-events-none hidden sm:inline-flex items-center justify-center rounded border border-border-subtle bg-surface-subtle font-mono text-xs font-medium text-ink-secondary ${
                 isHero ? 'absolute right-3.5 px-2 py-0.5' : 'absolute right-2.5 px-1.5 py-0.5'
               }`}
             >
@@ -257,32 +257,32 @@ export default function SearchBar({
       {showPanel && (
         <div
           id={listboxId}
-          className={`z-50 mt-2 rounded-xl border border-[#DEE2E6] bg-white shadow-lg max-h-[400px] overflow-y-auto ${
+          className={`z-50 mt-2 rounded-xl border border-border-subtle bg-white shadow-lg max-h-[400px] overflow-y-auto ${
             isHero
               ? 'absolute inset-x-0 top-full'
               : 'fixed inset-x-4 top-[4.25rem] sm:absolute sm:inset-x-auto sm:right-0 sm:top-full sm:w-[24rem]'
           }`}
         >
           {isLoading && !cachedIndex ? (
-            <div className="px-4 py-5 text-sm text-[#495057]">
+            <div className="px-4 py-5 text-sm text-ink-secondary">
               Loading guide index...
             </div>
           ) : fetchError ? (
             <div className="p-4 text-left space-y-3">
-              <p className="text-sm font-medium text-[#181C20]">
+              <p className="text-sm font-medium text-ink-primary">
                 Search index couldn&apos;t load right now.
               </p>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => void ensureIndexLoaded()}
-                  className="inline-flex min-h-[36px] items-center rounded-lg border border-[#8B1538] bg-[#FDF2F4] px-3 py-1.5 text-xs font-semibold text-[#8B1538] hover:bg-[#8B1538] hover:text-white transition-colors"
+                  className="inline-flex min-h-[36px] items-center rounded-lg border border-brand-crimson bg-brand-crimson-wash px-3 py-1.5 text-xs font-semibold text-brand-crimson hover:bg-brand-crimson hover:text-white transition-colors"
                 >
                   Retry search
                 </button>
               </div>
-              <div className="border-t border-[#DEE2E6] pt-3">
-                <p className="mb-2 text-xs font-medium text-[#495057]">
+              <div className="border-t border-border-subtle pt-3">
+                <p className="mb-2 text-xs font-medium text-ink-secondary">
                   Browse by category instead:
                 </p>
                 <div className="flex flex-wrap gap-1.5">
@@ -290,7 +290,7 @@ export default function SearchBar({
                     <a
                       key={category.slug}
                       href={`/categories/${category.slug}`}
-                      className="inline-flex items-center rounded-full border border-[#DEE2E6] bg-[#F8F9FA] px-3 py-1 text-xs font-medium text-[#181C20] hover:border-[#8B1538] hover:text-[#8B1538] transition-colors"
+                      className="inline-flex items-center rounded-full border border-border-subtle bg-canvas-paper px-3 py-1 text-xs font-medium text-ink-primary hover:border-brand-crimson hover:text-brand-crimson transition-colors"
                     >
                       {category.title}
                     </a>
@@ -299,7 +299,7 @@ export default function SearchBar({
               </div>
             </div>
           ) : results.length > 0 ? (
-            <ul role="listbox" aria-label="Search results" className="divide-y divide-[#DEE2E6]">
+            <ul role="listbox" aria-label="Search results" className="divide-y divide-border-subtle">
               {results.map((item, index) => {
                 const isActive = index === activeIndex;
                 return (
@@ -313,14 +313,14 @@ export default function SearchBar({
                       onClick={() => setIsOpen(false)}
                       className={`block px-4 py-3 text-left transition-colors duration-150 ${
                         isActive
-                          ? 'bg-[#FDF2F4] border-l-[3px] border-[#8B1538]'
-                          : 'border-l-[3px] border-transparent hover:bg-[#FDF2F4] hover:border-[#8B1538]'
+                          ? 'bg-brand-crimson-wash border-l-[3px] border-brand-crimson'
+                          : 'border-l-[3px] border-transparent hover:bg-brand-crimson-wash hover:border-brand-crimson'
                       }`}
                     >
-                      <p className="text-sm font-semibold text-[#181C20]">
+                      <p className="text-sm font-semibold text-ink-primary">
                         {item.title}
                       </p>
-                      <p className="mt-0.5 line-clamp-1 text-xs text-[#495057]">
+                      <p className="mt-0.5 line-clamp-1 text-xs text-ink-secondary">
                         {item.description}
                       </p>
                     </a>
@@ -330,7 +330,7 @@ export default function SearchBar({
             </ul>
           ) : (
             <div className="p-4 text-left">
-              <p className="text-sm text-[#181C20]">
+              <p className="text-sm text-ink-primary">
                 No guides matched <span className="font-semibold">&ldquo;{trimmedQuery}&rdquo;</span>.
               </p>
             </div>

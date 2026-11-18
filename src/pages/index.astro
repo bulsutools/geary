@@ -19,12 +19,12 @@ const websiteJsonLd = buildWebsiteJsonLd(baseOrigin.href);
   headerSearchShortcut={false}
   jsonLd={websiteJsonLd}
 >
-  <section class="relative z-20 border-b border-[#DEE2E6] bg-[#F8F9FA] py-12 sm:py-14 lg:py-16">
+  <section class="relative z-20 border-b border-border-subtle bg-canvas-paper py-12 sm:py-14 lg:py-16">
     <div class="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       <svg
         viewBox="0 0 200 200"
         fill="none"
-        class="absolute -right-12 -top-12 h-64 w-64 text-[#8B1538]/[0.05] sm:h-80 sm:w-80 motion-safe:animate-[spin_60s_linear_infinite]"
+        class="absolute -right-12 -top-12 h-64 w-64 text-brand-crimson/5 sm:h-80 sm:w-80 motion-safe:animate-[spin_60s_linear_infinite]"
       >
         <g fill="currentColor">
           <rect x="82" y="10" width="36" height="180" rx="8" />
@@ -39,11 +39,11 @@ const websiteJsonLd = buildWebsiteJsonLd(baseOrigin.href);
 
     <div class="relative mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
       <div class="mx-auto max-w-2xl text-center">
-        <h1 class="font-[family-name:var(--font-heading)] text-[1.875rem] sm:text-[2.5rem] font-extrabold leading-[1.15] tracking-[-0.025em] text-[#181C20]">
+        <h1 class="font-heading text-[1.875rem] sm:text-[2.5rem] font-extrabold leading-[1.15] tracking-[-0.025em] text-ink-primary">
           The Better BulSU Student Handbook
         </h1>
 
-        <p class="mt-4 text-base sm:text-lg leading-relaxed text-[#495057]">
+        <p class="mt-4 text-base sm:text-lg leading-relaxed text-ink-secondary">
           Student-managed guides for BulSUans, by BulSUans.
         </p>
 
@@ -65,13 +65,13 @@ const websiteJsonLd = buildWebsiteJsonLd(baseOrigin.href);
           <div class="mb-6 flex items-baseline justify-between gap-4">
             <h2
               id="featured-guides-heading"
-              class="font-[family-name:var(--font-heading)] text-xl sm:text-2xl font-bold text-[#181C20]"
+              class="font-heading text-xl sm:text-2xl font-bold text-ink-primary"
             >
               Featured
             </h2>
             <a
               href="/categories"
-              class="text-sm font-semibold text-[#8B1538] hover:text-[#6E0F2B] hover:underline underline-offset-2 transition-colors whitespace-nowrap"
+              class="text-sm font-semibold text-brand-crimson hover:text-brand-crimson-hover hover:underline underline-offset-2 transition-colors whitespace-nowrap"
             >
               Browse all categories →
             </a>
