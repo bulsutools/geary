@@ -11,6 +11,7 @@ describe('SEO JSON-LD builders and safe serialization', () => {
   test('builds WebSite JSON-LD with normalized root URL', () => {
     const schema = buildWebsiteJsonLd('https://geary.example.com');
     expect(schema['@type']).toBe('WebSite');
+    expect(schema.name).toBe('Geary');
     expect(schema.url).toBe('https://geary.example.com/');
     expect(schema.inLanguage).toBe('en');
   });

@@ -28,10 +28,10 @@ export function buildWebsiteJsonLd(siteUrl: string): JsonLdObject {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Geary - The Better BulSU Student Handbook',
+    name: 'Geary',
+    alternateName: 'The Better BulSU Student Handbook',
     url: new URL('/', siteUrl).href,
-    description:
-      'Unofficial student-managed Bulacan State University guides covering enrollment, academics, Registrar records, scholarships, policies, student organizations, and campus life.',
+    description: 'Student-managed guides for BulSUans, by BulSUans.',
     inLanguage: 'en',
   };
 }

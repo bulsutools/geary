@@ -427,8 +427,17 @@ Test body.
 
     const ogImgRes = await request.get('/og-image.png');
     expect(ogImgRes.status()).toBe(200);
+    for (const iconPath of ['/favicon.ico', '/favicon.svg', '/favicon-48x48.png', '/favicon-96x96.png', '/apple-touch-icon.png']) {
+      const res = await request.get(iconPath);
+      expect(res.status(), iconPath).toBe(200);
+    }
 
     await page.goto('/');
+    await expect(page).toHaveTitle('Geary');
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+      'content',
+      'Student-managed guides for BulSUans, by BulSUans.',
+    );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/.+\/$/);
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute(
@@ -442,7 +451,7 @@ Test body.
     const homeLd = await page
       .locator('script[type="application/ld+json"]')
       .evaluateAll((els) => els.map((el) => JSON.parse(el.textContent ?? '{}')));
-    expect(homeLd.some((d) => d['@type'] === 'WebSite')).toBe(true);
+    expect(homeLd.some((d) => d['@type'] === 'WebSite' && d.name === 'Geary')).toBe(true);
 
     await page.goto('/categories/academics');
     const catLd = await page
