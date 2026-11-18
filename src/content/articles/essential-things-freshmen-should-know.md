@@ -5,8 +5,13 @@ category: "enrollment"
 subcategory: "Orientation & First Year"
 updatedDate: 2026-11-18
 featured: true
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU SG Academic Affairs Committee & ICTO - ALAB SMS Student Portal Guide (Nov 15, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0x8n9T8wE97pJAxV1HAtcXfSLNmYEpYSeNrVyxkSA96Z5TVw3mpAaky8Dm2SeQS73l&id=61573139957540"
+  - label: "BulSU CBEA LSC - Dress Code Guide A.Y. 2026-2027 (Jun 8, 2026)"
+    url: "https://www.facebook.com/BulSUCBEALSC/posts/pfbid0fsR9ZfrnosjXTN4Z4Go3SkYBpX3ihkT9nXbUTaFrMGu2es31zM2yJ1rvcE5ymbaMl"
 ---
 
 Stepping onto a BulSU campus for the first time comes with unwritten habits every upperclassman picks up fast, plus official rules every freshman signs off on. Here is what the student manual sets out for your first year.

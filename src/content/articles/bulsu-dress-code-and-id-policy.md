@@ -5,8 +5,13 @@ category: "policies"
 subcategory: "Campus Rules & Dress Code"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU CBEA LSC - Dress Code Guide A.Y. 2026-2027 (Jun 8, 2026)"
+    url: "https://www.facebook.com/BulSUCBEALSC/posts/pfbid0fsR9ZfrnosjXTN4Z4Go3SkYBpX3ihkT9nXbUTaFrMGu2es31zM2yJ1rvcE5ymbaMl"
+  - label: "BulSU Meneses Campus LSC - Uniform Guide A.Y. 2026-2027 (May 4, 2026)"
+    url: "https://www.facebook.com/bulsumc2627/posts/pfbid0sRQWqombyCRTyYCU2xQ1oy7ZWpHzQtUU7M6Qw6FGTwRLs86csyyc1qryj7BfGALMl"
 ---
 
 Campus security enforces entry and dress rules right at the university gates under Part I, Section D.IV of the Student Manual. Knowing the weekly schedule prevents awkward gate holds before morning classes or exams.

@@ -49,6 +49,34 @@ describe('SEO JSON-LD builders and safe serialization', () => {
     });
   });
 
+  test('builds Article JSON-LD citation array when multiple sources are provided', () => {
+    const schema = buildArticleJsonLd({
+      title: 'How to Apply to BulSU',
+      description: 'ATBulSU steps and requirements.',
+      url: 'https://geary.example.com/articles/how-to-apply-to-bulsu',
+      dateModified: new Date('2026-11-18T00:00:00.000Z'),
+      section: 'Enrollment',
+      sources: [
+        {
+          label: 'BulSU Freshman Admissions Policy',
+          url: 'https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view',
+        },
+        {
+          label: 'BulSU Admissions Office Advisory',
+        },
+      ],
+    });
+
+    expect(schema.citation).toEqual([
+      {
+        '@type': 'CreativeWork',
+        name: 'BulSU Freshman Admissions Policy',
+        url: 'https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view',
+      },
+      'BulSU Admissions Office Advisory',
+    ]);
+  });
+
   test('escapes closing script brackets in serialized JSON-LD', () => {
     const raw = serializeJsonLd({ headline: '</script><script>alert(1)</script>' });
     expect(raw).not.toContain('</script>');

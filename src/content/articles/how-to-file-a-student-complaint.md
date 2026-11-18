@@ -5,8 +5,13 @@ category: "policies"
 subcategory: "Rights, Discipline & Grievances"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU SG Academic Affairs Committee - TAMBAD 2026 Grade Consultation Grievance (Nov 11, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02khKjQ4YVz8jJZLNsrwj5SidqMsURn1YX7Y8Ci6k9rAouyXNiSzvqRwXpwggb7T3xl&id=61573139957540"
+  - label: "BulSU GAD Center - Legal Aid Clinic & Sexual Harassment Guidelines (Jul 23, 2026)"
+    url: "https://www.facebook.com/gadcbulsu/posts/pfbid0csmqmu7LNsbM9YtBaFKrLSj8SCJLTh6Vx7f2Lw3innS63YUUDnhEXSYm4X3caS3Sl"
 ---
 
 If a classmate, faculty member, non-teaching staff, or university administrator treats you unfairly, abuses authority, or provides poor instruction or service, BulSU gives you a formal path called **Student Grievance Intervention** under Part III, Section H of the manual.

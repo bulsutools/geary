@@ -5,8 +5,13 @@ category: "enrollment"
 subcategory: "Admission & Enrollment"
 updatedDate: 2026-11-18
 featured: false
-source: "BulSU Freshman Undergraduate Admissions Policy (Student Policy Development Office / UAO)"
-sourceUrl: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+sources:
+  - label: "BulSU Freshman Undergraduate Admissions Policy (Student Policy Development Office / UAO)"
+    url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+  - label: "BulSU Admissions Office - Programs Offered & Grade Requirements (Sep 19, 2025)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0TJz8Fsn2ag7B6vY2VW3LpdhsPRdvNZLYPeqwGh5JCLbFdE3pkt5qKV7AZiEV39z7l"
+  - label: "BulSU SG Academic & Admissions Committees - ATBULSU 2027 FAQ Part 1 (Aug 30, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0MJGBJHt25CMkVJUr4QoSwiFAByDeNb37oFfYcm3UCzuda2dna5R8rJLmwTY8AhLRl&id=61573139957540"
 ---
 
 Admission into Bulacan State University as a freshman comes down to your **Grade 11 academic record**, **Senior High School track and strand alignment**, **ATBulSU score**, and **affirmative action criteria**. Under the **BulSU Freshman Undergraduate Admissions Policy**, requirements apply cleanly across board programs, non-board programs, and specialized colleges.

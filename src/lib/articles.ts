@@ -1,5 +1,10 @@
 import type { CategorySlug } from '../data/categories';
 
+export interface ArticleSource {
+  label: string;
+  url?: string;
+}
+
 export interface ArticleLike {
   id: string;
   slug?: string;
@@ -12,7 +17,37 @@ export interface ArticleLike {
     featured: boolean;
     source?: string;
     sourceUrl?: string;
+    sources?: readonly ArticleSource[];
   };
+}
+
+/** Combine legacy `source`/`sourceUrl` and multi-entry `sources` into one deduplicated list. */
+export function resolveArticleSources(
+  data: Pick<ArticleLike['data'], 'source' | 'sourceUrl' | 'sources'>,
+): ArticleSource[] {
+  const seen = new Set<string>();
+  const resolved: ArticleSource[] = [];
+
+  const pushUnique = (item: ArticleSource) => {
+    const label = item.label.trim();
+    if (!label) return;
+    const url = item.url?.trim() || undefined;
+    const key = `${label}\0${url ?? ''}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    resolved.push(url ? { label, url } : { label });
+  };
+
+  if (data.source) {
+    pushUnique({ label: data.source, url: data.sourceUrl });
+  }
+  if (data.sources) {
+    for (const item of data.sources) {
+      pushUnique(item);
+    }
+  }
+
+  return resolved;
 }
 
 export interface SubcategoryGroup<T extends ArticleLike> {

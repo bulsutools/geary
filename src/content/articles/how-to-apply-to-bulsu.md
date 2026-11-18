@@ -5,8 +5,15 @@ category: "enrollment"
 subcategory: "Admission & Enrollment"
 updatedDate: 2026-11-18
 featured: true
-source: "BulSU Freshman Undergraduate Admissions Policy (Student Policy Development Office / UAO)"
-sourceUrl: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+sources:
+  - label: "BulSU Freshman Undergraduate Admissions Policy (Student Policy Development Office / UAO)"
+    url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+  - label: "BulSU Admissions Office - ATBULSU 2027 Online Application Flyer (Aug 25, 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid035UgE32oH3ufmBAsfxszEBU7x6zKqyjqEoJLrSFAAvqjiHdUEEeqBMp9QMyJ8LUPKl"
+  - label: "BulSU Admissions Office - ATBULSU 2027 Deadline Reminder (Nov 14, 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid035czm9FanDzC1jTERD5VpnDurUHQrWyhfrMxBkgfsedcFGrmvFB9rc7RsDg3CYjTnl"
+  - label: "BulSU SG Academic & Admissions Committees - ATBULSU 2027 FAQ Part 1 (Aug 30, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0MJGBJHt25CMkVJUr4QoSwiFAByDeNb37oFfYcm3UCzuda2dna5R8rJLmwTY8AhLRl&id=61573139957540"
 ---
 
 Freshman applications run through the **University Admissions Office (UAO)** online portal at `https://admissions.bulsu.edu.ph/` (`admissions@bulsu.edu.ph`) before you bring physical copies to campus on your appointment date. Application windows are posted on the **BulSU Admissions Office Facebook page** (`/BulSUAdmissionsOffice`), while final qualifier lists go up on the **BulSU website**.

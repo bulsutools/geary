@@ -5,8 +5,13 @@ category: "documents"
 subcategory: "Academic Records & Clearances"
 updatedDate: 2026-11-18
 featured: true
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU Joint Memorandum No. 14, Series of 2025 - Registrar Processing Turnarounds (Jul 22, 2025)"
+    url: "https://www.facebook.com/BulSUMC/posts/pfbid02yeaYqk5xZLwY92hMWuNts3bTE27HtA2CtxADKjDqCBTgsLs71Tj8po8Yxcig9wKrl"
+  - label: "BulSU Sarmiento Campus Registrar - Batch 2026 Graduated TOR Release (Jul 27, 2026)"
+    url: "https://www.facebook.com/BulSUSCRegistrar/posts/pfbid02yC9btzXCNfoNADdw9RBH4hX6y4CAbY58TSoDkScXxQUvuS9DHHrUdGJpLnzMwQyFl"
 ---
 
 The Office of the Registrar handles student academic records across BulSU, issuing your Official Transcript of Records (TOR), diploma, transfer credentials, Certificate of Grades (COG), and other official academic certifications.

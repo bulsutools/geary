@@ -117,6 +117,7 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | `featured` | `boolean` | No | `false` |
 | `source` | `string` (`min >= 1`) | No | `—` |
 | `sourceUrl` | Valid URL `string` | No | `—` |
+| `sources` | `Array<{ label: string; url?: string }>` (`min >= 1`) | No | `—` |
 
 #### `SW-INT-03`: Static Search Index Payload Contract (`GET /search-index.json`)
 

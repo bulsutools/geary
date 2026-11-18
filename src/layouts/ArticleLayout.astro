@@ -3,7 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import type { CategoryMeta } from '../data/categories';
-import { formatArticleDate, type ArticleLike } from '../lib/articles';
+import { formatArticleDate, resolveArticleSources, type ArticleLike } from '../lib/articles';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../lib/seo';
 
 interface Heading {
@@ -21,6 +21,7 @@ interface Props {
 const { article, categoryMeta, headings } = Astro.props;
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length >= 2;
+const resolvedSources = resolveArticleSources(article.data);
 const baseOrigin = Astro.site ?? new URL(Astro.url.origin);
 const articleUrl = new URL(Astro.url.pathname, baseOrigin).href;
 const jsonLd = [
@@ -32,6 +33,7 @@ const jsonLd = [
     section: categoryMeta.title,
     source: article.data.source,
     sourceUrl: article.data.sourceUrl,
+    sources: article.data.sources,
   }),
   buildBreadcrumbJsonLd([
     { name: 'Home', url: new URL('/', baseOrigin).href },
@@ -94,29 +96,33 @@ const jsonLd = [
         </article>
 
         {
-          article.data.source && (
+          resolvedSources.length > 0 && (
             <aside
               aria-label="Article source"
               class="mt-8 rounded-xl border border-border-subtle bg-white p-4 sm:p-5"
             >
               <p class="text-xs font-semibold uppercase tracking-wider text-ink-secondary">
-                Source
+                {resolvedSources.length === 1 ? 'Source' : 'Sources'}
               </p>
-              {article.data.sourceUrl ? (
-                <a
-                  href={article.data.sourceUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="mt-1.5 inline-flex items-baseline gap-1.5 text-sm font-medium text-brand-crimson hover:text-brand-crimson-hover hover:underline underline-offset-2 transition-colors"
-                >
-                  <span>{article.data.source}</span>
-                  <span aria-hidden="true">↗</span>
-                </a>
-              ) : (
-                <p class="mt-1.5 text-sm font-medium text-ink-primary">
-                  {article.data.source}
-                </p>
-              )}
+              <ul class="mt-2 space-y-1.5">
+                {resolvedSources.map((item) => (
+                  <li>
+                    {item.url ? (
+                      <a
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="inline-flex items-baseline gap-1.5 text-sm font-medium text-brand-crimson hover:text-brand-crimson-hover hover:underline underline-offset-2 transition-colors"
+                      >
+                        <span>{item.label}</span>
+                        <span aria-hidden="true">↗</span>
+                      </a>
+                    ) : (
+                      <p class="text-sm font-medium text-ink-primary">{item.label}</p>
+                    )}
+                  </li>
+                ))}
+              </ul>
             </aside>
           )
         }

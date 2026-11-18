@@ -5,8 +5,11 @@ category: "scholarships"
 subcategory: "Work & Financial Support"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU PPESO - Institutional Student Assistant (ISA) Program A.Y. 2026-2027 (Jul 2, 2026)"
+    url: "https://www.facebook.com/bulsu.ppeso/posts/pfbid0jbDVz9DTGPQJinuN1hzsV4BVHQ4KnRGTsyhcxaGH7bRdtSqNmQDzqbw52dWvS7nJl"
 ---
 
 If you want to earn extra income around your class schedule without leaving campus, BulSU offers paid student work through its **Institutional Student Assistant (ISA)** program (handled in 2026 calls by **BulSU PPESO**, Placement Office, Ground Floor, Roxas Hall, alongside the Student Manual's **Student Assistantship / OSFA** rules) plus seasonal break jobs through **SPES**.

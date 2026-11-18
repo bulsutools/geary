@@ -1,3 +1,5 @@
+import { resolveArticleSources, type ArticleSource } from './articles';
+
 export interface BreadcrumbItemInput {
   name: string;
   url?: string;
@@ -11,6 +13,7 @@ export interface ArticleJsonLdInput {
   section: string;
   source?: string;
   sourceUrl?: string;
+  sources?: readonly ArticleSource[];
 }
 
 export type JsonLdObject = Record<string, unknown>;
@@ -47,8 +50,21 @@ export function buildBreadcrumbJsonLd(items: readonly BreadcrumbItemInput[]): Js
   };
 }
 
+/** Format a resolved source item into Schema.org citation format. */
+function formatCitationEntry(entry: ArticleSource): JsonLdObject | string {
+  return entry.url
+    ? {
+        '@type': 'CreativeWork',
+        name: entry.label,
+        url: entry.url,
+      }
+    : entry.label;
+}
+
 /** Build Schema.org Article JSON-LD for handbook student guides. */
 export function buildArticleJsonLd(input: ArticleJsonLdInput): JsonLdObject {
+  const citations = resolveArticleSources(input).map(formatCitationEntry);
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -61,17 +77,11 @@ export function buildArticleJsonLd(input: ArticleJsonLdInput): JsonLdObject {
     inLanguage: 'en',
     author: PUBLISHER_ENTITY,
     publisher: PUBLISHER_ENTITY,
-    ...(input.source
-      ? {
-          citation: input.sourceUrl
-            ? {
-                '@type': 'CreativeWork',
-                name: input.source,
-                url: input.sourceUrl,
-              }
-            : input.source,
-        }
-      : {}),
+    ...(citations.length === 1
+      ? { citation: citations[0] }
+      : citations.length > 1
+        ? { citation: citations }
+        : {}),
   };
 }
 

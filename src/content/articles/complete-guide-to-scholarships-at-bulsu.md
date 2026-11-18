@@ -5,8 +5,13 @@ category: "scholarships"
 subcategory: "Scholarships & Grants"
 updatedDate: 2026-11-18
 featured: true
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU OSFAS - Tertiary Education Subsidy (TES) Call A.Y. 2026-2027 (Jul 27, 2026)"
+    url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid024vuQdofXvNYd4fL4MWiR32PJ9m8vatXbFYXs7yzHcg4SekV7wK78ve2qAZKUSreil"
+  - label: "BulSU OSFAS - Tulong Dunong Program (TDP) Call & Annex 2 Checklist (Aug 3, 2026)"
+    url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid02fzqp8EHJWFEnpANu8XTV31DxsJ46oLPbw2ktGzNvSGJsM9QmHV2smTAGZz6LQ3K6l"
 ---
 
 The **BulSU Office of the Student Financial Assistance and Scholarships (OSFAS)** (also listed as OSFA in the 2016 manual, reachable at `scholarship@bulsu.edu.ph` or `(044) 919 7800 local 1086`) coordinates tuition discounts, government grants, and private benefactor scholarships for BulSU undergraduates. Check current OSFAS posts for exact office window locations, as recent advisories have moved between Gate 2 / Natividad Hall Ground Floor and beside the College of Law. Whether you qualify through grades, family background, athletics, performing arts, or financial need, knowing the exact criteria and 100-point screening test helps you apply cleanly.

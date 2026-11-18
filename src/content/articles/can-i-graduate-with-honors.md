@@ -5,8 +5,11 @@ category: "academics"
 subcategory: "Internships & Graduation"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU SG Academic Affairs Committee - Latin Honors (BOR Res. No. 47, s. 2018) & Gold Gear Awards (Nov 12, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0bwcD5Yxd7479YY4uzmZoHmQyu2dTdawiygJwNXvbgy514rpJTRVXTDxbuJsfgZDKl&id=61573139957540"
 ---
 
 Graduating with Latin Honors at BulSU comes down to your overall grade point average (GPA), clean grades in every subject, residency at the university, and maintaining at least 15 units per term (governed alongside **BOR Resolution No. 47, S. 2018**, confirmed active in Student Government Academic Affairs advisories). BulSU also awards non-Latin graduation honors and the annual **Gold Gear Awards** for top semester performers.

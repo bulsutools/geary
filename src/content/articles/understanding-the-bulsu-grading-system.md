@@ -5,8 +5,13 @@ category: "academics"
 subcategory: "Grades & Academic Standing"
 updatedDate: 2026-11-18
 featured: true
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU SG Academic Affairs Committee - A.Y. 2026-2027 Grading Scale (Nov 9, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid034S5mRC9VE6bkbXobtJJLcAFzb6Qpaq32q65LyP8urLjiWYgNypeq2zmaLapV8YmDl&id=61573139957540"
+  - label: "BulSU SG Academic Affairs Committee - TAMBAD 2026 Grade Consultation Grievance (Nov 11, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02khKjQ4YVz8jJZLNsrwj5SidqMsURn1YX7Y8Ci6k9rAouyXNiSzvqRwXpwggb7T3xl&id=61573139957540"
 ---
 
 BulSU uses a numerical grading scale from `1.00` (highest) down to `3.00` (minimum passing), plus special marks for conditional, incomplete, dropped, and failing standing. Knowing what each mark triggers saves you from turning a fixable problem into a permanent `5.00`.

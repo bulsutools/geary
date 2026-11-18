@@ -5,8 +5,15 @@ category: "enrollment"
 subcategory: "Shifting & Transferring"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU Freshman Undergraduate Admissions Policy (Transferee / Shifter Portal Restriction)"
+    url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+  - label: "BulSU Admissions Office - Shifters, Transferees & Second-Degree Advisory (May 26, 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid02pmdvPECmPmiQiQetjb9pXJZQa19SSZYw8twqDCuTYTVHuasTAA6ymx4ZNjYjDnSjl"
+  - label: "BulSU Admissions Office - Shifters, Transferees & Second-Degree Programs List (Jul 14, 2025)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid038EU2k11BUcoD8nuwNwKZVtNaSYYMKg5tYn4HFwLVNxbVLAfdBHLp6iDisUBPo1HWl"
 ---
 
 If you started college at another recognized higher education school, you can apply to transfer into Bulacan State University, as long as your grades clear BulSU's cutoff and the program you want still has open seats. **Important:** Under the BulSU Freshman Undergraduate Admissions Policy, transferees who attempt to apply through the Freshman Admission portal will be disallowed from all BulSU programs.

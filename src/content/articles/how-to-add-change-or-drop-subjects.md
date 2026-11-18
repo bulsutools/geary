@@ -5,8 +5,13 @@ category: "academics"
 subcategory: "Enrollment & Load Changes"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU SG Academic Affairs Committee & ICTO - ALAB SMS Add / Drop / Change Guide (Nov 15, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0x8n9T8wE97pJAxV1HAtcXfSLNmYEpYSeNrVyxkSA96Z5TVw3mpAaky8Dm2SeQS73l&id=61573139957540"
+  - label: "BulSU Sarmiento Campus Registrar - COR Balance & Portal Support Advisory (Jan 19, 2026)"
+    url: "https://www.facebook.com/BulSUSCRegistrar/posts/pfbid0d3HDJMSwDkZgHrdPrJdBkcW5Tw5yKBrUwNDCGsGbZ6hEMxrB1zHhTTS4rZDWo1WCl"
 ---
 
 Schedules shift fast at the start of a term. Whether you need to fix a time conflict, swap out a retired curriculum subject, or drop a class before midterms, BulSU handles requests through its student portal within strict academic deadlines.

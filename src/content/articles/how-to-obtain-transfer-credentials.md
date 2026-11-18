@@ -5,8 +5,11 @@ category: "documents"
 subcategory: "ID & Credentials"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU Freshman Undergraduate Admissions Policy (Enrolled Freshman Honorable Dismissal Note)"
+    url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
 ---
 
 When you decide to transfer from Bulacan State University to another college or university, your next school will require official transfer credentials (commonly including your Honorable Dismissal and academic transcript) from the Office of the Registrar. Note for newly admitted freshmen: under the BulSU Freshman Undergraduate Admissions Policy, students who have been admitted and enrolled in a program can only be granted an honorable dismissal once the semester officially starts.

@@ -208,26 +208,29 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     await mobileToc.locator('a[href="#latin-honors-gpa-cutoffs"]').click();
     await expect(page).toHaveURL(/#latin-honors-gpa-cutoffs$/);
 
-    // Related Guides & Verification Notice remain omitted; Source card renders handbook citation
+    // Related Guides & Verification Notice remain omitted; multi-source card renders Sources heading & links
     await expect(page.locator('section[aria-labelledby="related-guides-heading"]')).toHaveCount(0);
     await expect(page.locator('aside[aria-label="Verification notice"]')).toHaveCount(0);
-    const honorsSourceLink = page.locator('aside[aria-label="Article source"] a');
-    await expect(honorsSourceLink).toHaveAttribute(
+    const honorsSourceAside = page.locator('aside[aria-label="Article source"]');
+    await expect(honorsSourceAside).toContainText('Sources');
+    const honorsSourceLinks = honorsSourceAside.locator('a');
+    await expect(honorsSourceLinks).toHaveCount(2);
+    await expect(honorsSourceLinks.first()).toHaveAttribute(
       'href',
       'https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf',
     );
-    await expect(honorsSourceLink).toContainText(
+    await expect(honorsSourceLinks.first()).toContainText(
       'UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016',
     );
 
     // Handbook article renders Source card hyperlink
     await page.goto('/articles/understanding-the-bulsu-grading-system');
-    const sourceLink = page.locator('aside[aria-label="Article source"] a');
-    await expect(sourceLink).toHaveAttribute(
+    const sourceLinks = page.locator('aside[aria-label="Article source"] a');
+    await expect(sourceLinks.first()).toHaveAttribute(
       'href',
       'https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf',
     );
-    await expect(sourceLink).toContainText(
+    await expect(sourceLinks.first()).toContainText(
       'UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016',
     );
   });

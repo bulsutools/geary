@@ -5,8 +5,13 @@ category: "campus"
 subcategory: "Health, Safety & Housing"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "Bulacan State University - Main & External Campuses List (Mar 10, 2025)"
+    url: "https://www.facebook.com/bulsuofficial/posts/pfbid02F9iGAMPqLHc9H7Ezzfx4wKq7VhKSPAjw7Hu6d6yaycsWQNCK6XjFoKPxHwpWxXLhl"
+  - label: "BulSU Hagonoy Campus - External Campuses & Programs List (Aug 25, 2026)"
+    url: "https://www.facebook.com/BSUHC/posts/pfbid02XeGSBMAsBUNUQmmR4pFKjXgvmuMwX6NPHsnF4cVY3RRdajMLt2petUVGhpLmJUDbl"
 ---
 
 Across BulSU's Main Campus in **Malolos** and its external campuses (**Bustos, Hagonoy, Meneses, Sarmiento, and San Rafael**, plus **Plaridel Extension** listed in 2026 campus program announcements), Part V of the Student Manual sets standards for dining on campus, student housing, campus security, and emergency evacuation.

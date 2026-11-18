@@ -5,8 +5,15 @@ category: "enrollment"
 subcategory: "Shifting & Transferring"
 updatedDate: 2026-11-18
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU Freshman Undergraduate Admissions Policy (Transferee / Shifter Portal Restriction)"
+    url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+  - label: "BulSU Admissions Office - Shifters, Transferees & Second-Degree Advisory (May 26, 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid02pmdvPECmPmiQiQetjb9pXJZQa19SSZYw8twqDCuTYTVHuasTAA6ymx4ZNjYjDnSjl"
+  - label: "BulSU Admissions Office - Shifters, Transferees & Second-Degree Programs List (Jul 14, 2025)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid038EU2k11BUcoD8nuwNwKZVtNaSYYMKg5tYn4HFwLVNxbVLAfdBHLp6iDisUBPo1HWl"
 ---
 
 In BulSU's student manual, a shifter is any enrolled student moving from one course to another, whether inside the same college or across another college or campus. Your exact steps depend on whether you are changing degree programs, switching majors, or transferring from a satellite campus. **Never apply through the Freshman Admission portal as a shifter:** Under BulSU's Freshman Undergraduate Admissions Policy, shifters who attempt to apply through Freshman Admission will be disallowed from all BulSU programs.
