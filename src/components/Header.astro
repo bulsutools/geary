@@ -96,7 +96,7 @@ const NAV_LINKS = [
   <nav
     id="mobile-nav-drawer"
     aria-label="Mobile navigation"
-    class="hidden md:hidden border-t border-border-subtle bg-white px-4 py-3"
+    class="hidden md:hidden absolute inset-x-0 top-full z-40 border-t border-b border-border-subtle bg-white px-4 py-3 shadow-md"
   >
     <ul class="space-y-1">
       {
@@ -130,16 +130,30 @@ const NAV_LINKS = [
     const drawer = document.getElementById('mobile-nav-drawer');
     if (!toggle || !drawer) return;
 
+    const closeDrawer = () => {
+      toggle.setAttribute('aria-expanded', 'false');
+      drawer.classList.add('hidden');
+    };
+
     toggle.addEventListener('click', () => {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
       toggle.setAttribute('aria-expanded', String(!expanded));
       drawer.classList.toggle('hidden', expanded);
     });
 
+    document.addEventListener('click', (event) => {
+      if (
+        toggle.getAttribute('aria-expanded') === 'true' &&
+        !drawer.contains(event.target) &&
+        !toggle.contains(event.target)
+      ) {
+        closeDrawer();
+      }
+    });
+
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape' && toggle.getAttribute('aria-expanded') === 'true') {
-        toggle.setAttribute('aria-expanded', 'false');
-        drawer.classList.add('hidden');
+        closeDrawer();
       }
     });
   })();
