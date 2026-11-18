@@ -113,7 +113,7 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 ## 5. Component Specifications & Interactive States
 
 ### 5.1 Global Header & Geary Brand Mark (`Header.astro`)
-- **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`. Left: **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring). Center/Right: `Home` (`/`), `Categories` (`/categories`), and `Contribute` (`/contribute`) links (`>= 768px`) + Header `<SearchBar variant="header" />` + accessible mobile drawer toggle (`< 768px`).
+- **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`. Left: **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring). Center/Right: `Home` (`/`), `Categories` (`/categories`), `Campus Map` (`/map`), and `Contribute` (`/contribute`) links (`>= 768px`) + Header `<SearchBar variant="header" />` + accessible mobile drawer toggle (`< 768px`).
 - **Interactive States:**
   - *Default:* `text-[#495057]` navigation links, `min-h-[44px]` mobile tap target.
   - *Hover:* `text-[#8B1538]` with `150ms` transition; gear SVG rotates `90deg` smoothly (`300ms ease-out`) and returns to `0deg` when unhovered.
@@ -138,7 +138,7 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 - **Interactive States:** Hover shifts card border to `#8B1538` and title/arrow to `#8B1538` / `#6E0F2B`; `:focus-visible` shows crimson outline.
 
 ### 5.4 Article Summary Card (`ArticleCard.astro`)
-- **Anatomy:** Clickable `<a href="/articles/...">` card (`flex flex-col justify-between bg-white border border-[#DEE2E6] rounded-xl p-5 transition-colors`). Displays title (`font-semibold text-[#181C20]`) and a bottom-aligned row pairing the 2-line clamped description (`line-clamp-2 flex-1 text-sm text-[#495057]`) with `→` (`text-[#8B1538]`) on the right.
+- **Anatomy:** Clickable `<a href="/articles/...">` card (`flex flex-col justify-between bg-white border border-[#DEE2E6] rounded-xl p-5 transition-colors`). Displays title (`font-semibold text-[#181C20]`) and a bottom-aligned row pairing the 2-line clamped body preview (`line-clamp-2 flex-1 text-sm text-[#495057]`) with `→` (`text-[#8B1538]`) on the right.
 - **Interactive States:** Hover changes border to `#8B1538`, title color to `#8B1538`, and nudges `→`; `:focus-visible` shows crimson outline.
 
 ### 5.5 Breadcrumbs (`Breadcrumbs.astro`)
@@ -157,6 +157,11 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 
 ### 5.8 Global Footer (`Footer.astro`)
 - **Global Footer:** `border-t border-[#DEE2E6] bg-[#F8F9FA] py-8` displaying `© 2026 Geary` on the left and a single row of legal links ([Terms of Service](/terms) and [Privacy Policy](/privacy)) on the right.
+
+### 5.9 Interactive 2D Campus Map (`CampusMap.tsx`)
+- **Layout:** Responsive split container (`lg:grid-cols-[minmax(0,1fr)_360px]`) pairing the interactive SVG viewport on the left/top with a sticky building inspector panel on desktop (stacked cleanly below on mobile).
+- **Map Surface & Building States:** Campus grounds on `canvas-paper` (`#F8F9FA`) / `#F1F3F5`, footpaths in `#DEE2E6`, parks in `#E8F3EA`, resting clickable buildings in `white` with `border-strong` (`#CED4DA`) strokes, hovered buildings in `brand-crimson-wash` (`#FDF2F4`) with `#8B1538` stroke, and selected buildings filled `#8B1538` with `#D4A017` highlight outline (`>= 2px`).
+- **Controls:** Accessible zoom in (`+`), zoom out (`-`), reset view buttons overlaid cleanly on the map canvas, drag/scroll pan inside the bounded SVG canvas, a standalone search bar (no extra label, filter, or quick-jump ribbons), and a minimal right-hand inspector showing only the selected building's name and contained locations.
 
 ---
 

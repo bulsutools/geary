@@ -110,7 +110,6 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | Field | Type / Constraint | Required | Default |
 | :--- | :--- | :--- | :--- |
 | `title` | `string` (`min >= 1`) | Yes | — |
-| `description` | `string` (`min >= 1`, `max <= 220`) | Yes | — |
 | `category` | `enum` matching `SW-INT-01` `slug` values | Yes | — |
 | `subcategory` | `string` (`min >= 1`) | Yes | — |
 | `updatedDate` | Coercible ISO date (`Date`) | Yes | — |
@@ -125,7 +124,7 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | :--- | :--- | :--- |
 | `slug` | `string` | URL segment for `/articles/[slug]`. |
 | `title` | `string` | Article display title. |
-| `description` | `string` | 1-sentence article summary. |
+| `preview` | `string` | Plain-text article preview extracted from the Markdown body. |
 | `category` | `CategorySlug` | Canonical category slug. |
 | `categoryLabel` | `string` | Human-readable category title resolved from `SW-INT-01`. |
 | `subcategory` | `string` | Sub-topic grouping label. |
@@ -149,9 +148,9 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 
 #### `SRS-FUNC-CNT-02`: Strict Zod Frontmatter Validation
 - **Inputs:** Raw YAML frontmatter dictionary per Markdown file.
-- **Processing Logic:** Validate all fields against `SW-INT-02` (`title`, `description`, `category` enum, `subcategory`, coerced `updatedDate`, boolean `featured`).
+- **Processing Logic:** Validate all fields against `SW-INT-02` (`title`, `category` enum, `subcategory`, coerced `updatedDate`, boolean `featured`).
 - **Outputs:** Strongly typed metadata object attached to each collection entry.
-- **Error Handling:** Missing fields, invalid dates, over-length summaries, or unrecognized `category` values abort `astro build` / `astro check` with descriptive Zod diagnostics.
+- **Error Handling:** Missing fields, invalid dates, or unrecognized `category` values abort `astro build` / `astro check` with descriptive Zod diagnostics.
 
 #### `SRS-FUNC-CNT-03`: Semantic Markdown Compilation
 - **Inputs:** Validated Markdown body text.
@@ -186,12 +185,12 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 #### `SRS-FUNC-RND-03`: Deterministic Subcategory Grouping
 - **Inputs:** Articles belonging to the active category `slug`.
 - **Processing Logic:** Group articles by `subcategory`, sort subcategory headers deterministically in alphabetical order, and sort articles alphabetically by `title` within each group.
-- **Outputs:** Subcategory sections containing scannable article cards (`title`, `description`, `updatedDate`).
+- **Outputs:** Subcategory sections containing scannable article cards (`title`, body `preview`).
 - **Error Handling:** When a category has `0` articles, render a simple empty-state icon and notice (*"No guides here yet."*).
 
 #### `SRS-FUNC-RND-04`: Article Static Path Generation (`/articles/[slug]`)
 - **Inputs:** Validated articles collection.
-- **Processing Logic:** Emit one static route per article entry, binding metadata header (breadcrumb, category badge, `<h1>` title, description, formatted `Last Updated` date), Markdown body, TOC, disclaimer, and related guides.
+- **Processing Logic:** Emit one static route per article entry, binding metadata header (breadcrumb, `<h1>` title, formatted `Last Updated` date), social/JSON-LD meta derived from the article body preview, Markdown body, TOC, and optional source card.
 - **Outputs:** Static HTML file at `/articles/<slug>/index.html`.
 - **Error Handling:** Duplicate file slugs fail compilation deterministically.
 
@@ -215,7 +214,7 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 
 #### `SRS-FUNC-SRCH-01`: Build-Time Search Index Serialization
 - **Inputs:** Validated articles collection and `SW-INT-01` category registry.
-- **Processing Logic:** Serialize every published article into a `SearchIndexItem` (`SW-INT-03`) containing `slug`, `title`, `description`, `category`, `categoryLabel`, `subcategory`, and plain-text `h2`/`h3` `headings`.
+- **Processing Logic:** Serialize every published article into a `SearchIndexItem` (`SW-INT-03`) containing `slug`, `title`, body `preview`, `category`, `categoryLabel`, `subcategory`, and plain-text `h2`/`h3` `headings`.
 - **Outputs:** Static `search-index.json` artifact served with `application/json` content type.
 - **Error Handling:** Type-checked category mapping prevents missing labels at build time.
 
@@ -259,8 +258,8 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 ### 4.4 Layout, Navigation & Disclaimers Subsystem
 
 #### `SRS-FUNC-UI-01`: Responsive Global Header & Mobile Navigation
-- **Inputs:** Navigation links (`Home`, `Categories`, `Contribute`) and active route path.
-- **Processing Logic:** Render Geary brand link (`/`), top-level navigation links (`Home`, `Categories`, `Contribute`) on `>= 768px`, compact Header `<SearchBar />`, and an accessible hamburger toggle (`aria-expanded`, `aria-controls`) revealing navigation links below `768px`.
+- **Inputs:** Navigation links (`Home`, `Categories`, `Campus Map`, `Contribute`) and active route path.
+- **Processing Logic:** Render Geary brand link (`/`), top-level navigation links (`Home`, `Categories`, `Campus Map`, `Contribute`) on `>= 768px`, compact Header `<SearchBar />`, and an accessible hamburger toggle (`aria-expanded`, `aria-controls`) revealing navigation links below `768px`.
 - **Outputs:** Single-row responsive `<header>` landmark across all pages.
 - **Error Handling:** Lightweight progressive-enhancement menu toggle functions cleanly without blocking static page render.
 
@@ -281,6 +280,23 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 - **Processing Logic:** Enforce constrained prose line measure (`~65ch`), generous line spacing, styled ordered steps and callouts, horizontal overflow wrapping (`overflow-x-auto`) around tables, and safe word wrapping (`break-words`) on long strings.
 - **Outputs:** Readable prose across all target breakpoints without horizontal document overflow.
 - **Error Handling:** Long unbroken URLs or inline code never push mobile viewport width beyond `100%`.
+
+---
+
+### 4.5 Interactive 2D Campus Map Subsystem (`/map`)
+
+#### `SW-INT-04`: Static Campus Map Dataset Contract (`src/data/campus-map.ts`)
+- Defines `CampusBuilding` (`id`, `name`, `shortLabel?`, `kind`, `floors?`, `svgPath`, `center`, `summary`, `locations: CampusLocation[]`), `CampusLocation` (`id`, `name`, `floor?`, `category`, `keywords?`, `notes?`, `articleSlug?`), and campus contextual geometry (`perimeterPath`, `roads`, `parks`, `gates`).
+
+#### `SRS-FUNC-MAP-01`: Client-Side Location & Building Search
+- **Inputs:** User query string and `CampusBuilding[]`.
+- **Processing Logic:** Perform literal case-insensitive substring matching across `location.name`, `location.keywords`, `location.floor`, `building.name`, and `building.shortLabel`, prioritizing location matches (`label` + `parentBuildingName`) and building matches.
+- **Outputs:** Ranked list of matching locations/buildings indicating which building houses each match.
+
+#### `SRS-FUNC-MAP-02`: Interactive 2D SVG Map & Building Inspector
+- **Inputs:** Selected building ID, highlighted location ID, zoom scale (`1` to `3`), and SVG viewBox pan offsets.
+- **Processing Logic:** Highlight selected building footprint (`#8B1538` fill, `#D4A017` ring), smoothly zoom/pan viewBox onto building center when selected from search, and populate the side/bottom inspector panel with the building name and contained location names.
+- **Outputs:** Synchronized 2D vector map + building detail panel plus accessible keyboard building index.
 
 ---
 

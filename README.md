@@ -30,7 +30,6 @@ Set `PUBLIC_SITE_URL` in your build environment before deploying so canonical li
 2. Add or edit Markdown files inside `src/content/articles/`.
 3. Include valid frontmatter matching `src/content.config.ts`:
    - `title`: Guide headline
-   - `description`: Concise summary (`1` to `220` characters)
    - `category`: One of `enrollment`, `academics`, `documents`, `scholarships`, `policies`, `organizations`, or `campus`
    - `subcategory`: Matching subgroup heading inside the category
    - `updatedDate`: ISO date (`YYYY-MM-DD`)

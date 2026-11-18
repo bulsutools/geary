@@ -72,7 +72,7 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **Preconditions / Inputs:** Successful execution of `bun run build`.
 - **Verification Procedure:** Inspect generated `dist/` output files and byte size of `dist/search-index.json`.
 - **Pass/Fail Acceptance Criteria:**
-  - `dist/index.html`, `dist/contribute/index.html`, `dist/terms/index.html`, `dist/privacy/index.html`, `dist/404.html`, all `dist/categories/<slug>/index.html` routes, and all `dist/articles/<slug>/index.html` routes exist.
+  - `dist/index.html`, `dist/map/index.html`, `dist/contribute/index.html`, `dist/terms/index.html`, `dist/privacy/index.html`, `dist/404.html`, all `dist/categories/<slug>/index.html` routes, and all `dist/articles/<slug>/index.html` routes exist.
   - `dist/search-index.json` is valid JSON, size is `< 100 KB`, and item count matches the published article collection count.
 
 #### `TC-BLD-04`: Internal Link & Anchor Integrity
@@ -90,8 +90,8 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **ISO 25010 Characteristic:** Functional Suitability (*Functional Correctness*) & Performance Efficiency (*Time Behaviour*)
 - **Linked Requirements:** `REQ-SRCH-03`, `SRS-FUNC-SRCH-03`, `SRS-NFR-PERF-04`, `UC-01`
 - **Preconditions / Inputs:** Pure search helper (e.g., `filterAndRankArticles(items, query)`) and a fixture corpus of `SearchIndexItem[]`.
-- **Verification Procedure:** Execute unit assertions comparing multi-word queries (`"latin honors"`, `"  TOR  "`, `"inc completion"`), verifying that title matches outrank heading/subcategory matches, which outrank description matches, and capped output length `<= 8`. Measure execution time against `200` synthetic items.
-- **Pass/Fail Acceptance Criteria:** Ranking order strictly reflects field weights (`title > headings/subcategory > description/categoryLabel`), result list never exceeds `8` items, and execution takes `< 16 ms`.
+- **Verification Procedure:** Execute unit assertions comparing multi-word queries (`"latin honors"`, `"  TOR  "`, `"inc completion"`), verifying that title matches outrank heading/subcategory matches, which outrank body preview matches, and capped output length `<= 8`. Measure execution time against `200` synthetic items.
+- **Pass/Fail Acceptance Criteria:** Ranking order strictly reflects field weights (`title > headings/subcategory > preview/categoryLabel`), result list never exceeds `8` items, and execution takes `< 16 ms`.
 
 #### `TC-UNIT-02`: Literal Substring Safety for Regex & Special Characters
 - **ISO 25010 Characteristic:** Reliability (*Fault Tolerance*) & Security (*Integrity*)
@@ -118,7 +118,7 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **ISO 25010 Characteristic:** Functional Suitability (*Completeness*) & Maintainability
 - **Linked Requirements:** `REQ-SRCH-01`, `SW-INT-03`, `SRS-FUNC-SRCH-01`
 - **Preconditions / Inputs:** Built `dist/search-index.json` artifact (or generator function output).
-- **Verification Procedure:** Validate every array entry using a Zod contract check requiring `slug`, `title`, `description`, `category` (in `CATEGORY_SLUGS`), `categoryLabel`, `subcategory`, and `headings` (`string[]`).
+- **Verification Procedure:** Validate every array entry using a Zod contract check requiring `slug`, `title`, `preview`, `category` (in `CATEGORY_SLUGS`), `categoryLabel`, `subcategory`, and `headings` (`string[]`).
 - **Pass/Fail Acceptance Criteria:** 100% of serialized entries satisfy the `SearchIndexItem` Zod schema.
 
 ---
@@ -175,6 +175,12 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **Preconditions / Inputs:** Built `dist/` served via `astro preview`.
 - **Verification Procedure:** Check `<link rel="canonical">`, Open Graph (`og:title`, `og:description`, `og:type`, `og:url`, `og:image`) and Twitter `summary_large_image` tags across `/`, `/categories/academics`, and `/articles/latin-honors-and-gwa`; parse JSON-LD blocks (`WebSite`, `Article`, `BreadcrumbList`); fetch `/robots.txt`, `/sitemap-index.xml`, and `/og-image.png`; verify `/404.html` carries `<meta name="robots" content="noindex, follow">` and `/404` is excluded from sitemap.
 - **Pass/Fail Acceptance Criteria:** Every checked page has an absolute canonical URL matching `Astro.site`, valid Open Graph/Twitter metadata, parseable JSON-LD matching page type, reachable `og-image.png` and `sitemap-index.xml`, and `noindex` on `/404.html`.
+
+#### `TC-E2E-07`: Interactive 2D Campus Map (`/map`)
+- **ISO 25010 Characteristic:** Functional Suitability & Operability
+- **Linked Requirements:** `REQ-MAP-01`–`04`, `SRS-FUNC-MAP-01`–`02`
+- **Verification Procedure:** Visit `/map`, search `"Registrar"` in the map search input, verify a match appears showing `Flores Hall`, select it, verify `Flores Hall` becomes active on the SVG map and displays `Office of the University Registrar` in the inspector, click another building directly on the map (`Roxas Hall`), and exercise zoom/reset controls.
+- **Pass/Fail Acceptance Criteria:** Location search maps matches to parent buildings, clicking a building or selecting a search result updates the inspector panel without runtime errors, and `/map` passes `TC-E2E-04` and `TC-A11Y-01` with `0` violations.
 
 ---
 

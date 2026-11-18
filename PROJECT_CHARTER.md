@@ -67,6 +67,7 @@ To serve as the go-to, **unofficial centralized student information hub** for Bu
 2. **Categories & Purposeful Organization:** Organizing all content under five student-intent categories—*Admissions & Enrollment*, *Registrar & Documents*, *Handbook & Policies*, *Scholarships & Aid*, and *Campus Life & Spots*—with purposeful sub-topic hierarchy and reading orientation aids for fast skimming and exploration.
 3. **Client-Side Search Bar:** Providing instant keyword discovery across published guides entirely within the user's browser with zero backend cost.
 4. **Low-Cognitive-Load UI/UX & BulSUan Visual Identity:** Establishing a calm, mobile-first reading layout and intuitive navigation tailored to BulSU students.
+5. **Interactive 2D Campus Map & Location Finder:** Providing an SVG-based BulSU Malolos Main Campus schematic (`/map`) with clickable buildings, indoor office/service listings, and instant location search with zero backend dependencies.
 
 ### 6.2 Out-of-Scope (Explicitly Excluded from MVP)
 - **AI / RAG Chatbot:** An AI chatbot trained on the Student Handbook PDF is explicitly **excluded/scrapped** from the MVP to eliminate API costs, rate limits, and policy hallucination risks.

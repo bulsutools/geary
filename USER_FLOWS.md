@@ -288,6 +288,23 @@ sequenceDiagram
 
 ---
 
+### `UC-06`: Locate a Campus Office or Building on `/map`
+
+| Field | Details |
+| :--- | :--- |
+| **Actors** | `ACT-01`, `ACT-02`, `ACT-03` |
+| **Operational Modes** | `MODE-02` |
+| **Preconditions** | Student visits `/map` via the Header `Campus Map` link or direct URL. |
+| **Postconditions** | Target building is highlighted on the 2D SVG schematic and its indoor locations/offices are displayed. |
+
+#### Main Success Scenario (Basic Flow)
+1. Student clicks `Campus Map` in the Header or mobile menu to open `/map`.
+2. Student either types an office or facility (e.g., `"Registrar"`, `"Guidance"`, `"Canteen"`) into the map search bar or clicks a building footprint directly on the SVG map.
+3. Search results display each matching location paired with its parent building (e.g., `Office of the University Registrar — Flores Hall`).
+4. Selecting a result or building highlights that building on the map, pans/focuses to it, and opens the inspector showing floors, offices, contact hints, and linked Geary guides.
+
+---
+
 ## 5. Off-Nominal, Exception & Error Scenario Matrix *(ISO 29148 Clause 9.3.5)*
 
 | Error ID | Scenario | Operational Mode | Trigger Condition | Expected System Behavior | User Recovery Path |

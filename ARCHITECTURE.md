@@ -90,7 +90,7 @@ Adding or editing one `.md` file in `src/content/articles/` updates four build o
 1. **Article View (`/articles/[slug]`):** Renders compiled Markdown prose, extracts `h2`/`h3` headings for TOC navigation, builds breadcrumbs, and resolves up to 3 sibling guides in the same category.
 2. **Category Directory (`/categories/[slug]`):** Updates guide counts and places the article card under its `subcategory` heading.
 3. **Home Directory (`/`):** Refreshes the matching Category card's count/preview links and adds the article to **Featured / Essential Guides** when `featured: true`.
-4. **Search Payload (`/search-index.json`):** Serializes the article's `slug`, `title`, `description`, `category`, `categoryLabel`, `subcategory`, and `headings` array.
+4. **Search Payload (`/search-index.json`):** Serializes the article's `slug`, `title`, `preview` (derived from Markdown body), `category`, `categoryLabel`, `subcategory`, and `headings` array.
 
 ---
 
@@ -122,8 +122,13 @@ flowchart TD
         C_VER["VerificationBanner.astro"]
     end
 
-    subgraph Islands["Hydrated React Island"]
+    subgraph StaticData["Static Modules & Data"]
+        D_MAP["data/campus-map.ts & lib/map-search.ts"]
+    end
+
+    subgraph Islands["Hydrated React Islands"]
         I_SRCH["SearchBar.tsx (variant: hero or header)"]
+        I_MAP["CampusMap.tsx (2D Interactive SVG Map on /map)"]
     end
 
     P_HOME --> L_BASE
@@ -161,11 +166,11 @@ flowchart TD
 | **`src/components/Footer.astro`** | Static Astro (`0 KB` JS) | Imports `CATEGORIES` | Renders global unofficial BulSU student hub disclaimer and category directory links. |
 | **`src/components/Breadcrumbs.astro`** | Static Astro (`0 KB` JS) | `items: Array<{ label: string; href?: string }>` | Renders semantic breadcrumb trail linking parent routes and marking the current page. |
 | **`src/components/CategoryCard.astro`** | Static Astro (`0 KB` JS) | `category: CategoryMeta`, `count: number`, `previewArticles: ArticleEntry[]` | Renders category summary card with icon, guide count, up to 3 preview links, and `"Explore all →"` route link. |
-| **`src/components/ArticleCard.astro`** | Static Astro (`0 KB` JS) | `article: ArticleEntry`, `categoryMeta?: CategoryMeta`, `showCategoryBadge?: boolean` | Renders scannable article link card with title, summary, optional category badge, and formatted `updatedDate`. |
+| **`src/components/ArticleCard.astro`** | Static Astro (`0 KB` JS) | `article: ArticleEntry`, `categoryMeta?: CategoryMeta`, `showCategoryBadge?: boolean` | Renders scannable article link card with title and 2-line body preview. |
 | **`src/components/TableOfContents.astro`** | Static Astro (`0 KB` JS) | `headings: MarkdownHeading[]`, `mode: 'desktop' \| 'mobile'` | Filters `depth === 2 \|\| depth === 3`; renders nothing when `< 2` headings exist; outputs sticky sidebar (`desktop`) or `<details>` disclosure (`mobile`). |
 | **`src/components/VerificationBanner.astro`** | Static Astro (`0 KB` JS) | `updatedDate: Date` | Displays official office verification notice and `updatedDate` at the bottom of articles. |
 | **`src/components/SearchBar.tsx`** | **React Island (`client:load`)** | `variant: 'hero' \| 'header'`, `enableGlobalShortcut?: boolean` | Lazily fetches & caches `/search-index.json` in module memory; executes pure weighted literal substring scorer (`src/lib/search.ts`); manages keyboard navigation, outside-click dismissal, zero-match pills, and fetch-error fallback UI. |
-| **`src/lib/search.ts`** | Pure TypeScript Module | `items: SearchIndexItem[]`, `query: string` | Implements query normalization and weighted multi-term scoring (`title` > `headings`/`subcategory` > `description`/`categoryLabel`), cleanly unit-testable in isolation from React DOM. |
+| **`src/lib/search.ts`** | Pure TypeScript Module | `items: SearchIndexItem[]`, `query: string` | Implements query normalization and weighted multi-term scoring (`title` > `headings`/`subcategory` > `preview`/`categoryLabel`), cleanly unit-testable in isolation from React DOM. |
 | **`src/lib/articles.ts`** | Pure TypeScript Module | `articles: ArticleEntry[]` | Implements deterministic subcategory grouping (`groupArticlesBySubcategory`) and related-guide selection helpers shared by page templates and unit tests. |
 
 ---
@@ -217,7 +222,6 @@ import { CATEGORY_SLUGS } from './data/categories';
 
 export const articleSchema = z.object({
   title: z.string().min(1),
-  description: z.string().min(1).max(220),
   category: z.enum(CATEGORY_SLUGS),
   subcategory: z.string().min(1),
   updatedDate: z.coerce.date(),
@@ -241,7 +245,7 @@ Build-time `GET` endpoint exporting static JSON conforming to `SearchIndexItem[]
 export interface SearchIndexItem {
   slug: string;
   title: string;
-  description: string;
+  preview: string;
   category: CategorySlug;
   categoryLabel: string;
   subcategory: string;
@@ -314,6 +318,7 @@ geary/
     │   └── SearchBar.tsx            # Hydrated React island consuming /search-index.json
     └── pages/
         ├── index.astro              # Home hub (Hero SearchBar, Featured Guides)
+        ├── map.astro                # Interactive 2D BulSU Malolos Campus Map island
         ├── contribute.astro         # Community submission page with embedded Google Form
         ├── terms.astro              # Terms of Service & unofficial disclaimer page
         ├── privacy.astro            # Privacy Policy (zero-tracking static architecture)

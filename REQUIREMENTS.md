@@ -51,6 +51,7 @@ This document serves as the single authoritative traceability ledger across Gear
 | **RTM-18** | `OBJ-02`, `OBJ-04` | `REQ-UI-03` / `AC-UI-03` (`P0`) | `SRS-FUNC-UI-01`, `SRS-FUNC-UI-03` | `UJ-04`, `UC-02`, `AF-02C` | `BaseLayout.astro`, `Header.astro`, `Footer.astro`, `DESIGN_SYSTEM.md` §5.1, §5.8 | `BL-10` | `TC-BLD-04`, `TC-E2E-04`, `TC-A11Y-02` | `[x] Verified` |
 | **RTM-19** | `OBJ-04` | `REQ-UI-04` / `AC-UI-04` (`P1`) | `UI-INT-03` | `UJ-02`, `UJ-03` | `public/favicon.svg`, `Header.astro`, `index.astro`, `DESIGN_SYSTEM.md` §5.1, §6 | `BL-05`, `BL-10`, `BL-13` | `TC-A11Y-01`, `TC-E2E-04` | `[x] Verified` |
 | **RTM-20** | `OBJ-03`, `OBJ-04` | `REQ-UI-05` / `AC-UI-05` (`P1`) | `SRS-FUNC-RND-06`, `UI-INT-01` | `UC-04`, `ERR-08` | `src/pages/404.astro`, `SearchBar.tsx` | `BL-14`, `BL-17` | `TC-BLD-03`, `TC-E2E-05`, `TC-A11Y-01` | `[x] Verified` |
+| **RTM-21** | `OBJ-01`, `OBJ-03`, `OBJ-05` | `REQ-MAP-01`–`04` / `AC-MAP-01`–`04` (`P0`) | `SW-INT-04`, `SRS-FUNC-MAP-01`, `SRS-FUNC-MAP-02`, `SRS-FUNC-UI-01` | `UC-06` | `src/data/campus-map.ts`, `src/lib/map-search.ts`, `CampusMap.tsx`, `src/pages/map.astro`, `Header.astro` | `BL-21` | `TC-BLD-03`, `TC-UNIT-06`, `TC-E2E-04`, `TC-E2E-07`, `TC-A11Y-01` | `[x] Verified` |
 
 ---
 

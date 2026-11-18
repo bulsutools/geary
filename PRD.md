@@ -46,16 +46,16 @@ Every product requirement in this PRD carries a strict release priority:
 
 | Req ID | Priority | Requirement Statement |
 | :--- | :--- | :--- |
-| **REQ-ART-01** | **P0** | The system shall publish student guides authored in Markdown and validate required metadata fields—`title`, `description`, `category`, `subcategory`, `updatedDate`, and `featured`—during site compilation. |
+| **REQ-ART-01** | **P0** | The system shall publish student guides authored in Markdown and validate required metadata fields—`title`, `category`, `subcategory`, `updatedDate`, and `featured`—during site compilation. |
 | **REQ-ART-02** | **P0** | The system shall render standard and tabular Markdown elements—including headings, numbered procedures, bulleted lists, tables, callout blockquotes, and links—into clear, readable HTML pages. |
-| **REQ-ART-03** | **P0** | Every article view shall display an informative header containing breadcrumbs, category badge, article title, concise summary description, and formatted *Last Updated* date. |
+| **REQ-ART-03** | **P0** | Every article view shall display an informative header containing breadcrumbs, article title, and formatted *Last Updated* date. |
 | **REQ-ART-04** | **P1** | The system shall automatically generate an "On this page" Table of Contents from an article's major and minor section headings—displayed as a sticky sidebar on desktop and a collapsible disclosure panel above the article on mobile—and hide it completely when fewer than 2 headings exist. |
 | **REQ-ART-05** | **P1** | The system shall display a "Related Guides in This Category" section showing up to 3 sibling guides from the same category alongside an unofficial verification notice at the bottom of each article. |
 
 #### Product Behavior
 - **Metadata Integrity:** Articles require valid metadata matching one of the 5 approved category identifiers. Missing fields, invalid dates, or unknown categories prevent publishing with a clear error message so broken guides never go live.
 - **Reading & Skimming Experience:**
-  1. When a student opens an article, the header immediately confirms context (breadcrumb trail, category badge, title, 1-sentence summary, and *Last Updated* date).
+  1. When a student opens an article, the header immediately confirms context (breadcrumb trail, title, and *Last Updated* date).
   2. For articles with 2 or more section headings, mobile readers see a collapsed-by-default `"On this page"` panel near the top so prose starts immediately without excessive scrolling, while desktop readers see a sticky sidebar to jump directly between sections.
   3. At the bottom of the guide, a verification reminder prompts students to confirm time-sensitive fees and deadlines with official BulSU offices, followed by up to 3 sibling guides from the same category (omitted cleanly if no sibling articles exist yet).
 
@@ -66,7 +66,7 @@ Every product requirement in this PRD carries a strict release priority:
 - **AC-ART-02 (`REQ-ART-02`):**
   - *Given* a guide containing headings, numbered steps, bullet lists, tables, blockquotes, and links, *When* viewed on mobile and desktop screens, *Then* all elements remain cleanly formatted and tables do not push the page wider than the screen.
 - **AC-ART-03 (`REQ-ART-03`):**
-  - *Given* any published article page, *When* opened by a student, *Then* the breadcrumb, category badge, main title, summary description, and formatted *Last Updated* date appear clearly above the body text.
+  - *Given* any published article page, *When* opened by a student, *Then* the breadcrumb, main title, and formatted *Last Updated* date appear clearly above the body text.
 - **AC-ART-04 (`REQ-ART-04`):**
   - *Given* an article with 2 or more section headings, *When* viewed on desktop, *Then* the "On this page" navigation appears as a sticky side rail; *When* viewed on mobile, *Then* it appears as a collapsible toggle above the prose.
   - *Given* an article with fewer than 2 section headings, *When* viewed on any screen size, *Then* no Table of Contents box or empty column is rendered.
@@ -112,19 +112,19 @@ Every product requirement in this PRD carries a strict release priority:
 
 | Req ID | Priority | Requirement Statement |
 | :--- | :--- | :--- |
-| **REQ-SRCH-01** | **P0** | The system shall generate a static client-side search index at build time containing each published guide's route identifier, title, summary, category label, subcategory, and section headings. |
+| **REQ-SRCH-01** | **P0** | The system shall generate a static client-side search index at build time containing each published guide's route identifier, title, body preview, category label, subcategory, and section headings. |
 | **REQ-SRCH-02** | **P0** | The system shall provide an interactive search bar prominently in the Home hero and accessibly inside the global header across all pages. |
-| **REQ-SRCH-03** | **P0** | The search bar shall match user queries instantaneously in the browser against titles, section headings, subcategories, category labels, and summaries, presenting ranked results badged by category. |
+| **REQ-SRCH-03** | **P0** | The search bar shall match user queries instantaneously in the browser against titles, section headings, subcategories, category labels, and body previews, presenting ranked results. |
 | **REQ-SRCH-04** | **P1** | The search bar shall support complete keyboard operation: `/` or `Ctrl+K` (`Cmd+K`) to focus, `ArrowUp`/`ArrowDown` to move through results, `Enter` to open the selected guide, and `Escape` to close. |
 | **REQ-SRCH-05** | **P1** | When a query produces zero matching articles (or when the search index cannot load), the search overlay shall display a clear fallback message with clickable quick-jump links to all five categories. |
 
 #### Product Behavior
-- **Zero-Backend Instant Filtering:** Focusing or typing in the search bar loads the static search index once and caches it in browser memory. Multi-word queries (e.g., `"tor request"`, `"latin honors"`) rank title matches highest, followed by heading/subcategory matches, then summary/category matches, displaying up to 8 top results.
+- **Zero-Backend Instant Filtering:** Focusing or typing in the search bar loads the static search index once and caches it in browser memory. Multi-word queries (e.g., `"tor request"`, `"latin honors"`) rank title matches highest, followed by heading/subcategory matches, then body preview/category matches, displaying up to 8 top results.
 - **Clean Overlay Lifecycle:** Clicking outside the search box, pressing `Escape`, or clearing the input dismisses results cleanly. Special punctuation in queries is treated safely as plain text.
 
 #### Acceptance Criteria
 - **AC-SRCH-01 (`REQ-SRCH-01`):**
-  - *Given* a completed build, *When* inspecting the generated search index, *Then* every published guide is present with its slug, title, description, category metadata, subcategory, and extracted headings.
+  - *Given* a completed build, *When* inspecting the generated search index, *Then* every published guide is present with its slug, title, body preview, category metadata, subcategory, and extracted headings.
 - **AC-SRCH-02 (`REQ-SRCH-02`):**
   - *Given* any page on the site (Home, Category, Article, or 404), *When* a user interacts with the hero or header search bar, *Then* the search interface activates smoothly with no runtime errors.
 - **AC-SRCH-03 (`REQ-SRCH-03`):**
@@ -163,3 +163,22 @@ Every product requirement in this PRD carries a strict release priority:
   - *Given* the main article reading area, *When* scrolling through content, *Then* no background watermarks, animations, or promotional popups interfere with reading comprehension.
 - **AC-UI-05 (`REQ-UI-05`):**
   - *Given* an invalid URL path, *When* the `404` page displays, *Then* students see a clear recovery message, an interactive search bar, and links to Home and all five categories.
+
+---
+
+### 3.5 Feature 5: Interactive 2D Campus Map (`/map`) (`F-05`)
+
+#### Requirements Specification
+
+| Req ID | Priority | Requirement Statement |
+| :--- | :--- | :--- |
+| **REQ-MAP-01** | **P0** | The system shall render a 2D interactive SVG schematic of BulSU Malolos Main Campus derived from OpenStreetMap building footprints, walkways, gates, and landmarks without external tile servers. |
+| **REQ-MAP-02** | **P0** | Clicking or selecting any campus building shall highlight it and open a minimal inspector listing the selected building name and the names of contained locations/offices. |
+| **REQ-MAP-03** | **P0** | A dedicated campus search bar shall search across both buildings and indoor locations (e.g., Registrar, Clinic, Cashier, OSFAS, Library, Canteen) and indicate which building contains each match; selecting a match highlights and centers that building on the map. |
+| **REQ-MAP-04** | **P1** | The map canvas shall support pan, zoom-in, zoom-out, and reset controls alongside keyboard-accessible building elements. |
+
+#### Acceptance Criteria
+- **AC-MAP-01 (`REQ-MAP-01`):** *Given* `/map`, *When* loaded, *Then* the 2D BulSU Malolos SVG schematic renders with zero external map tile requests and zero horizontal overflow on mobile or desktop.
+- **AC-MAP-02 (`REQ-MAP-02`):** *Given* any clickable building on the map, *When* clicked, *Then* the building highlights in BulSU Crimson (`#8B1538`) and the inspector displays its name and contained locations/offices.
+- **AC-MAP-03 (`REQ-MAP-03`):** *Given* a query such as `"Registrar"` or `"Scholarship"` typed into the campus map search bar, *When* matching locations appear, *Then* each result shows its parent building name (`Flores Hall`, `College of Law Annex / Near College of Law`, etc.), and selecting it focuses that building on the map and shows the matched location in the inspector.
+- **AC-MAP-04 (`REQ-MAP-04`):** *Given* pan/zoom buttons and reset control, *When* triggered by mouse or keyboard, *Then* the SVG viewport zooms cleanly and resets back to full campus view.
