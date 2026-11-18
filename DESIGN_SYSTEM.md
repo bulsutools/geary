@@ -59,7 +59,7 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 - **Body & UI (`--font-sans`):** `'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif`
 - **Monospace (`--font-mono`):** `'JetBrains Mono', ui-monospace, SFMono-Regular, Consolas, monospace`
 
-*(Note: System fallbacks ensure crisp rendering even before web fonts load on constrained campus cellular connections.)*
+*(Note: `Plus Jakarta Sans` (`600`–`800`) and `Inter` (`400`–`700`, `400-italic`) are self-hosted locally via `@fontsource` Latin subsets with `font-display: swap`; system fallbacks prevent FOIT on constrained campus cellular connections.)*
 
 ### 3.2 Typographic Scale
 

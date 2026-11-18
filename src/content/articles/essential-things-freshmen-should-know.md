@@ -4,7 +4,7 @@ description: "First-year orientation, No ID No Entry, daily uniforms, clinics, g
 category: "enrollment"
 subcategory: "Orientation & First Year"
 updatedDate: 2026-11-18
-featured: false
+featured: true
 source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
 sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
