@@ -178,7 +178,7 @@ flowchart TD
 ## 5. Integrations & Module Contracts
 
 ### 5.1 Framework Integrations (`astro.config.mjs`)
-- **`site` configuration:** Configured from `process.env.PUBLIC_SITE_URL` with a placeholder fallback (`https://geary.example.com`) so canonical URLs, Open Graph URLs, `robots.txt`, and sitemaps resolve consistently across environments.
+- **`site` configuration:** Configured from `process.env.PUBLIC_SITE_URL`, falling back to Vercel production/deployment URLs (`VERCEL_PROJECT_PRODUCTION_URL` / `VERCEL_URL`) and locally `https://geary.example.com`, so canonical URLs, Open Graph URLs, `robots.txt`, and sitemaps resolve consistently across environments.
 - **`@astrojs/react`:** Enables selective client hydration of `SearchBar.tsx` inside `.astro` files.
 - **`@astrojs/sitemap`:** Generates `dist/sitemap-index.xml` at build time, excluding `/404` and non-HTML utility routes.
 - **Tailwind CSS (`@tailwindcss/vite`):** Compiles utility classes and `src/styles/global.css` tokens through Astro's Vite plugin pipeline.
@@ -281,7 +281,10 @@ geary/
 ├── astro.config.mjs                 # Astro static config + @astrojs/react + @tailwindcss/vite
 ├── tsconfig.json                    # Strict TypeScript compiler configuration
 ├── public/                          # Static assets copied verbatim to dist/
-│   ├── favicon.ico                  # Legacy fallback favicon
+│   ├── apple-touch-icon.png         # 180x180 Geary touch icon for iOS / Android
+│   ├── favicon-48x48.png            # 48x48 PNG favicon for Google Search & mobile
+│   ├── favicon-96x96.png            # 96x96 high-DPI PNG favicon
+│   ├── favicon.ico                  # Multi-size (16/32/48px) Geary fallback favicon
 │   ├── favicon.svg                  # Minimalist Geary geometric gear icon
 │   ├── googled56ea9e672e7afb1.html  # Google Search Console ownership verification
 │   └── og-image.png                 # Shared 1200x630 Open Graph social preview card
