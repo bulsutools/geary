@@ -1,6 +1,5 @@
 ---
 title: "BulSU Dress Code, Grooming, and ID Policy"
-description: "BulSU uniform days, Free Days, PE and lab outfits, hair color and earring rules, and No ID No Entry gate checks."
 category: "policies"
 subcategory: "Campus Rules & Dress Code"
 updatedDate: 2026-11-18

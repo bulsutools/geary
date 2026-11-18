@@ -1,6 +1,5 @@
 ---
 title: "How to File a Leave of Absence"
-description: "Step-by-step BulSU Leave of Absence filing, the 1-year limit, return readmission steps, and curriculum rules."
 category: "enrollment"
 subcategory: "Leave & Readmission"
 updatedDate: 2026-11-18

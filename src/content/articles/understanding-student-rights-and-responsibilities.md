@@ -1,6 +1,5 @@
 ---
 title: "Student Rights and Responsibilities at BulSU"
-description: "Constitutional and Education Act student rights, due process guarantees, representation on the BOR, and daily duties."
 category: "policies"
 subcategory: "Rights, Discipline & Grievances"
 updatedDate: 2026-11-18

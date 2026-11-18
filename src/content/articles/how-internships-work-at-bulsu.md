@@ -1,6 +1,5 @@
 ---
 title: "How Internships and Job Placement Work at BulSU"
-description: "Step-by-step Student Internship Program placement via CarDSI, daily intern duties, and PPESO career services."
 category: "academics"
 subcategory: "Internships & Graduation"
 updatedDate: 2026-11-18

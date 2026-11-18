@@ -1,6 +1,5 @@
 ---
 title: "Understanding the BulSU Grading System"
-description: "Complete 1.00 to 5.00 grading scale, what 4.00 and INC mean, exam exemption, grade transparency, and fixing errors."
 category: "academics"
 subcategory: "Grades & Academic Standing"
 updatedDate: 2026-11-18

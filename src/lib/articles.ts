@@ -8,9 +8,9 @@ export interface ArticleSource {
 export interface ArticleLike {
   id: string;
   slug?: string;
+  body?: string;
   data: {
     title: string;
-    description: string;
     category: CategorySlug;
     subcategory: string;
     updatedDate: Date;
@@ -19,6 +19,45 @@ export interface ArticleLike {
     sourceUrl?: string;
     sources?: readonly ArticleSource[];
   };
+}
+
+/** Extract a clean plain-text preview from an article's Markdown body for cards, search, and meta descriptions. */
+export function getArticlePreview(
+  entry: { body?: string; data: { title: string } },
+  maxLength = 160,
+): string {
+  const raw = entry.body ?? '';
+  const plain = raw
+    .replace(/```[\s\S]*?```/g, ' ')
+    .replace(/^\s*\|?(?:\s*:?-+:?\s*\|)+\s*$/gm, ' ')
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+    .replace(/\[([^\]]+)\]\[[^\]]*\]/g, '$1')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/^[\s>]*[-*+]\s+/gm, '')
+    .replace(/^[\s>]*\d+\.\s+/gm, '')
+    .replace(/^>\s?/gm, '')
+    .replace(/`([^`]+)`/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\*([^*]+)\*/g, '$1')
+    .replace(/__([^_]+)__/g, '$1')
+    .replace(/~~([^~]+)~~/g, '$1')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\|/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!plain) {
+    return entry.data.title.trim();
+  }
+  if (plain.length <= maxLength) {
+    return plain;
+  }
+
+  const sliced = plain.slice(0, maxLength).trimEnd();
+  const lastSpace = sliced.lastIndexOf(' ');
+  const cutoff = lastSpace > Math.floor(maxLength * 0.6) ? sliced.slice(0, lastSpace) : sliced;
+  return `${cutoff.replace(/[.,;:!?-]+$/, '')}...`;
 }
 
 /** Combine legacy `source`/`sourceUrl` and multi-entry `sources` into one deduplicated list. */

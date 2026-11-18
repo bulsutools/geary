@@ -3,7 +3,7 @@ import type { CategorySlug } from '../data/categories';
 export interface SearchIndexItem {
   slug: string;
   title: string;
-  description: string;
+  preview: string;
   category: CategorySlug;
   categoryLabel: string;
   subcategory: string;
@@ -35,9 +35,9 @@ export function filterAndRankArticles(
     const title = item.title.toLowerCase();
     const headingsText = item.headings.join(' ').toLowerCase();
     const subcategory = item.subcategory.toLowerCase();
-    const description = item.description.toLowerCase();
+    const preview = item.preview.toLowerCase();
     const categoryLabel = item.categoryLabel.toLowerCase();
-    const combined = `${title} ${headingsText} ${subcategory} ${description} ${categoryLabel}`;
+    const combined = `${title} ${headingsText} ${subcategory} ${preview} ${categoryLabel}`;
 
     const matchesAllTokens = tokens.every((token) => combined.includes(token));
     if (!matchesAllTokens) {
@@ -53,7 +53,7 @@ export function filterAndRankArticles(
       if (headingsText.includes(token) || subcategory.includes(token)) {
         score += 5;
       }
-      if (description.includes(token) || categoryLabel.includes(token)) {
+      if (preview.includes(token) || categoryLabel.includes(token)) {
         score += 2;
       }
     }

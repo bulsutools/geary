@@ -1,6 +1,5 @@
 ---
 title: "How to Transfer to BulSU"
-description: "GPA cutoff, maximum completed units, required credentials, and credit transfer rules for college transferees to BulSU."
 category: "enrollment"
 subcategory: "Shifting & Transferring"
 updatedDate: 2026-11-18

@@ -1,6 +1,5 @@
 ---
 title: "How to File a Student Complaint"
-description: "Filing student grievances through the Director for Student Welfare, the escalation ladder, and assembly rules."
 category: "policies"
 subcategory: "Rights, Discipline & Grievances"
 updatedDate: 2026-11-18

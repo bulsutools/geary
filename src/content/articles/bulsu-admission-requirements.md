@@ -1,6 +1,5 @@
 ---
 title: "BulSU Admission Requirements"
-description: "Grade 11 GWA and subject cutoffs, required SF9, residency, ITR, affirmative action options, and track rules."
 category: "enrollment"
 subcategory: "Admission & Enrollment"
 updatedDate: 2026-11-18

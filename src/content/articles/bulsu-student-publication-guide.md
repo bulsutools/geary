@@ -1,6 +1,5 @@
 ---
 title: "BulSU Student Publication Guide"
-description: "The Pacesetter and college papers, RA 7079 rules, editorial board qualifications, selection exams, and press contests."
 category: "organizations"
 subcategory: "Sports, Culture & Media"
 updatedDate: 2026-11-18

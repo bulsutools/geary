@@ -1,6 +1,5 @@
 ---
 title: "What Happens When You Fail a Subject?"
-description: "BulSU's 7 academic delinquency tiers, probation limits, load cuts, course shifting, and university disqualification."
 category: "academics"
 subcategory: "Grades & Academic Standing"
 updatedDate: 2026-11-18

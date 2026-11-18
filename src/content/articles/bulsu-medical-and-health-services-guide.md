@@ -1,6 +1,5 @@
 ---
 title: "BulSU Medical Services and Student Insurance Guide"
-description: "Free campus clinic care, ambulance service, mandatory checkups, and how to file a 24/7 Student Accident Insurance claim."
 category: "campus"
 subcategory: "Health, Safety & Housing"
 updatedDate: 2026-11-18

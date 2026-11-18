@@ -1,6 +1,5 @@
 ---
 title: "How to Request Your TOR and Certificates"
-description: "How to claim your Official Transcript of Records, COG, name updates, clearance rules, and the 30-day issuance rule."
 category: "documents"
 subcategory: "Academic Records & Clearances"
 updatedDate: 2026-11-18

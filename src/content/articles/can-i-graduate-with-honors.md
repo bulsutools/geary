@@ -1,6 +1,5 @@
 ---
 title: "Can I Graduate With Honors?"
-description: "GPA tiers for Summa, Magna, and Cum Laude, residency rules, 15-unit minimums, and annual Gold Gear Awards at BulSU."
 category: "academics"
 subcategory: "Internships & Graduation"
 updatedDate: 2026-11-18

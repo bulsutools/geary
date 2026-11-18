@@ -1,6 +1,5 @@
 ---
 title: "Understanding University Disciplinary Procedures"
-description: "Light to grave offense penalties, cheating and plagiarism sanctions, formal hearing timelines, appeals, and expungement."
 category: "policies"
 subcategory: "Rights, Discipline & Grievances"
 updatedDate: 2026-11-18

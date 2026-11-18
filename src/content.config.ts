@@ -10,7 +10,6 @@ export const articleSourceSchema = z.object({
 
 export const articleSchema = z.object({
   title: z.string().min(1),
-  description: z.string().min(1).max(220),
   category: z.enum(CATEGORY_SLUGS),
   subcategory: z.string().min(1),
   updatedDate: z.coerce.date(),

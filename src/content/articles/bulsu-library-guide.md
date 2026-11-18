@@ -1,6 +1,5 @@
 ---
 title: "BulSU Library Guide"
-description: "Borrowing limits for circulation, reserve, fiction, theses, and media collections plus BulSU Library services."
 category: "campus"
 subcategory: "Campus Facilities"
 updatedDate: 2026-11-18

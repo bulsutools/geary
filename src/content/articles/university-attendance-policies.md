@@ -1,6 +1,5 @@
 ---
 title: "Understanding University Attendance Policies"
-description: "15-minute tardy rule, 20-minute absence cutoff, instructor wait times, 30% excused cap, and automatic FDA/UD."
 category: "policies"
 subcategory: "Academic & Attendance Rules"
 updatedDate: 2026-11-18

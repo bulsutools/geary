@@ -13,6 +13,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     expect(existsSync(resolve(DIST_DIR, 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'categories', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'contribute', 'index.html'))).toBe(true);
+    expect(existsSync(resolve(DIST_DIR, 'map', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'terms', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'privacy', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, '404.html'))).toBe(true);
@@ -55,6 +56,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/articles/bulsu-guidance-and-counseling-guide',
       '/articles/complete-guide-to-scholarships-at-bulsu',
       '/contribute',
+      '/map',
       '/terms',
       '/privacy',
     ];
@@ -249,6 +251,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/categories/enrollment',
       '/articles/can-i-graduate-with-honors',
       '/contribute',
+      '/map',
       '/terms',
       '/privacy',
       '/404.html',
@@ -291,6 +294,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       '/categories/policies',
       '/articles/can-i-graduate-with-honors',
       '/contribute',
+      '/map',
       '/terms',
       '/privacy',
       '/404.html',
@@ -300,7 +304,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       await page.goto(route);
 
       await expect(page.locator('header')).toHaveCount(1);
-      await expect(page.locator('header nav[aria-label="Primary navigation"] a')).toHaveCount(3);
+      await expect(page.locator('header nav[aria-label="Primary navigation"] a')).toHaveCount(4);
       await expect(page.locator('main')).toHaveCount(1);
       await expect(page.locator('footer')).toHaveCount(1);
       await expect(page.locator('h1')).toHaveCount(1);
@@ -356,7 +360,6 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       badFile,
       `---
 title: "Invalid Category Test"
-description: "Invalid category slug fixture"
 category: "unknown-category"
 subcategory: "Test"
 updatedDate: 2026-11-17
@@ -463,5 +466,76 @@ Test body.
     await page.goto('/404.html');
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute('content', 'noindex, follow');
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+  });
+
+  test('TC-E2E-07: searches indoor campus locations, highlights parent building, clicks SVG buildings, and zooms', async ({
+    page,
+  }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+
+    await page.goto('/map');
+    await expect(page.locator('h1')).toContainText('Main Campus');
+
+    const mapSvg = page.locator('main svg[role="group"]');
+    await expect(mapSvg).toHaveAttribute('viewBox', '0 0 1000 850');
+
+    const searchInput = page.locator('main input[role="combobox"]');
+    await searchInput.fill('Registrar');
+
+    const listbox = page.locator('main [role="listbox"]');
+    await expect(listbox).toBeVisible();
+    const firstOption = listbox.locator('[role="option"]').first();
+    await expect(firstOption).toContainText('Registrar');
+    await expect(firstOption).toContainText('Flores Hall');
+    await firstOption.click();
+
+    const inspector = page.locator('main aside');
+    await expect(inspector.locator('h2')).toHaveText('Flores Hall');
+    await expect(inspector.locator('[data-search-match="true"]')).toContainText('Registrar');
+    await expect(page.locator('[data-building-id="flores-hall"]')).toHaveAttribute(
+      'aria-current',
+      'true',
+    );
+    await expect(mapSvg).not.toHaveAttribute('viewBox', '0 0 1000 850');
+
+    await page.locator('button[aria-label="Reset map view"]').click();
+    await expect(mapSvg).toHaveAttribute('viewBox', '0 0 1000 850');
+
+    await page.locator('[data-building-id="roxas-hall"]').click();
+    await expect(inspector.locator('h2')).toHaveText('Roxas Hall');
+    await expect(inspector).toContainText('Office of the Student Welfare');
+
+    await page.locator('button[aria-label="Zoom in map"]').click();
+    const zoomedViewBox = await mapSvg.getAttribute('viewBox');
+    expect(zoomedViewBox).not.toBe('0 0 1000 850');
+
+    // Verify 1-finger touch drag pan and 2-finger pinch zoom update SVG viewBox
+    await mapSvg.evaluate((svg) => {
+      const rect = svg.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      svg.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 12, pointerType: 'touch', clientX: cx, clientY: cy }));
+      svg.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 12, pointerType: 'touch', clientX: cx - 60, clientY: cy - 40 }));
+      svg.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 12, pointerType: 'touch', clientX: cx - 60, clientY: cy - 40 }));
+    });
+    const pannedViewBox = await mapSvg.getAttribute('viewBox');
+    expect(pannedViewBox).not.toBe(zoomedViewBox);
+
+    await mapSvg.evaluate((svg) => {
+      const rect = svg.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      svg.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 10, pointerType: 'touch', clientX: cx - 30, clientY: cy }));
+      svg.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 11, pointerType: 'touch', clientX: cx + 30, clientY: cy }));
+      svg.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 10, pointerType: 'touch', clientX: cx - 75, clientY: cy }));
+      svg.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, pointerId: 11, pointerType: 'touch', clientX: cx + 75, clientY: cy }));
+      svg.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 10, pointerType: 'touch', clientX: cx - 75, clientY: cy }));
+      svg.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 11, pointerType: 'touch', clientX: cx + 75, clientY: cy }));
+    });
+    const pinchedViewBox = await mapSvg.getAttribute('viewBox');
+    expect(pinchedViewBox).not.toBe(pannedViewBox);
+
+    expect(pageErrors).toEqual([]);
   });
 });

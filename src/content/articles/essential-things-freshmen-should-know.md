@@ -1,6 +1,5 @@
 ---
 title: "What Every BulSU Freshman Should Know"
-description: "First-year orientation, No ID No Entry, daily uniforms, clinics, guidance testing, and student rules at BulSU."
 category: "enrollment"
 subcategory: "Orientation & First Year"
 updatedDate: 2026-11-18

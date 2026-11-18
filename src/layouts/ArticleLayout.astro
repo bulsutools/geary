@@ -3,7 +3,12 @@ import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import TableOfContents from '../components/TableOfContents.astro';
 import type { CategoryMeta } from '../data/categories';
-import { formatArticleDate, resolveArticleSources, type ArticleLike } from '../lib/articles';
+import {
+  formatArticleDate,
+  getArticlePreview,
+  resolveArticleSources,
+  type ArticleLike,
+} from '../lib/articles';
 import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '../lib/seo';
 
 interface Heading {
@@ -22,12 +27,13 @@ const { article, categoryMeta, headings } = Astro.props;
 const tocHeadings = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const hasToc = tocHeadings.length >= 2;
 const resolvedSources = resolveArticleSources(article.data);
+const articlePreview = getArticlePreview(article);
 const baseOrigin = Astro.site ?? new URL(Astro.url.origin);
 const articleUrl = new URL(Astro.url.pathname, baseOrigin).href;
 const jsonLd = [
   buildArticleJsonLd({
     title: article.data.title,
-    description: article.data.description,
+    description: articlePreview,
     url: articleUrl,
     dateModified: article.data.updatedDate,
     section: categoryMeta.title,
@@ -46,7 +52,7 @@ const jsonLd = [
 
 <BaseLayout
   title={article.data.title}
-  description={article.data.description}
+  description={articlePreview}
   activeCategory={categoryMeta.slug}
   ogType="article"
   ogImageAlt={`${article.data.title} - Geary BulSU Student Guide`}
@@ -71,10 +77,6 @@ const jsonLd = [
       <h1 class="mt-8 font-heading text-[1.75rem] sm:text-[2.25rem] font-bold leading-[1.2] tracking-[-0.02em] text-ink-primary">
         {article.data.title}
       </h1>
-
-      <p class="mt-3 text-base sm:text-lg leading-relaxed text-ink-secondary">
-        {article.data.description}
-      </p>
 
       <p class="mt-4 text-xs font-medium text-ink-secondary">
         Last Updated: {formatArticleDate(article.data.updatedDate)}

@@ -1,6 +1,5 @@
 ---
 title: "BulSU Student Organizations Guide"
-description: "Joining orgs as a freshman, starting or renewing a student org, facility reservations, fundraising, and campus posters."
 category: "organizations"
 subcategory: "Student Orgs & Leadership"
 updatedDate: 2026-11-18

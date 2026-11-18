@@ -1,6 +1,5 @@
 ---
 title: "How to Apply for Student Assistantships"
-description: "Eligibility rules for paid BulSU Student Assistantships through OSFA and holiday jobs via PPESO SPES."
 category: "scholarships"
 subcategory: "Work & Financial Support"
 updatedDate: 2026-11-18

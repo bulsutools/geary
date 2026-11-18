@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 import { getCollection, render } from 'astro:content';
 import { getCategoryBySlug } from '../data/categories';
-import { getArticleSlug } from '../lib/articles';
+import { getArticlePreview, getArticleSlug } from '../lib/articles';
 import type { SearchIndexItem } from '../lib/search';
 
 export const GET: APIRoute = async () => {
@@ -17,7 +17,7 @@ export const GET: APIRoute = async () => {
         return {
           slug: getArticleSlug(entry),
           title: entry.data.title,
-          description: entry.data.description,
+          preview: getArticlePreview(entry),
           category: entry.data.category,
           categoryLabel: categoryMeta?.title ?? entry.data.category,
           subcategory: entry.data.subcategory,

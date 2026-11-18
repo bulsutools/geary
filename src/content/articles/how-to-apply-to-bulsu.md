@@ -1,6 +1,5 @@
 ---
 title: "How to Apply to BulSU"
-description: "Online ATBulSU application, appointment hard copies, qualifier scoring weights, Engineering exam, and waitlist choices."
 category: "enrollment"
 subcategory: "Admission & Enrollment"
 updatedDate: 2026-11-18

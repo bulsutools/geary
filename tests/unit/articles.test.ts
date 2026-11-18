@@ -1,6 +1,7 @@
 /// <reference types="bun" />
 import { describe, expect, test } from 'bun:test';
 import {
+  getArticlePreview,
   getArticleSlug,
   getCategoryPreviewArticles,
   getFeaturedArticles,
@@ -12,9 +13,9 @@ import {
 const MOCK_ARTICLES: ArticleLike[] = [
   {
     id: 'z-guide.md',
+    body: 'First sentence for **Zeta** guide with [link](/articles/alpha) and `code`.',
     data: {
       title: 'Zeta Form Guide',
-      description: 'Guide Z.',
       category: 'documents',
       subcategory: 'Forms',
       updatedDate: new Date('2026-11-10'),
@@ -23,9 +24,9 @@ const MOCK_ARTICLES: ArticleLike[] = [
   },
   {
     id: 'a-guide.md',
+    body: 'Alpha guide body preview.',
     data: {
       title: 'Alpha Form Guide',
-      description: 'Guide A.',
       category: 'documents',
       subcategory: 'Forms',
       updatedDate: new Date('2026-11-12'),
@@ -34,9 +35,9 @@ const MOCK_ARTICLES: ArticleLike[] = [
   },
   {
     id: 'b-record.md',
+    body: 'Beta record body preview.',
     data: {
       title: 'Beta Academic Record',
-      description: 'Record B.',
       category: 'documents',
       subcategory: 'Academic Records',
       updatedDate: new Date('2026-11-15'),
@@ -45,9 +46,9 @@ const MOCK_ARTICLES: ArticleLike[] = [
   },
   {
     id: 'c-other.md',
+    body: 'Campus map overview.',
     data: {
       title: 'Campus Map',
-      description: 'Campus C.',
       category: 'campus',
       subcategory: 'Navigation',
       updatedDate: new Date('2026-11-16'),
@@ -102,5 +103,19 @@ describe('Article taxonomy and grouping helpers (TC-UNIT-04)', () => {
       3,
     );
     expect(related.map((a) => getArticleSlug(a))).toEqual(['b-record', 'z-guide']);
+
+    expect(getArticlePreview(MOCK_ARTICLES[0])).toBe(
+      'First sentence for Zeta guide with link and code.',
+    );
+    expect(
+      getArticlePreview(
+        {
+          body: 'Word '.repeat(50),
+          data: { title: 'Fallback Title' },
+        },
+        40,
+      ).length,
+    ).toBeLessThanOrEqual(43);
+    expect(getArticlePreview({ data: { title: 'Fallback Title' } })).toBe('Fallback Title');
   });
 });

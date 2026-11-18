@@ -1,6 +1,5 @@
 ---
 title: "How to Obtain Transfer Credentials"
-description: "How to request your Honorable Dismissal and Transfer Credentials when leaving BulSU, including rules after dismissal."
 category: "documents"
 subcategory: "ID & Credentials"
 updatedDate: 2026-11-18

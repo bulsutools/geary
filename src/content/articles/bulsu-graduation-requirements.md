@@ -1,6 +1,5 @@
 ---
 title: "BulSU Graduation Requirements"
-description: "Mandatory graduation filing, 1-year residency, clearances, INC rules, commencement attire, and the Loyalty Award."
 category: "academics"
 subcategory: "Internships & Graduation"
 updatedDate: 2026-11-18

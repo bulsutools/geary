@@ -1,6 +1,5 @@
 ---
 title: "How to Add, Change, or Drop Subjects"
-description: "2-week window to add or change subjects, curriculum substitution rules, dropping deadline, and tuition refunds."
 category: "academics"
 subcategory: "Enrollment & Load Changes"
 updatedDate: 2026-11-18

@@ -1,6 +1,5 @@
 ---
 title: "BulSU Sports, Cultural Arts, and Competitions"
-description: "How to join BulSU varsity teams, 50-100% sports and arts scholarships, off-campus permits, and cash prizes."
 category: "organizations"
 subcategory: "Sports, Culture & Media"
 updatedDate: 2026-11-18

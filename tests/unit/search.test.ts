@@ -10,7 +10,7 @@ const FIXTURE_ITEMS: SearchIndexItem[] = [
   {
     slug: 'how-to-complete-inc',
     title: 'How to Complete an INC Grade',
-    description:
+    preview:
       'Completion period deadlines, Completion Form routing, and Registrar submission steps.',
     category: 'documents',
     categoryLabel: 'Registrar & Documents',
@@ -20,7 +20,7 @@ const FIXTURE_ITEMS: SearchIndexItem[] = [
   {
     slug: 'latin-honors-and-gwa',
     title: 'Latin Honors & GWA Requirements',
-    description:
+    preview:
       'Simplified breakdown of BulSU GWA brackets, residency minimums, and grade disqualifiers.',
     category: 'academics',
     categoryLabel: 'Handbook & Policies',
@@ -34,7 +34,7 @@ const FIXTURE_ITEMS: SearchIndexItem[] = [
   {
     slug: 'how-to-request-tor',
     title: 'How to Request a Transcript of Records (TOR)',
-    description:
+    preview:
       'Window flow, clearance prerequisites, estimated fees, and claiming tips at BulSU.',
     category: 'documents',
     categoryLabel: 'Registrar & Documents',
@@ -42,9 +42,9 @@ const FIXTURE_ITEMS: SearchIndexItem[] = [
     headings: ['What to Bring Before Lining Up', 'Step-by-Step Request Workflow'],
   },
   {
-    slug: 'inc-note-in-description',
+    slug: 'inc-note-in-preview',
     title: 'General Academic Standing Overview',
-    description: 'Includes a brief mention of INC grading rules and honors review.',
+    preview: 'Includes a brief mention of INC grading rules and honors review.',
     category: 'academics',
     categoryLabel: 'Handbook & Policies',
     subcategory: 'General Rules',
@@ -53,7 +53,7 @@ const FIXTURE_ITEMS: SearchIndexItem[] = [
   {
     slug: 'special-char-test',
     title: 'Marking [INC] (2026)*?\\+ Rules',
-    description: 'Testing literal character matching for GWA > 1.75 thresholds.',
+    preview: 'Testing literal character matching for GWA > 1.75 thresholds.',
     category: 'academics',
     categoryLabel: 'Handbook & Policies',
     subcategory: 'Special Cases',
@@ -62,14 +62,14 @@ const FIXTURE_ITEMS: SearchIndexItem[] = [
 ];
 
 describe('Search query normalization & weighted ranking (TC-UNIT-01..03)', () => {
-  test('TC-UNIT-01: normalizes multi-term queries and weights title > headings/subcategory > description', () => {
+  test('TC-UNIT-01: normalizes multi-term queries and weights title > headings/subcategory > preview', () => {
     const torResults = filterAndRankArticles(FIXTURE_ITEMS, '  tor  ');
     expect(torResults[0]?.slug).toBe('how-to-request-tor');
 
     const incResults = filterAndRankArticles(FIXTURE_ITEMS, 'inc');
     expect(incResults.length).toBeGreaterThanOrEqual(2);
-    // Exact title matches outrank description-only match
-    expect(incResults[incResults.length - 1]?.slug).toBe('inc-note-in-description');
+    // Exact title matches outrank preview-only match
+    expect(incResults[incResults.length - 1]?.slug).toBe('inc-note-in-preview');
 
     const multiTerm = filterAndRankArticles(FIXTURE_ITEMS, 'latin honors');
     expect(multiTerm[0]?.slug).toBe('latin-honors-and-gwa');
@@ -79,7 +79,7 @@ describe('Search query normalization & weighted ranking (TC-UNIT-01..03)', () =>
     const largeCorpus: SearchIndexItem[] = Array.from({ length: 200 }, (_, i) => ({
       slug: `guide-${i}`,
       title: `BulSU Guide ${i} Enrollment`,
-      description: 'Guide description for student procedures and forms.',
+      preview: 'Guide body preview for student procedures and forms.',
       category: 'enrollment',
       categoryLabel: 'Admissions & Enrollment',
       subcategory: 'General',
@@ -128,7 +128,7 @@ describe('Built search-index.json schema contract (TC-UNIT-05)', () => {
     const itemSchema = z.object({
       slug: z.string().min(1),
       title: z.string().min(1),
-      description: z.string().min(1),
+      preview: z.string().min(1),
       category: z.enum(CATEGORY_SLUGS),
       categoryLabel: z.string().min(1),
       subcategory: z.string().min(1),

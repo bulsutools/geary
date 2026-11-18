@@ -1,6 +1,5 @@
 ---
 title: "How to Shift Programs in BulSU"
-description: "When you need to take the Shifter's Exam, required documents, and how academic delinquency affects shifting at BulSU."
 category: "enrollment"
 subcategory: "Shifting & Transferring"
 updatedDate: 2026-11-18

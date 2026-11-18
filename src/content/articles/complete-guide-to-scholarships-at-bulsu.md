@@ -1,6 +1,5 @@
 ---
 title: "Complete Guide to Scholarships at BulSU"
-description: "Institutional discounts, CHED, DOST, Barangay, ESGP-PA, private scholarships, the 100-point screening exam, and renewal."
 category: "scholarships"
 subcategory: "Scholarships & Grants"
 updatedDate: 2026-11-18

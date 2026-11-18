@@ -321,7 +321,7 @@ export default function SearchBar({
                         {item.title}
                       </p>
                       <p className="mt-0.5 line-clamp-1 text-xs text-ink-secondary">
-                        {item.description}
+                        {item.preview}
                       </p>
                     </a>
                   </li>

@@ -1,6 +1,5 @@
 ---
 title: "How to Replace a Lost Student ID"
-description: "Steps to report a lost BulSU ID, how long an Affidavit of Loss works at the gate, and what happens if you tamper with an ID."
 category: "documents"
 subcategory: "ID & Credentials"
 updatedDate: 2026-11-18

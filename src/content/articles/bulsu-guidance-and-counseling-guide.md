@@ -1,6 +1,5 @@
 ---
 title: "BulSU Guidance and Counseling Services Guide"
-description: "Confidential counseling, year-level tests, academic probation follow-up, referrals, and PWD support at BulSU."
 category: "campus"
 subcategory: "Student Support & Welfare"
 updatedDate: 2026-11-18

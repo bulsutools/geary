@@ -1,6 +1,5 @@
 ---
 title: "Academic Load, Prerequisites, and Residency"
-description: "Student load classifications, prerequisite locks, graduating tutorials, special classes, and max residency limits."
 category: "academics"
 subcategory: "Enrollment & Load Changes"
 updatedDate: 2026-11-18

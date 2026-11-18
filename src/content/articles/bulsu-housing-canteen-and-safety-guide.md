@@ -1,6 +1,5 @@
 ---
 title: "BulSU Canteen, Dormitories, and Safety Guide"
-description: "University canteen rules, accredited boarding houses and Hostel privacy, plus earthquake and fire evacuation steps."
 category: "campus"
 subcategory: "Health, Safety & Housing"
 updatedDate: 2026-11-18
