@@ -19,8 +19,6 @@ Stepping onto a BulSU campus for the first time comes with unwritten habits ever
 
 All incoming freshmen and transfer students are required to attend *Handog ni BulSU kay Bunso*, BulSU's annual orientation before classes open in the first semester. You'll meet university officials, tour academic offices and student services, and get walked through academic regulations and campus traditions. Even upperclassmen get an annual re-orientation each first semester to refresh policy rules.
 
-You'll also find a duplicate **Acknowledgement Form** inside the Undergraduate Student Manual. Fill it out, have your parent or guardian sign it, and submit the duplicate copy to your College Secretary's office or campus. Signing confirms you know you are accountable for following manual policies even if you overlook a section later.
-
 ## Daily Essentials: Portal, IDs, and Uniform Days
 
 Bookmark **`https://alabsms.bulsu.edu.ph/`** (**ALAB SMS**, which replaced the older HEIMS portal in late 2026) for viewing enrollments and submitting add/drop/change requests. If your login fails, file a helpdesk ticket at `https://bulsupport.zohodesk.com/portal/en/signin`.

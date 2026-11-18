@@ -13,7 +13,7 @@ sources:
     url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid02fzqp8EHJWFEnpANu8XTV31DxsJ46oLPbw2ktGzNvSGJsM9QmHV2smTAGZz6LQ3K6l"
 ---
 
-The **BulSU Office of the Student Financial Assistance and Scholarships (OSFAS)** (also listed as OSFA in the 2016 manual, reachable at `scholarship@bulsu.edu.ph` or `(044) 919 7800 local 1086`) coordinates tuition discounts, government grants, and private benefactor scholarships for BulSU undergraduates. Check current OSFAS posts for exact office window locations, as recent advisories have moved between Gate 2 / Natividad Hall Ground Floor and beside the College of Law. Whether you qualify through grades, family background, athletics, performing arts, or financial need, knowing the exact criteria and 100-point screening test helps you apply cleanly.
+The **BulSU Office of the Student Financial Assistance and Scholarships (OSFAS)** coordinates tuition discounts, government grants, and private benefactor scholarships for BulSU undergraduates. Check current OSFAS posts for exact office window locations, as recent advisories have moved between Gate 2 / Natividad Hall Ground Floor and beside the College of Law. Whether you qualify through grades, family background, athletics, performing arts, or financial need, knowing the exact criteria and 100-point screening test helps you apply cleanly.
 
 ## Institutional Tuition Discounts
 
