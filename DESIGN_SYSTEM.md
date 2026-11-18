@@ -152,7 +152,7 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 ### 5.7 Markdown Prose & Procedural Callouts (`ArticleLayout.astro`)
 - **Ordered Procedures (`<ol>`):** Clear step numbering (`marker:font-semibold marker:text-[#8B1538]`) with `space-y-2` vertical breathing room.
 - **Blockquotes / Callouts (`<blockquote>`):** `bg-[#FEF9E7]` (or `#FDF2F4`) with `border-l-4 border-[#D4A017]` (or `#8B1538`), `px-4 py-3 rounded-r-lg text-[#181C20]` so student survival tips and office rules stand out immediately.
-- **Tables (`<table>`):** Wrapped inside `<div class="overflow-x-auto my-6 border border-[#DEE2E6] rounded-lg">` with `bg-[#EEF1F4]` `<thead>` rows and `whitespace-nowrap` / balanced column padding so wide fee/GWA tables never break `375px` mobile layout.
+- **Tables (`<table>`):** Styled with `bg-[#EEF1F4]` `<thead>` rows, balanced column padding, wrapping header text, and `min-width` protection on 3-column notes cells with `overflow-x: auto` so wide or text-heavy tables stay readable without breaking `375px` mobile layout.
 - **Source Card (`ArticleLayout.astro`):** When `source` and/or `sources` frontmatter is present, renders `mt-8 rounded-xl border border-[#DEE2E6] bg-white p-4 sm:p-5` below `<article>`, showing an uppercase `"Source"` (or `"Sources"` when multiple entries exist) label (`text-xs font-semibold uppercase tracking-wider text-[#495057]`) and a list of plain-text labels (`text-[#181C20]`) or external links (`text-[#8B1538]`, when a URL is provided).
 
 ### 5.8 Global Footer (`Footer.astro`)

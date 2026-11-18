@@ -270,6 +270,22 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
         ).toBe(true);
       }
     }
+
+    await page.setViewportSize({ width: 375, height: 812 });
+    await page.goto('/');
+    const mainBefore = await page.locator('main').boundingBox();
+    await page.locator('#mobile-menu-toggle').click();
+    await expect(page.locator('#mobile-nav-drawer')).toBeVisible();
+    const mainAfter = await page.locator('main').boundingBox();
+    expect(mainAfter?.y).toBe(mainBefore?.y);
+
+    await page.goto('/articles/bulsu-dress-code-and-id-policy');
+    const notesHeaderBox = await page.locator('.geary-prose th').nth(2).boundingBox();
+    expect(notesHeaderBox?.width ?? 0).toBeGreaterThanOrEqual(200);
+    const dressOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    );
+    expect(dressOverflow).toBe(true);
   });
 
   test('TC-E2E-05: renders branded 404 recovery page with SearchBar and 5 category links', async ({
