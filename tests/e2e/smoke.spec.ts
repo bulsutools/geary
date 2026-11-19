@@ -433,7 +433,7 @@ Test body.
     }
 
     await page.goto('/');
-    await expect(page).toHaveTitle('Geary');
+    await expect(page).toHaveTitle('Geary - The Better BulSU Student Handbook');
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       'content',
       'Student-managed information portal for BulSUans, by BulSUans.',
