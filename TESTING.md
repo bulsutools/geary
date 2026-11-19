@@ -221,15 +221,25 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 To keep developer feedback fast during MVP implementation, tests execute in four lightweight stages:
 
 ```text
-[1. Type & Schema Check]  ──▶  [2. Unit Tests]  ──▶  [3. Static Build]  ──▶  [4. E2E + Axe Smoke]
-     bun run check             bun test               bun run build           bun run test:e2e
+[1. Type & Schema Check]  ──▶  [2. Static Build]  ──▶  [3. Unit Tests]  ──▶  [4. E2E + Axe Smoke]
+     bun run check              bun run build              bun test               bun run test:e2e
 ```
 
 | Script Command | Tool | Target Verification |
 | :--- | :--- | :--- |
 | `bun run check` | `astro check` | `TC-BLD-01` (TypeScript & Astro diagnostics) |
-| `bun test` (`bun run test:unit`) | `bun test` | `TC-UNIT-01`–`05` (Search scorer, special chars, grouping, JSON contract) |
 | `bun run build` | `astro build` | `TC-BLD-02`, `TC-BLD-03` (Zod validation + `dist/` generation) |
+| `bun test` (`bun run test:unit`) | `bun test` | `TC-UNIT-01`–`05` (Search scorer, special chars, grouping, JSON contract) |
 | `bun run test:e2e` | `playwright test` | `TC-BLD-04`, `TC-E2E-01`–`05`, `TC-A11Y-01`–`02`, `TC-SEC-01` |
+
+### 4.1 GitHub Actions Continuous Integration (CI) Automation
+Following org standards established in `bulsutools/room-tba`, automated checks run on every pull request and push to `main`:
+
+| Workflow File | Trigger Events | Checks & Responsibilities |
+| :--- | :--- | :--- |
+| `.github/workflows/ci.yml` | `pull_request`, `push: [main]` | Runs `verify` (`bun run check`, `bun run build`, `bun test`) and `e2e` (`playwright test`). |
+| `.github/workflows/dependency-review.yml` | `pull_request` | Evaluates new dependencies via `actions/dependency-review-action` (blocks critical CVEs). |
+| `.github/workflows/codeql.yml` | `pull_request`, `push: [main]`, weekly cron | Static application security testing (SAST) for `javascript-typescript`. |
+| `.github/workflows/deploy-pages.yml` | `push: [main]` | Builds and deploys static `dist/` to Cloudflare Pages project `geary`. |
 
 *(Full bidirectional mapping between requirements, source artifacts, and `TC-*` test cases is maintained in [REQUIREMENTS.md](./REQUIREMENTS.md).)*

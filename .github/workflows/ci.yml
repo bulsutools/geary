@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verify (typecheck, build, unit)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+
+      - name: Install dependencies
+        run: mkdir -p node_modules && bun install --frozen-lockfile
+
+      - name: Astro & TypeScript check
+        run: bun run check
+
+      - name: Build static site
+        run: bun run build
+
+      - name: Unit tests
+        run: bun test tests/unit
+
+  e2e:
+    name: E2E & Accessibility Smoke
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+
+      - name: Install dependencies
+        run: mkdir -p node_modules && bun install --frozen-lockfile
+
+      - name: Install Playwright browsers & dependencies
+        run: bunx playwright install --with-deps chrome chromium
+
+      - name: Build static site
+        run: bun run build
+
+      - name: Run Playwright E2E tests
+        run: bun run test:e2e
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-${{ github.run_id }}
+          path: playwright-report/
+          retention-days: 7
