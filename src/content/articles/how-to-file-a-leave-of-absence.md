@@ -2,39 +2,65 @@
 title: "How to File a Leave of Absence"
 category: "enrollment"
 subcategory: "Leave & Readmission"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU Office of the University Registrar - Deadline for Filing Dropping and/or Leave of Absence, 1st Semester A.Y. 2025-2026 (Sep 22, 2025)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02MZ7mNWk1cgNYXpFr52pqgJgo8ZFNBssorvk7jjnPxojHVv66LPPZ1TYjSqJMb5k2l&id=100084548907241"
+  - label: "BulSU Sarmiento Campus Admissions Office - Returning Students for 1st Semester A.Y. 2026-2027 (May 2026)"
+    url: "https://www.facebook.com/BulSUSarmientoAdmissions/posts/pfbid0KXcw8FTVdZuncHZgJSu5SCqZ8kgXKtsfEn16Zb3Xv72cWXxA3ytvsCkSnbe3ZkTnl"
+  - label: "BulSU Sarmiento Campus Admissions Office - Returning Students for 1st & 2nd Semester A.Y. 2025-2026"
+    url: "https://www.facebook.com/BulSUSarmientoAdmissions/posts/pfbid02FDdyHbFQqi8Nwi5nJwq2nqTgsChkfUBAWGvrq9H95e1YJe4hAjZhVZtstzcMz72zl"
+  - label: "BulSU SG Ethics and Discipline Committee - Office Memorandum No. 06, S. 2026 (LOA & Resignation of Student Government Officers)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0ooC5AuHyF7xdot8Smp8Vuz3FMJyqzvWzRhyR9ep5htpm2J1s8HnRbDREYNbXXNNPl&id=61576726373776"
 ---
 
-If you need to pause your college studies for a semester or up to a full year, filing an official Leave of Absence (LOA) protects your student standing and pauses your maximum residency clock. Simply stopping class attendance without filing an LOA counts against your residency and can trigger failing or `UD` marks.
+Filing an official Leave of Absence (LOA) lets you pause enrollment for a semester or up to a full year without counting that time against your maximum residency. Stopping class attendance without filing an LOA uses up your residency clock and can result in failing or Unofficially Dropped (`UD`) marks.
 
-## The 1-Year Limit and What Exceeding It Costs
+## Limits, deadlines, and penalties
 
-Under BulSU rules, an official LOA cannot exceed **one (1) year**. Two helpful protections and one strict penalty apply:
+- **1-year maximum:** An official LOA cannot exceed one year.
+- **Residency protection:** Semesters covered by an approved LOA do not count toward maximum residency (4 years for 2-year courses, 6 years for 4-year courses, 7.5 years for 5-year courses).
+- **Penalty for overstaying:** Staying away beyond one year lets your Dean require **3 to 6 additional academic units** when you return.
 
-- **Residency protection:** Semesters covered by an approved LOA do not count toward your maximum residency period (4 years for 2-year courses, 6 years for 4-year courses, or 7.5 years for 5-year courses).
-- **Penalty for overstaying:** If you stay away longer than the 1-year maximum, your Dean may require you to re-enroll in **3 to 6 additional academic units** as an academic penalty when you return.
+The Office of the University Registrar announces each semester's filing cutoff on Facebook (for timing reference, the 1st Semester 2025-2026 deadline for dropping and LOA was October 4, 2025).
 
-## Step-by-Step: Filing Your Leave of Absence
+**Note for Student Government officers:** Stepping back from SG council duties follows a separate internal SG filing rule and does not replace filing an academic LOA with the Registrar.
 
-1. **Request the LOA Form** from the Office of the Registrar.
-2. **Fill out the form completely** and finish every clearance or signature listed on it.
-3. **Return the completed LOA form** to the Office of the Registrar.
+## How to file an LOA
 
-**Keep proof of receipt:** Photocopy your signed LOA form before handing it in and ask the receiving clerk to write their full name and signature on your copy. You'll want that photocopy to speed up readmission when you come back.
+1. Request the LOA Form from the Office of the University Registrar before the semester's filing deadline.
+2. Fill out the form completely and obtain every required clearance or signature listed on it.
+3. Photocopy your fully signed LOA form before turning it in.
+4. Submit the original form to the Office of the University Registrar and ask the receiving clerk to write their full name and signature on your photocopy as proof of receipt. Keep this copy for readmission.
 
-## How to Apply for Readmission When Returning
+## Applying for readmission when you return
 
-1. **Appear in person at the Office of the Registrar** and apply for readmission. Bring your signed LOA photocopy so the staff can fast-track your record check.
-2. **Submit your Readmission Slip to your Dean.** Once the Registrar issues your Readmission Slip, hand it personally to your College or Campus Dean (or their authorized representative). Under the manual, the Dean cannot deny a readmitted student from enrolling.
+### General procedure
 
-## Which Curriculum You Will Follow Upon Return
+1. Appear in person at the Office of the University Registrar and apply for readmission, bringing your signed LOA photocopy to speed up verification.
+2. Take the Readmission Slip issued by the Registrar and hand it personally to your College or Campus Dean (or their authorized representative). The Dean cannot deny a readmitted student from enrolling.
 
-If your program's curriculum was revised while you were away, your year level decides which checklist applies:
+### External campus checklist (Sarmiento Campus reference)
 
-- **2nd year returnees (4-year course) or 3rd year returnees (5-year course):** You shift to the **new curriculum**.
-- **Penultimate or senior year returnees on an old curriculum:** You stay under subject substitution rules, where unoffered old subjects are replaced by related subjects with equal or higher credit units.
+Check your College Dean or campus admissions page before your return semester for local requirements. For reference, Sarmiento Campus returning students submitted:
 
-Before leaving mid-semester, also check the dropping deadline and tuition refund rules in [How to Add, Change, or Drop Subjects](/articles/how-to-add-change-or-drop-subjects) so you know whether a formal withdrawal affects your fees.
+- [x] Re-admission Letter addressed to the Campus Dean
+- [x] Completed Clearance Form
+- [x] Medical Certificate, if your absence was due to physical illness
+- [x] Psychological Evaluation, if your absence was due to a mental health condition
+- [x] Report of Grades (requested in some semesters; confirm whether your campus needs it)
+
+## Curriculum rules when you return
+
+If your program's curriculum changed while you were away, your year level decides which checklist you follow:
+
+- Returning 2nd-year students (4-year course) or 3rd-year students (5-year course) shift to the new curriculum.
+- Penultimate or senior-year returnees on an old curriculum follow subject substitution rules, replacing unoffered old subjects with related subjects of equal or higher credit units.
+
+## Related guides
+
+- [How to Add, Change, or Drop Subjects](/articles/how-to-add-change-or-drop-subjects)
+- [Academic Load, Prerequisites, and Residency](/articles/academic-load-prerequisites-and-residency)

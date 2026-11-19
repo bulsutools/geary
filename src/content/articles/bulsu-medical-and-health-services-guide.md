@@ -2,45 +2,70 @@
 title: "BulSU Medical Services and Student Insurance Guide"
 category: "campus"
 subcategory: "Health, Safety & Housing"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: true
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Health Services & Office of Student Welfare"
+    url: "https://www.bulsu.edu.ph/"
+  - label: "BulSU Health Services Unit Main Campus - Clinic Operating Hours (Apr 2026)"
+    url: "https://www.facebook.com/bulsuclinicmain/posts/pfbid02gzPvs32XkgdR38GxSXBEeh2XGq9yk3xdj2mwMpFUC7J6ZmawSCrpfZhfxaeytExul"
+  - label: "BulSU Admissions Office - Enrollment Medical & Dental Exam Requirements (Apr 30, 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0DjUHRCk6GfUFZr8QQRFaXS86r65MwRQjMfzJxumCJVbnAYK9rTUtyfkYRVS3QQDYl"
+  - label: "BulSU Office of the Student Welfare Main Campus - Enhanced Student Insurance Guide (Jun-Jul 2026)"
+    url: "https://www.facebook.com/reel/879433951291298/"
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
 
-Two student benefits built right into your enrollment keep you covered during medical emergencies: free campus care at **BulSU Medical and Dental Services** and 24/7 worldwide **Student Accident Insurance** administered through the Office of Student Welfare (OSW).
+Enrolled BulSU students receive two built-in health protections: free walk-in care and medical certificates at **University Health Services**, and 24/7 **Enhanced Student Accident Insurance** processed through the **Office of Student Welfare (OSW)**.
 
-## Free Medical and Dental Clinic Services
+## University Health Services clinic hours and care
 
-Run by a full-time University Physician alongside a dentist and nurses on rotating schedules, the BulSU clinic provides:
+Main Campus **Health Services** operates **Monday to Friday from 8:00 AM to 5:00 PM**. During peak freshman enrollment windows, medical and dental exams may run at temporary campus venues (such as Valencia Hall), so check [BulSU Health Services Main Campus](https://www.facebook.com/bulsuclinicmain) or Admissions posts before lining up.
 
-- **Medical and dental consultations** and treatment, including dispensing available basic medicines
-- **Dental procedures:** oral prophylaxis (cleaning) and tooth extraction
-- **Annual physical, medical, and dental exams** required for incoming **freshmen, transferees, and shifters** (including the medical permit needed to finalize admission)
-- **Medical and dental certificates** for class excuses, off-campus trips, or athletics
-- **Trauma first-aid and emergency ambulance conduction** to outside medical facilities when serious injuries occur
-- **Disease prevention:** vaccination drives, hygiene monitoring, and health education (complemented by Socio-Community Involvement's RA 9165 anti-drug awareness and random drug testing with PDEA)
+Staffed by a University Physician, dentist, and nurses, the clinic offers free services to enrolled students:
 
-Note two useful protections linked to clinic care: an illness certified by the University Physician counts as an **excused class absence** (up to 30% semester attendance), and if the University Physician formally advises you to **discontinue your studies for health reasons**, you are entitled to a full refund of paid tuition.
+- Medical and dental consultations, basic medicines when available, oral prophylaxis (cleaning), and tooth extraction
+- Admission medical and dental exams for freshmen, transferees, and shifters (requires your completed Medical and Dental Assessment Form, a **chest X-ray taken within 6 months**, medical clearance photocopy if applicable, and PWD ID if applicable)
+- Trauma first aid, emergency ambulance transport when needed, vaccination drives, and health education
 
-## Your 24/7 Student Accident Insurance
+An illness certified by the University Physician counts as an excused absence (up to the 30% semester cap). If the University Physician formally advises you to stop attending for health reasons, you qualify for a full refund of paid tuition.
 
-Every enrolled student pays an accident insurance fee under miscellaneous fees. According to Part IV, Section II.F of the Student Manual, your policy covers you **24 hours a day, 7 days a week, anywhere in the world** (including fieldwork days). You or your parent/guardian can claim reimbursement for accident-related hospital and medical bills.
+## Getting free medical and dental certificates
 
-### How to File an Accident Insurance Claim
+All standard student medical and dental certificates at University Health Services are **free**:
 
-Visit the **Office of the Student Welfare (OSW)** to pick up and accomplish the personal accident claim checklist, then attach:
+| Purpose | What to bring | Typical time |
+| --- | --- | --- |
+| Absent student excuse | Original BulSU ID or COR; parent/guardian excuse letter with wet signature (for 1-2 days absent) or licensed physician's medical certificate (for 3+ days absent); photocopy or softcopy of parent/guardian valid government ID | About 6 minutes |
+| OJT, Practice Teaching, or Field Study | CARDSIS endorsement and intern list (forwarded by CARDSIS), original BulSU ID or COR, chest X-ray valid within 6 months (photocopy or softcopy) | About 14 minutes |
+| Seminars, field trips, or school activities | Approved activity letter and participant list from college coordinator, original BulSU ID or COR | About 14 minutes |
 
-- **Insurance Policy** and **Official Receipt of Premium Payment** (both provided to you by OSW)
-- **Police Report or Accident Investigation Report** (plus any endorsements or attachments)
-- **For bodily injury claims:**
-  - Medical Certificate
-  - Hospital Statement of Account / bills
-  - Official Receipts for medicines and hospital bills
-  - Doctor's prescriptions
-- **For death claims:**
-  - Death Certificate
-  - Funeral and burial receipts
-  - Medical Certificate (if hospitalized)
+For OJT and off-campus activity certificates, you undergo a brief health assessment on site. If the physician or dentist flags a concern, you will be asked to submit an outside clearance before the certificate is released.
 
-OSW notifies you or your parent/guardian once the claim is approved and reimbursement is ready for pickup.
+## 24/7 Enhanced Student Accident Insurance
+
+Every bona fide enrolled BulSU student is covered **24 hours a day, 7 days a week**, on or off campus, for personal accidents, road accidents, and animal or insect bites. Injuries resulting from self-harm or intoxication are excluded.
+
+**Two strict filing deadlines:**
+
+1. **Report the incident within 30 days** at the Office of Student Welfare (OSW) to get your official claim form and case-specific checklist.
+2. **Submit complete requirements within 90 days** from the date of the accident (or death).
+
+### What to prepare for an accident claim
+
+- [x] Accomplished Accident Insurance Claim Form (from OSW)
+- [x] One original Incident Report signed by you
+- [x] One original Medical Certificate from your attending physician
+- [x] Original official receipts for hospitalization, medicines, laboratory tests, radiology, and accident-related procedures
+- [x] Original Hospital Statement of Account (showing admission and discharge dates if confined) and original medicine prescriptions
+- [x] Original and photocopy of your BulSU ID, plus one original Certificate of Registration (COR)
+- [x] Photo of the accident or injury
+- [x] **If animal or insect bite:** Vaccination Certificate and copy of your anti-rabies vaccination record
+- [x] **If vehicular accident:** Original Police Report plus original and photocopy of an updated Driver's License (if you were driving)
+
+### Additional requirements for accidental death claims
+
+Beneficiaries must submit the claim form, original PSA Death Certificate, original proof of relationship (PSA birth or marriage certificate), student's BulSU ID and original COR, plus an original Autopsy or Medico-Legal Report, Police Report, witness affidavit (if applicable), incident photos, and Driver's License (if the student was driving).
+
+Once you turn in complete documents at OSW, counter verification and forwarding to the insurance provider takes about **15 minutes**. The provider contacts you and sends an SMS once your reimbursement cheque is ready for pickup.

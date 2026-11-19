@@ -2,78 +2,78 @@
 title: "Understanding the BulSU Grading System"
 category: "academics"
 subcategory: "Grades & Academic Standing"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: true
 sources:
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+  - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
-  - label: "BulSU SG Academic Affairs Committee - A.Y. 2026-2027 Grading Scale (Nov 9, 2026)"
+  - label: "BulSU SG Academic Affairs Committee - BulSU Grades Equivalent A.Y. 2026-2027 (Nov 9, 2026)"
     url: "https://www.facebook.com/permalink.php?story_fbid=pfbid034S5mRC9VE6bkbXobtJJLcAFzb6Qpaq32q65LyP8urLjiWYgNypeq2zmaLapV8YmDl&id=61573139957540"
-  - label: "BulSU SG Academic Affairs Committee - TAMBAD 2026 Grade Consultation Grievance (Nov 11, 2026)"
-    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02khKjQ4YVz8jJZLNsrwj5SidqMsURn1YX7Y8Ci6k9rAouyXNiSzvqRwXpwggb7T3xl&id=61573139957540"
+  - label: "BulSU COE LSC - Grades Equivalent & Regulations (May 20, 2025)"
+    url: "https://www.facebook.com/BulSUCOELSC/posts/pfbid0efrGia6MSLA1h3PKDa5Gu9fNXUYdUZKaxvcbNBSQxPYK1ceBr2kzwKKCdT4vBNdrl"
+  - label: "BulSU CCJE LSC - Grade Equivalent & Zero-Baseline Grading System (May 30, 2025)"
+    url: "https://www.facebook.com/CCJELSCOfficialPage/posts/pfbid02Mn8Cfypum9BnH5JCf9GiVb9v5zBBxUjQiLPD9VoZH1a6b39diZ6GknsKKsvpuZgcl"
+  - label: "BulSU Office of the University Registrar - INC and 4.00 Completion Deadlines (Nov 19, 2025; Apr 10, 2026; Nov 6, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02BuY3CA7SUpz7uTTK6CVbTYGPX9Kbm3ehe7jR9YcTqTBGK7xQ8qrYidsXaLUB3ymxl&id=100084548907241"
+  - label: "BulSU Sarmiento Campus Registrar - New Completion and Conditional Forms (Nov 11, 2026)"
+    url: "https://www.facebook.com/BulSUSCRegistrar/posts/pfbid027irfF4ytwDenFMyg8oGjjXhPy4bLaSmthEm2CBNATs2X6zvFF6fdDPNnnNr6wRt4l"
+  - label: "BulSU SG Academic Affairs Committee - Grade Transparency and Consultation Guidelines (Apr 15, 2026)"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02x54QJy4RE7JgCjLosqSoc1ot8p53syY91KCZmbvAYgV1gwBBtzagXgrZuKJl&id=61573139957540"
 ---
 
-BulSU uses a numerical grading scale from `1.00` (highest) down to `3.00` (minimum passing), plus special marks for conditional, incomplete, dropped, and failing standing. Knowing what each mark triggers saves you from turning a fixable problem into a permanent `5.00`.
+Bulacan State University grades undergraduate courses from `1.00` (highest) down to `3.00` (lowest passing), plus special marks for conditional, incomplete, dropped, and failing standing.
 
-## Numerical Grade Equivalents
+## Numerical grade equivalents
 
-| Grade | Percentage Equivalent (A.Y. 2026-2027) | Meaning |
-| --- | --- | --- |
-| 1.00 | 96.50 - 100% | Passed |
-| 1.25 | 94 - 96% | Passed |
-| 1.50 | 91 - 93% | Passed |
-| 1.75 | 88 - 90% | Passed |
-| 2.00 | 85 - 87% | Passed |
-| 2.25 | 82 - 84% | Passed |
-| 2.50 | 79 - 81% | Passed |
-| 2.75 | 76 - 78% | Passed |
-| 3.00 | 75 - 75.49% | Passed (lowest passing grade) |
-| 4.00 | Conditional | Conditional Passed |
-| 5.00 | Below passing | Failed |
-| Inc. | Incomplete | Lacks project or activity |
-| D | Dropped | Officially Dropped |
-| FDA / UD | Dropped / Failed | Failure Due to Absences / Unofficially Dropped |
+| Grade | Equivalent |
+| --- | --- |
+| 1.00 | 96.50% - 100% |
+| 1.25 | 93.50% - 96.49% |
+| 1.50 | 90.50% - 93.49% |
+| 1.75 | 87.50% - 90.49% |
+| 2.00 | 84.50% - 87.49% |
+| 2.25 | 81.50% - 84.49% |
+| 2.50 | 78.50% - 81.49% |
+| 2.75 | 75.50% - 78.49% |
+| 3.00 | 75% - 75.49% (Passed) |
+| 4.00 | Conditional Passed |
+| 5.00 | Failed |
+| INC | Incomplete |
+| D | Officially Dropped |
+| UD or FDA | Unofficially Dropped or Failure Due to Absences |
 
-*Note: Exact boundary percentages (`96.50 - 100%` for `1.00` and `75 - 75.49%` for `3.00`) reflect the A.Y. 2026-2027 summary posted by the BulSU SG Academic Affairs Committee; the 2016 Student Manual rounds these to `97 - 100%` and `75%`.*
+*Reference: [BulSU SG Academic Affairs grading chart](https://www.facebook.com/permalink.php?story_fbid=pfbid034S5mRC9VE6bkbXobtJJLcAFzb6Qpaq32q65LyP8urLjiWYgNypeq2zmaLapV8YmDl&id=61573139957540) (A.Y. 2026-2027).*
 
-## What Does 4.00 Mean?
+BulSU also uses a zero-baseline grading system in colleges such as CCJE, where grades build upward from zero through assignments, exams, and class participation.
 
-A `4.00` (Conditional Passed) means you had a slight deficiency that kept you just shy of the lowest passing grade of `3.00`.
+## Conditional (`4.00`) and Incomplete (`INC`) marks
 
-- **Deadline:** You have **two (2) weeks** from receiving the grade to consult your subject teacher and resolve the deficiency.
-- **If you miss the deadline:** The grade turns automatically into **`5.00`**.
-- **Permanent record protection:** A `4.00` never appears on your Official Transcript of Records or permanent record, since it resolves to a passing grade or a `5.00`.
+A `4.00` means a slight deficiency kept you just below `3.00`. An `INC` means you earned passing marks across grading criteria except for a missing project or activity.
 
-## What Does INC Mean?
+- **Time limits:** Standard handbook rules give **2 weeks** to clear a `4.00` and **1 year** to clear an `INC`, though some college summaries list 1 year for both. Always follow the semester-specific deadline posted by the Office of the University Registrar (for example, November 12, 2026 for 1st Semester 2025-2026 grades).
+- **Automatic failure:** Unresolved `4.00` and `INC` grades automatically convert to **`5.00`** once the deadline passes, and late completion forms are not accepted.
+- **Forms:** Download Completion or Conditional Pass Forms from the BulSU website, or check your campus Registrar Facebook page for temporary links when the website is being updated.
+- **Records and prerequisites:** A `4.00` never appears on your Official Transcript of Records (it resolves to a passing mark or `5.00`). An `INC` in a prerequisite subject blocks enrollment in the next dependent subject until cleared.
 
-An `Inc.` (Incomplete) means you earned passing marks across grading criteria except for a missing required project or activity.
+## `D` vs. `FDA` and `UD`
 
-- **Grace period:** You have **one (1) year** to finish the missing requirement.
-- **If you miss the deadline:** An unresolved `Inc.` automatically becomes **`5.00`**.
-- **Prerequisite lock:** If you get `Inc.` in a prerequisite subject, you cannot enroll in the next subject that depends on it until you complete the prerequisite.
+- `D` (Officially Dropped): You filed a signed Dropping Form before the semester deadline.
+- `FDA` or `UD` (Failure Due to Absences / Unofficially Dropped): You stopped attending class without notice or exceeded the unexcused absence cap before midterms.
 
-## D vs. FDA / UD
+## Exam permits and final exam exemptions
 
-- **`D` (Officially Dropped):** You submitted a formal dropping form signed by your instructor, Dean, and the University Registrar before the deadline.
-- **`FDA` or `UD` (Failure Due to Absences / Unofficially Dropped):** You stopped attending class without notice, or exceeded the **20% unexcused absence cap** before midterm examinations.
+Bring your examination permit to scheduled midterm and final exams so your instructor or proctor can sign it. Your instructor may exempt you from the final exam if you have a **pre-final grade of at least `1.5`** and have finished all course requirements. Special or removal exams require instructor recommendation and unit head approval.
 
-## Midterm and Final Exam Rules
+## Grade transparency, corrections, and disputes
 
-Always carry your **examination permit** when sitting for scheduled midterm and final exams so your instructor or proctor can sign it.
+You have the right to know how your grade is computed, check your class standing in the class record at any time, be told your midterm and final grades before encoding or posting, and receive a Certificate of Grades (COG) every semester.
 
-Can you skip finals? A subject teacher may exempt you from taking the final examination if you hold a **pre-final grade of at least 1.5** and have finished all course requirements. Special or removal examinations may also be given upon your subject teacher's recommendation and unit head approval.
+**Fixing a posted grade error:** Contact your instructor right away. Faculty cannot edit posted grades on their own; genuine errors require written approval from your College or Campus Dean with supporting proof, forwarded to the Registrar.
 
-## How to Check and Correct Grades
+**If an instructor refuses to show or explain your grade:** Write a narrative report with your student details, course, and what happened, submit it to your Class Mayor first, and escalate to your Local Student Council.
 
-Under BulSU's **Transparency and Correction of Grades** rule, you have the right to:
+## Related guides
 
-- Know the computation method used for your grade
-- View and re-evaluate your class standing in the class record at any time
-- Be informed of your final grade **before** it is encoded or posted
-- Receive your **Certificate of Grades (COG)** at the end of every semester on its scheduled release date
-
-If you spot an error after grades are posted, **contact your subject instructor immediately**. Faculty members cannot alter posted grades on their own; if a genuine error occurred, your instructor must request written authority from the College or Campus Dean with supporting documents attached, and the Dean forwards that approval to the Registrar for official correction.
-
-If an instructor refuses to show, consult on, or explain your grade, you can also escalate through BulSU Student Government's **Grade Consultation and Transparency Grievance** channel (`TAMBAD` / `SIWALAT` guides from the Office of the Student Regent and SG Academic Affairs Committee): write a narrative report with your personal info, course details, and what happened, submit it to your **Class Mayor**, and escalate through your **Local Student Council** to college administration or the Office of Student Affairs.
-
-Hit a `5.00` or facing academic warning? Read [What Happens When You Fail a Subject?](/articles/what-happens-when-you-fail-a-subject). Aiming for Dean's List, President's List, or Latin Honors? Check [Can I Graduate With Honors?](/articles/can-i-graduate-with-honors).
+- [What Happens When You Fail a Subject?](/articles/what-happens-when-you-fail-a-subject)
+- [Can I Graduate With Honors?](/articles/can-i-graduate-with-honors)
+- [How to Add, Change, or Drop Subjects](/articles/how-to-add-change-or-drop-subjects)

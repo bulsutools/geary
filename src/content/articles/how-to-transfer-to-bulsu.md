@@ -2,50 +2,85 @@
 title: "How to Transfer to BulSU"
 category: "enrollment"
 subcategory: "Shifting & Transferring"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
 sources:
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+  - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU Citizen's Charter 2026 (1st Edition) - University Admissions Office, p. 130"
   - label: "BulSU Freshman Undergraduate Admissions Policy (Transferee / Shifter Portal Restriction)"
     url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
-  - label: "BulSU Admissions Office - Shifters, Transferees & Second-Degree Advisory (May 26, 2026)"
+  - label: "BulSU Admissions Office - Available Programs for Shifters, Transferees & Second-Degree Coursers A.Y. 2026-2027 (May 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0jGR8UpNbN1n8Uzx1QwQgqEmdjZcUmgp4EB2vGx6EeDUytSh2CzQHHE2PowVmr56kl"
+  - label: "BulSU Admissions Office - Extension for Shifters, Transferees & Second-Degree Coursers A.Y. 2026-2027 (May 26, 2026)"
     url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid02pmdvPECmPmiQiQetjb9pXJZQa19SSZYw8twqDCuTYTVHuasTAA6ymx4ZNjYjDnSjl"
-  - label: "BulSU Admissions Office - Shifters, Transferees & Second-Degree Programs List (Jul 14, 2025)"
-    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid038EU2k11BUcoD8nuwNwKZVtNaSYYMKg5tYn4HFwLVNxbVLAfdBHLp6iDisUBPo1HWl"
+  - label: "BulSU CICT Local Student Council - Shifters, Transferees & Second-Degree Requirements A.Y. 2026-2027"
+    url: "https://www.facebook.com/CICTLSCofficialpage/posts/pfbid02VQSRX5LGggJHKHWTNB5xPeJdJtcHV1RLXwmCn41yBgXE1KQ6aMo3yxhbPkUg2zkPl"
+  - label: "BulSU Sarmiento Campus Admissions Office - Shifters, Transferees & Second-Degree Admission Test (Jun 2026)"
+    url: "https://www.facebook.com/BulSUSarmientoAdmissions/posts/pfbid02VNTfaNZJnedvS5NgAjHD6DoDBKX66UHvEwh8HBbsLih8sBFJKNr6FSXcKh2VRj8Nl"
 ---
 
-If you started college at another recognized higher education school, you can apply to transfer into Bulacan State University, as long as your grades clear BulSU's cutoff and the program you want still has open seats. **Important:** Under the BulSU Freshman Undergraduate Admissions Policy, transferees who attempt to apply through the Freshman Admission portal will be disallowed from all BulSU programs.
+College students from other recognized higher education institutions apply through BulSU's combined **Shifters, Transferees, and Second-Degree Coursers** track. **Do not apply through the Freshman Admission portal**, because transferees who use the freshman flow are barred from all BulSU programs.
 
-## Eligibility Rules for Transferees
+## Eligibility, schedule, and fees
 
-To qualify as a transfer applicant, you have to meet every one of these academic limits:
+Transfer admission covers **incoming 2nd-year students** from other recognized schools, while second-degree admission covers applicants who already hold a bachelor's or associate's degree.
 
-- **GPA of 2.5 or better** across all college subjects you have already taken
-- **Zero failing marks** (no `5.0` or its equivalent in any academic subject)
-- **At most 50% of curriculum units completed** toward the course you want to enter
-- **Open program slot** in the degree you are applying for
+Transfer applicants must also meet these academic conditions:
 
-Because admission is selective and slots are limited, meeting the minimum numbers puts you in the candidate pool alongside other applicants without guaranteeing a seat automatically.
+- A General Weighted Average (GPA) of **2.5 or better** across all college subjects taken
+- **No failing grade** (`5.0` or equivalent) in any academic subject
+- At most **50% of the target curriculum's units** completed
+- An open slot in your chosen program
 
-## Documents and Filing Steps
+Meeting these minimums qualifies you to apply, though slots are limited and not guaranteed. Confirm with the University Admissions Office (UAO) if your target college imposes stricter cutoffs.
 
-In recent cycles (such as May to June 2026 advisories from the **BulSU Admissions Office**), BulSU groups **Shifters, Transferees, and Second-Degree Coursers** under one online application and hard-copy appointment schedule at Malolos Campus, with limited slots across Main Campus and external campuses (**Bustos, Hagonoy, Meneses, San Rafael, and Sarmiento**). Start at `https://admissions.bulsu.edu.ph/` (or the Office of Admissions and Orientation) during the posted window and submit:
+### Recent application window (A.Y. 2026-2027 reference)
 
-- Two `2" x 2"` color ID photos with a white background (computer-generated photos are rejected)
-- Original and photocopy of your current Certificate of Registration (COR) and class cards for initial evaluation
-- Official Transcript of Records (TOR) and Honorable Dismissal from your previous school, submitted to the Office of the Registrar
-- P300.00 non-refundable examination fee paid at the Cashier's Office when scheduled for admission testing
+| Stage | Original window | Extended window |
+| --- | --- | --- |
+| Online application | May 20 to 29, 2026 | May 27 to June 1, 2026 |
+| Hard-copy submission | May 21 to 30, 2026 (excluding May 25-26, Sundays, holidays) | May 28 to June 2, 2026 (excluding Sundays, holidays) |
 
-Double check that the name on all your transfer credentials matches your birth certificate. Any discrepancy requires a notarized Affidavit of Discrepancy, and submitting altered or incomplete records disqualifies an applicant.
+During the May 2026 cycle, hard-copy submission for all campuses took place by appointment at Malolos Campus (temporarily at BulSU E-Library 2nd Floor), with limited slots across Main Campus and external campuses (Bustos, Hagonoy, Meneses, San Rafael, and Sarmiento). Wait for your target year's exact dates on the [BulSU Admissions Office Facebook page](https://www.facebook.com/BulSUAdmissionsOffice).
 
-## How Your Previous Subjects Get Credited
+### Fees
 
-Transferring does not automatically carry over all your earned units. Once admitted, file a request for transfer credit at the Office of the Registrar. The Registrar evaluates your submitted credentials and recommends valid subject credits to the Vice President for Academic Affairs (VPAA) for final approval.
+On-site document submission for shifters, transferees, and second-degree coursers has **no fee** (replacing the older P300 exam fee). Confirm on the current cycle announcement whether any testing fee applies.
 
-Before classes start, incoming transferees also complete two mandatory onboarding steps:
+## Documents to prepare
 
-1. **Medical and dental checkup** at the BulSU Medical and Dental Services Clinic.
-2. **Freshman and transferee orientation** (*Handog ni BulSU kay Bunso*) to learn campus policies and academic rules.
+Gather both scanned copies (for online filing) and physical copies (for your Malolos Campus appointment):
 
-Already enrolled at BulSU and planning to switch courses internally? Read [How to Shift Programs in BulSU](/articles/how-to-shift-programs-in-bulsu). Leaving BulSU for another university? Check [How to Obtain Transfer Credentials](/articles/how-to-obtain-transfer-credentials).
+- [x] Certified copy of your Official Transcript of Records (TOR) (with Special Order for graduates of private higher education institutions) or Certificate of Grades
+- [x] Certificate of Good Moral Character from your previous school
+- [x] Original and photocopy of your current Certificate of Registration (COR) and class cards for initial evaluation
+- [x] Honorable Dismissal from your previous school (required for Registrar enrollment and for second-degree applicants)
+- [x] Two 2" x 2" color ID photos on a white background (computer-generated photos are rejected)
+- [x] Notarized Affidavit of Discrepancy if the name on your records differs from your birth certificate
+
+If you are applying as a **second-degree courser**, also prepare:
+
+- [x] Letter of intent addressed to the College Dean
+
+Submitting altered or incomplete credentials disqualifies your application.
+
+## Application and credit transfer steps
+
+1. Check the [BulSU Admissions Office Facebook page](https://www.facebook.com/BulSUAdmissionsOffice) when the Shifters, Transferees, and Second-Degree Coursers window opens to confirm your target course has open slots.
+2. Complete the online application using the portal link posted for that cycle (recent freshman admissions use the [BulSU Online Application Portal](https://admissions.bulsu.edu.ph/)).
+3. Book an appointment and bring your physical documents to the University Admissions Office at Malolos Campus (temporarily at BulSU E-Library 2nd Floor in May 2026). On-site validation takes about 8 minutes.
+4. Watch your registered email for confirmation and your tentative admission test schedule (for reference, Sarmiento Campus held its A.Y. 2026-2027 admission test on June 5, 2026).
+5. Once admitted, complete the mandatory medical and dental examination at University Health Services and attend *Handog ni BulSU kay Bunso* orientation before classes start.
+6. File a request for transfer credit at the Office of the University Registrar. Transferring does not carry over your earned units automatically; the Registrar evaluates your records and submits recommended subject credits to the Vice President for Academic Affairs (VPAA) for final approval.
+
+## Contacts
+
+- Email: `admissions@bulsu.edu.ph`
+- Facebook: [BulSU Admissions Office](https://www.facebook.com/BulSUAdmissionsOffice)
+
+## Related guides
+
+- [How to Shift Programs in BulSU](/articles/how-to-shift-programs-in-bulsu)
+- [How to Obtain Transfer Credentials](/articles/how-to-obtain-transfer-credentials)
+- [What Every BulSU Freshman Should Know](/articles/essential-things-freshmen-should-know)

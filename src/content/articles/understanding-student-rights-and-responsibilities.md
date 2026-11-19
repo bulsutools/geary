@@ -2,46 +2,70 @@
 title: "Student Rights and Responsibilities at BulSU"
 category: "policies"
 subcategory: "Rights, Discipline & Grievances"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "Bulacan State University - Public Statement on Freedom of Expression and Responsibilities (Oct 1, 2025)"
+    url: "https://www.facebook.com/bulsuofficial/posts/pfbid02YiXunGxRvxWQPj25JdjE3HRHS3a4oG8o8HuLtQcu5gbyeESWc9ofPQRagCGraCNhl"
+  - label: "BulSU SG Academic Affairs Committee - Grade Transparency Explainer (Apr 15, 2026)"
+    url: "https://www.facebook.com/BulSUSG2026"
+  - label: "BulSU Bustos LSC - Magna Carta of Students Overview (Jul 28, 2026)"
+    url: "https://www.facebook.com/BulSUBustosLSC/posts/pfbid02ZWHb5uEbAVAvGjoDdUAyVxYswwiHp14nEikF2xwdyxwMs8PdQgmV5eujCqiUALjWl"
 ---
 
-Part I of BulSU's Undergraduate Student Manual spells out two sides of campus membership: the legal rights protecting every enrolled student and the behavioral and civic responsibilities you accept when joining the university.
+Enrolling at BulSU comes with clear protections backed by the 1987 Philippine Constitution, the Education Act of 1982, and university rules, paired with standards of conduct expected from every student.
 
-## Core Student Rights (Constitution & Education Act of 1982)
+## Core student rights
 
-BulSU explicitly guarantees your rights under both the 1987 Philippine Constitution and the Education Act of 1982, including the right to:
+Every officially enrolled BulSU student has the right to:
 
-- **Quality education without discrimination:** Non-discrimination regardless of sex, socio-economic status, political beliefs, religion, and aspirations.
-- **Continue your degree:** Stay enrolled in your chosen field through graduation, unless stopped by academic deficiency or disciplinary sanctions.
-- **Access school records & timely issuance:** Confidential preservation of your records, full access to inspect and re-evaluate your class standing, and issuance of official certificates, diplomas, transcripts, and transfer credentials **within 30 days of request**.
-- **Guidance and counseling:** Free access to Guidance Services when making academic, personal, or career choices.
-- **Free expression, assembly, and student press:** Publish recognized campus newspapers (protected under Republic Act 7079), hold peaceful assemblies, invite guest speakers, and voice grievances to university offices.
-- **Join recognized organizations & skip involuntary fees:** Form or join recognized student organizations voluntarily, and remain **free from involuntary contributions** except those approved by your own student organizations.
-- **Representation in governance:** Elect the **BulSU Student Government (BSU-SG)** (two chambers: the at-large Supreme Student Council plus Local Student Councils, with class mayors per section). The elected SG President serves for a 1-year term as the student representative on the **University Board of Regents**.
+- **Quality education without discrimination:** Fair access to instruction regardless of sex, socio-economic status, political beliefs, or religion.
+- **Finish your degree program:** Continue in your enrolled program through graduation, unless stopped by academic deficiency or disciplinary sanctions.
+- **Confidential records and timely release:** Privacy over your academic records and release of official certificates, transcripts, diplomas, and transfer credentials within 30 days of a completed request.
+- **Free guidance and counseling:** Access campus Guidance Services for academic, personal, or career support.
+- **Free expression, peaceful assembly, and campus press:** Publish recognized student publications (protected under the Campus Journalism Act, RA 7079), organize peaceful assemblies following campus rules, invite speakers, and raise concerns with university offices.
+- **Voluntary organizations and no unauthorized fees:** Join recognized student organizations voluntarily and decline involuntary collections unless approved by your own student organizations (no forced ticket sales or compulsory unapproved fees).
+- **Student representation in governance:** Elect your Class Mayors, Local Student Council (LSC), and the university-wide BulSU Student Government (BSU-SG). The elected SG President also represents the student body on the University Board of Regents for a one-year term.
 
-## Your Due Process Rights in Any Case
+## Grade transparency and consultation rights
 
-If anyone ever files a disciplinary complaint against you, Part III guarantees five basic due process protections:
+Under university student-feedback standards, you have specific academic transparency rights in every class:
 
-1. No disciplinary penalty may be imposed until due process requirements are met.
-2. Sanctions require **substantial evidence**, with the burden of proof resting on the complainant.
-3. You may only be penalized based on evidence shown to you that you had a fair chance to rebut.
-4. You have the right to defend yourself in person or through a legal counsel or representative you choose.
-5. Until a final decision is rendered, you keep all student rights and privileges (unless placed under preventive suspension).
+- Know how your course grades are computed from the start of the semester.
+- Receive timely midterm updates so you can adjust your performance, and use faculty consultation hours to review your standing.
+- Be informed of your final grades before they are encoded or posted, and receive a Certificate of Grades every semester.
+- Rely on posted grades staying final unless corrected for a clerical error with your College Dean's approval.
 
-## Key Obligations, Campus Laws, and Daily Conduct
+If an instructor posts grades without consultation or refuses to explain a score, you can escalate through the steps in [How to File a Student Complaint](/articles/how-to-file-a-student-complaint).
 
-Alongside wearing your university ID and following the [BulSU Dress Code, Grooming, and ID Policy](/articles/bulsu-dress-code-and-id-policy), every BulSUan is bound by campus rules and national statutes highlighted in the manual:
+## Freedom of expression and its responsibilities
 
-- **RA 7877** (Anti-Sexual Harassment Act of 1995)
-- **RA 8049** (Anti-Hazing Law of 1995)
-- **RA 10627** (Anti-Bullying Act of 2013)
-- **RA 10586** (Anti-Drunk and Drugged Driving Act of 2013)
-- **RA 9165** (Comprehensive Dangerous Drugs Act, paired with campus anti-drug education and random drug testing)
-- **RA 8293** (Intellectual Property Code)
-- **RA 7610 & RA 8353** (Protection against abuse, exploitation, and rape)
+BulSU affirms democracy, academic freedom, and critical thinking as central to university life. At the same time, the university reminds students and employees that public statements reflect on the community: intellectual criticism is welcome, but it must remain respectful and avoid offensive or disparaging language.
 
-To see how complaints work if a professor, staff member, or student violates your rights, read [How to File a Student Complaint](/articles/how-to-file-a-student-complaint). For how hearings and penalties run, see [Understanding University Disciplinary Procedures](/articles/understanding-university-disciplinary-procedures).
+Student councils and the Office of the Student Regent also champion expanded student welfare charters (such as gender sensitivity, mental health breaks, and all-hazards safety guidelines). Keep in mind that proposed policies and consultation drafts only take effect as binding university rules once formally approved by the administration or Board of Regents.
+
+## Due process rights in disciplinary cases
+
+If someone files a formal disciplinary complaint against you, five due process protections apply:
+
+1. No penalty may be imposed until due process requirements are met.
+2. Any sanction requires substantial evidence, and the burden of proof rests on the complainant.
+3. You may only be penalized based on evidence presented to you that you had a fair chance to answer.
+4. You may defend yourself in person or through a legal counsel or chosen representative.
+5. Until a final decision is issued, you keep your full student rights and privileges (unless placed under preventive suspension).
+
+## Daily obligations and campus laws
+
+Along with wearing your ID and following the [BulSU Dress Code, Grooming, and ID Policy](/articles/bulsu-dress-code-and-id-policy), every BulSUan must abide by campus rules and national laws enforced inside the university:
+
+- **RA 7877 and RA 11313:** Anti-Sexual Harassment Act and Safe Spaces Act.
+- **RA 8049:** Anti-Hazing Law.
+- **RA 10627:** Anti-Bullying Act.
+- **RA 10586:** Anti-Drunk and Drugged Driving Act.
+- **RA 9165:** Comprehensive Dangerous Drugs Act (paired with campus anti-drug education and random drug testing).
+- **RA 8293:** Intellectual Property Code (covering plagiarism and unauthorized copying).
+- **RA 7610 and RA 8353:** Protections against abuse, exploitation, and sexual assault.
+
+To see how hearings and sanctions work when rules are broken, read [Understanding University Disciplinary Procedures](/articles/understanding-university-disciplinary-procedures).

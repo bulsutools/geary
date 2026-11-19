@@ -2,79 +2,96 @@
 title: "BulSU Admission Requirements"
 category: "enrollment"
 subcategory: "Admission & Enrollment"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
 sources:
-  - label: "BulSU Freshman Undergraduate Admissions Policy (Student Policy Development Office / UAO)"
+  - label: "BulSU Freshman Undergraduate Admissions Policy (Updated Guidelines BulSU Freshmen 2027-2028, Student Policy Development Office / UAO - PDF)"
     url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+  - label: "BulSU Citizen's Charter 2026 (1st Edition) - University Admissions Office, pp. 128-129"
   - label: "BulSU Admissions Office - Programs Offered & Grade Requirements (Sep 19, 2025)"
     url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0TJz8Fsn2ag7B6vY2VW3LpdhsPRdvNZLYPeqwGh5JCLbFdE3pkt5qKV7AZiEV39z7l"
-  - label: "BulSU SG Academic & Admissions Committees - ATBULSU 2027 FAQ Part 1 (Aug 30, 2026)"
-    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0MJGBJHt25CMkVJUr4QoSwiFAByDeNb37oFfYcm3UCzuda2dna5R8rJLmwTY8AhLRl&id=61573139957540"
+  - label: "BulSU Admissions Office - ATBulSU 2026-2027 Documentary Requirements (Sep 17, 2025)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid02kgtKZYc6kdRYu7TkBnBE3YHcp8CH7hoxoXaVEg2bUUf6TukrUyg6dbHykHaUVNyGl"
+  - label: "BulSU Admissions Office - University Programs Offered for A.Y. 2027-2028 (Aug 24, 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0g7pPsC6Wy1jXtAXzy1XtkqMAqZuF92pDP2eXSVGWMi68RT1U5x25VykfcVKTDhJtl"
+  - label: "BulSU Admissions Office - New Board Programs BS Real Estate Management & BS Customs Administration for A.Y. 2027-2028 (Sep 25, 2026)"
+    url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid02wGRhrRnepE3X4YoqNmgbD159M5CvRRnBf3rNtTYc8JRKFWtpxEakByPCPZM6jSJRl"
+  - label: "BulSU Bustos Campus - Bachelor of Secondary Education ATBulSU 2027 Video (Sep 24, 2026)"
+    url: "https://www.facebook.com/reel/1670200784630839/"
 ---
 
-Admission into Bulacan State University as a freshman comes down to your **Grade 11 academic record**, **Senior High School track and strand alignment**, **ATBulSU score**, and **affirmative action criteria**. Under the **BulSU Freshman Undergraduate Admissions Policy**, requirements apply cleanly across board programs, non-board programs, and specialized colleges.
+Freshman admission to Bulacan State University depends on your Grade 11 grades, required documents, Senior High School (SHS) strand alignment, Admission Test for BulSU (ATBulSU) score, and optional Affirmative Action records. **If you have already enrolled in another college or another BulSU program, do not apply as a freshman**, because transferees and shifters caught using Freshman Admission are barred from all BulSU programs.
 
-## Who Can Apply as a Freshman
+## Who can apply as a freshman
 
-You qualify to apply for freshman admission if you belong to any of these secondary-school groups:
+You qualify for Freshman Admission if you meet all of these conditions:
 
-- **Senior High School graduates or candidates for graduation** from public or DepEd-recognized private high schools
-- **Senior High School graduates** from accredited secondary schools abroad
-- **Alternative Learning System (ALS)** graduates holding their Accreditation and Equivalency (A&E) Assessment and Certification
+- You are an SHS candidate for graduation or an SHS graduate from a public school, a Department of Education (DepEd)-recognized private school, or an accredited secondary school abroad.
+- You have not enrolled in or attended any college or university before the academic year you are applying for.
+- Alternative Learning System (ALS) graduates with an Accreditation and Equivalency (A&E) Assessment and Certification also appear under BulSU's freshman Affirmative Action categories.
 
-**Important restriction for current college students:** Transferees and shifters who try to apply through **Freshman Admission** will be disallowed from **all** BulSU programs. Read [How to Transfer to BulSU](/articles/how-to-transfer-to-bulsu) or [How to Shift Programs in BulSU](/articles/how-to-shift-programs-in-bulsu) for the proper paths.
+## Grade 11 GWA and subject cutoffs
 
-## Grade 11 GWA and Subject Cutoffs
+Your Grade 11 School Form 9 (SF9 / Form 138) sets which programs you can select:
 
-Your eligibility hinges on your **Grade 11 School Form 9 (SF9 / Form 138)**:
-
-| Program Group | Minimum Grade 11 GWA | Subject Grade Rules |
+| Program group | Minimum Grade 11 GWA | Subject or track requirement |
 | --- | --- | --- |
-| **Board / Licensure Programs** | **87% or better** | At least **85%** in every Grade 11 subject, plus college-specific **87%** minimums below |
-| **Engineering, Architecture & Accountancy** | **87% or better** | Minimum **87%** in Math and Science subjects |
-| **Secondary Education (BSED)** | **87% or better** | Minimum **87%** in your major subject (e.g., Math for BSED Math, English for BSED English) |
-| **Nursing, Psychology & Medical Technology** | **87% or better** | Minimum **87%** in Science subjects |
-| **Non-Board Programs** | **85% or better** | At least **85%** minimum per Grade 11 subject |
-| **College of Industrial Technology (CIT)** | No fixed GWA | Applicants from the **TVL Track** holding a relevant **National Certificate (NC I, NC II)** receive preference |
-| **College of Sports, Exercise & Recreation (CSER)** | Preference rule | Applicants from the **Sports Track** or athletes competing at provincial, regional, or national meets receive preference |
+| Board / licensure programs | 87% | At least 85% in all subjects |
+| Engineering, Architecture, Accountancy | 87% | At least 87% in Math and Science |
+| BS Real Estate Management & BS Customs Administration (new for A.Y. 2027-2028) | 87% | At least 85% in all subjects and 87% in Math and Science |
+| Secondary Education (BSEd) | 87% | At least 87% in your major subject (such as Math for BSEd Math) |
+| Nursing, Psychology, Medical Technology | 87% | At least 87% in Science |
+| Non-board programs | 85% | None beyond the 85% overall GWA |
+| College of Industrial Technology (CIT) | No fixed GWA | Technical-Vocational-Livelihood (TVL) track graduates with NC I or NC II preferred |
+| College of Sports, Exercise, and Recreation (CSER) | No fixed GWA | Sports track applicants and provincial, regional, or national athletes preferred |
 
-On top of Grade 11 cutoffs, applicants aiming for **licensure-board programs** must score **80% or better** on the admission examination.
+For any program leading to a licensure examination, you must also score **80% or higher** on the admission exam.
 
-## Required Documents (Scanned + Hard Copy)
+Check the [A.Y. 2027-2028 Programs Offered post](https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0g7pPsC6Wy1jXtAXzy1XtkqMAqZuF92pDP2eXSVGWMi68RT1U5x25VykfcVKTDhJtl) and the [September 25, 2026 new programs announcement](https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid02wGRhrRnepE3X4YoqNmgbD159M5CvRRnBf3rNtTYc8JRKFWtpxEakByPCPZM6jSJRl) on the BulSU Admissions Office page to verify which campuses offer your chosen course. On the programs graphics, red indicates board programs, black indicates non-board programs, and blue marks newly added programs.
 
-Prepare clear scanned copies for **Step 1 online upload** and matching **hard copies** for your chosen University Admissions Office (UAO) appointment date (submitted at the specific BulSU campus where you applied):
+## Mandatory documents to prepare
 
-1. **Certified True Copy (with school seal) of Grade 11 SF9**
-2. **Accomplished Application Form (Declaration Form)** with a `2" x 2"` ID picture
-3. **Certified True Copy of Proof of Residency** (actual Barangay Certificate of Residency, not a Barangay ID alone)
-4. **Photocopy of a recent utility bill** (Electric, Water, or Internet bill; bills under another person's name are accepted if renting or sharing utilities, while households owning their own meter must submit a parent-named bill)
-5. **Photocopy of recent Income Tax Return (ITR) or Certificate of Tax Exemption** (must be current and updated)
+Upload scanned copies during online application on the [BulSU Online Application Portal](https://admissions.bulsu.edu.ph/), then bring matching physical copies on your scheduled appointment date. On-site document submission for new college students has **no fee** and takes about 8 minutes.
 
-**Document workarounds clarified by the BulSU SG Academic and Admissions FAQ (Aug 30, 2026):**
+- [x] Certified True Copy of your Grade 11 Report Card (SF9 / Form 138, 1st and 2nd semester) with school seal
+- [x] Two originally signed copies of the Application Form (Declaration Form), emailed after online application, each with a 2" x 2" ID photo with name tag on a white background
+- [x] Certified True Copy or photocopy of Proof of Residency (Barangay Certificate)
+- [x] Photocopy of a recent utility bill (electric, water, or internet), or a Barangay Certification if you cannot present a utility bill
+- [x] Photocopy of a recent Income Tax Return (ITR), Certificate of Tax Exemption, or notarized Barangay Certification of low or no income
 
-- **Certificate of Indigency as ITR alternative:** Accepted if the certificate states you belong to a low-income or no-income household and carries a Barangay **dry seal** (without a dry seal, it must be notarized).
-- **Children of OFWs (no ITR / low-income cert):** Ask your Barangay to issue a **Barangay Certificate** stating your parent works as an OFW and how many years they have worked abroad, stamped with a dry seal or notarized (an OFW employment contract alone will not replace the ITR).
-- **Filipino citizens:** Select `Filipino` on the form and leave passport/student visa fields blank (required for foreign applicants only).
+## Optional documents for Affirmative Action (up to 20 points)
 
-## Optional Documents for Affirmative Action (Up to 20 Points)
+Affirmative Action makes up 20% of your final selection score. Submit only the documents that apply to you.
 
-Affirmative action makes up **20% of your final selection score** to promote fair access across Bulacan and Region 3 demographic groups. Submit certified true copies, membership certificates, or IDs for any applicable items below:
+Residency (up to 3 points):
 
-- **Residency:** Barangay Certification showing permanent residence in the **Province of Bulacan** (3 pts) or **another province in Region 3** (2 pts).
-- **Special Groups (submit only one document, 3 pts):**
-  - Member of an Indigenous Cultural Community (ICC) / Indigenous People (IP)
-  - Pantawid Pamilyang Pilipino Program (**4Ps**) member
-  - **Student with Special Needs (SSN / PWD)** under RA 7277 (**PWD ID** accepted)
-  - **ALS graduate** (A&E Assessment and Certification)
-- **Solo Parent, Orphan, or First-Gen Status (submit only one document, 3 pts):**
-  - **Child of a Solo Parent** (Solo Parent ID, or an Affidavit of Solo Parent **notarized by an attorney**, never a Barangay-only certification)
-  - **Solo Parent** (child's Birth Certificate, RA 8972)
-  - **Single or Double Orphan living with relatives** (parent death certificate/s or DSWD certification)
-  - **Orphaned or abandoned student living in an orphanage** (Certification from a DSWD-recognized institution)
-  - **First-Generation College Student** (neither parent nor legal guardian completed college/post-secondary education; Certification requested from **CSWDO / MSWDO** or affidavit of non-graduation)
-- **Geographically Isolated and Disadvantaged Areas (GIDA, 3 pts):** Barangay or LGU certification showing permanent residence in a DOH/DepEd-classified GIDA area.
-- **Exemplary Artistic or Athletic Ability (3 pts):** Certification from your School Head or community/civic/religious org head stating your award title.
-- **BulSU Adopted Community / Child of a BulSU Employee (5 pts):** Certificate from the University Extension Office, or parent's latest BulSU Employee ID (for regular or non-regular staff serving at least 1 year).
+- [x] Barangay Certification showing permanent residence in Bulacan (3 points) or another province in Region 3 (2 points)
 
-Ready to file? Follow the upload, exam permit, and ranking rules in [How to Apply to BulSU](/articles/how-to-apply-to-bulsu).
+Group A (3 points, submit at most one document):
+
+- [x] Member of an Indigenous Cultural Community or Indigenous People (ICC/IP): National Commission on Indigenous Peoples (NCIP) or tribal/barangay certificate
+- [x] Pantawid Pamilya Pilipino Program (4Ps) beneficiary: 4Ps ID or barangay certification
+- [x] Student with Special Needs (SSN) or disability under RA 7277: PWD ID or membership certificate
+- [x] Alternative Learning System (ALS) graduate: Accreditation and Equivalency (A&E) Assessment and Certification
+
+Group B (3 points, submit at most one document):
+
+- [x] Child of a solo parent: Solo Parent ID from the City or Municipal Social Welfare and Development Office (CSWDO / MSWDO)
+- [x] Solo parent under RA 8972: birth certificate of your child
+- [x] Single or double orphan living with relatives: death certificate of one or both parents
+- [x] Orphaned or abandoned student living in an orphanage: certification from a Department of Social Welfare and Development (DSWD)-recognized institution
+- [x] First-generation college student (no parent or legal guardian completed college): MSWDO/CSWDO certification, Affidavit of Non-Graduation, or barangay/school certification (confirm with UAO which format it requires)
+
+Additional categories:
+
+- [x] Geographically Isolated and Disadvantaged Area (GIDA) resident (3 points): Barangay or local government unit (LGU) certification
+- [x] Exemplary artistic or athletic ability (3 points): certification from your school head or community, civic, or religious organization head stating your title and award
+- [x] BulSU Adopted Community member or child of a BulSU employee with at least one year of service (5 points): certificate from the University Extension Office or your parent's latest BulSU Employee ID
+
+Working students (with a Certificate of Employment) appeared as an optional category in the 2026 cycle, though it is not listed in the current Affirmative Action points table.
+
+## Related guides
+
+- [How to Apply to BulSU](/articles/how-to-apply-to-bulsu)
+- [How to Transfer to BulSU](/articles/how-to-transfer-to-bulsu)
+- [How to Shift Programs in BulSU](/articles/how-to-shift-programs-in-bulsu)

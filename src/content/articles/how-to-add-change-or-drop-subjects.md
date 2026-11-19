@@ -2,64 +2,79 @@
 title: "How to Add, Change, or Drop Subjects"
 category: "academics"
 subcategory: "Enrollment & Load Changes"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
 sources:
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+  - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
-  - label: "BulSU SG Academic Affairs Committee & ICTO - ALAB SMS Add / Drop / Change Guide (Nov 15, 2026)"
-    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid0x8n9T8wE97pJAxV1HAtcXfSLNmYEpYSeNrVyxkSA96Z5TVw3mpAaky8Dm2SeQS73l&id=61573139957540"
-  - label: "BulSU Sarmiento Campus Registrar - COR Balance & Portal Support Advisory (Jan 19, 2026)"
-    url: "https://www.facebook.com/BulSUSCRegistrar/posts/pfbid0d3HDJMSwDkZgHrdPrJdBkcW5Tw5yKBrUwNDCGsGbZ6hEMxrB1zHhTTS4rZDWo1WCl"
+  - label: "BulSU ICTO - Regular and Irregular Student Enrollment Guides in ALAB SMS (Nov 14, 2026)"
+    url: "https://www.facebook.com/bulsu.icto/posts/pfbid0EbpbEz5CeD5FbZgMWbxnE42PfWLDo8B1xPJewtTGzeCu9ErTecwdYEQKd1px7Shnl"
+  - label: "BulSU ICTO - Add/Drop/Change Tutorial in ALAB SMS (Nov 16, 2026)"
+    url: "https://www.facebook.com/bulsu.icto/posts/pfbid0r946bqrpD9HaJ5t39wfNBxXXqrKWHp1zJjVrvErw2Dw7LoXE5fMEqGhxD25uFDYUl"
+  - label: "BulSU ICTO - Important Reminders on Add, Drop, and Change of Subjects (Nov 17, 2026)"
+    url: "https://www.facebook.com/bulsu.icto/posts/pfbid0Jva1LV9FNuxywpKNhvnDjUqayvEYdBKa9GLb2WDTLwpGhDmQ1i1W7XRyKqxR83x3l"
+  - label: "BulSU SG Academic Affairs Committee & ICTO - ALAB SMS Phase 2 Add/Change/Drop Guide & July 2026 Registrar Assistance Notice"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid023i9RatJteTgzngHwFJdBvXdVjcnAvA2M9WEWo2ZrKKMi3pkpQQqN7WkhpsFNxrWal&id=61573139957540"
+  - label: "BulSU Sarmiento Campus Registrar - HEIMS Add/Drop/Change Fallback Advisory (Jul 14, 2026)"
+    url: "https://www.facebook.com/BulSUSCRegistrar/posts/pfbid0JKj5Zn4qK7dRMHcFwqmURbWYzqVXqVEyffjKnNYwKVvKfCM5dMrVT3ww6hq8Lmdfl"
 ---
 
-Schedules shift fast at the start of a term. Whether you need to fix a time conflict, swap out a retired curriculum subject, or drop a class before midterms, BulSU handles requests through its student portal within strict academic deadlines.
+BulSU handles adding, changing, and dropping subjects through the **ALAB SMS Portal** during the enrollment adjustment period, subject to college and Registrar approval. Routine adding and changing must happen within the **first 2 weeks of regular classes**, while official dropping stays open up to **1 week before midterm examinations**.
 
-## Adding or Changing Subjects in ALAB SMS (First 2 Weeks)
+## Rules before requesting changes
 
-Under the Student Manual, you may request to **add or change enrolled subjects within the first two (2) weeks of regular classes**, subject to approval from your academic unit head.
+- **Finish enlisting first:** During regular or irregular enrollment in ALAB SMS, clicking Save does not submit your enrollment. You must click **Enlist** after checking your assessment.
+- **Subject unavailable:** Coordinate with your college first if a subject does not appear in ALAB SMS.
+- **No cross-semester adding:** You cannot add 1st-semester subjects during the 2nd semester.
+- **Dropping risk:** Dropping two subjects in one term blocks you from enrolling in requisite subjects next semester, and dropping two subjects while on probation drops you from your course.
+- **Portal URL note:** ICTO uses the [ALAB SMS Portal](https://alabsms.bulsu.edu.ph/), while one Student Government guide listed `bulsu-sms.bulsutech.com`. Verify the active link from ICTO's Facebook page before signing in.
 
-Online change-of-matriculation transactions have transitioned from the older **HEIMS** portal (`https://bulsu.heims.ph/`) to the newer **ALAB SMS** (`https://alabsms.bulsu.edu.ph/`). Based on the November 2026 **ALAB SMS** guide from BulSU ICTO and the BulSU SG Academic Affairs Committee:
+## How to add, change, or drop subjects in ALAB SMS
 
-1. Sign in at `https://alabsms.bulsu.edu.ph/` and open **Add / Drop / Change** in the sidebar.
-2. **To add a subject:** Search for the course and select an available class section, then check the line added in your Request panel.
-3. **To change a subject:** Choose **Another schedule** (Option A to move sections) or **Another course** (Option B to swap subjects).
-4. **To drop a subject:** Select the subject to drop and double-check all pending lines in the Request panel.
-5. **Submit with a reason:** Enter a short reason (**5 to 255 characters**) and click **Send Request**.
+1. Log in to the [ALAB SMS Portal](https://alabsms.bulsu.edu.ph/) with your BulSU account and open **Add/Drop/Change** from the sidebar.
+2. To **add a subject**, search for the course, select an open class section, and check the line added in the Request panel.
+3. To **change a subject**, choose **Another schedule** (to switch sections of the same course if open) or **Another course** (to search for a replacement subject and select its class).
+4. To **drop a subject**, select the course to drop and review all pending lines in the Request panel.
+5. Enter a reason (5 to 255 characters, such as "Schedule adjustment for this term") and click **Send Request**.
+6. Wait for Registrar approval and monitor your status under **Your requests**.
 
-Wait past the two-week change window and routine add/change requests close. If you cannot log into your portal account, submit a support ticket through **`https://bulsupport.zohodesk.com/portal/en/signin`** (linked at Registrar and Admissions desks). Note too that unpaid or system-flagged account balances can hold your Certificate of Registration (COR) until Accounting corrects them; students awaiting scholarship documentation during a system hold may use an **Advising Slip** temporarily per campus Registrar guidance.
+If you miss the online adjustment deadline, request assistance directly from the Office of the University Registrar. For login or account trouble, submit a ticket via the [ICTO Helpdesk](https://icto-helpdesk.bulsu.edu.ph/) (also listed as `ict-helpdesk.bulsu.edu.ph` on ICTO's page).
 
-## Substituting Subjects Under an Old Curriculum
+## Substituting subjects under an old curriculum
 
-If your checklist changed while you were enrolled or on a Leave of Absence, you can substitute a new subject for an old one when all three rules apply:
+You may substitute a new subject for a retired curriculum subject when all three conditions hold:
 
-1. The old subject belongs to a revised or replaced curriculum and is **no longer offered**.
-2. The old and new subjects are **similar or related** to each other.
-3. The replacement subject carries **equal or more credit units** than the old subject.
+- The old subject belongs to a revised or replaced curriculum and is no longer offered.
+- The old and new subjects are similar or related.
+- The replacement carries equal or more credit units.
 
-## How to Officially Drop a Subject
+## Formal dropping form (`D` vs. `FDA` / `UD`)
 
-You can officially drop a subject anytime **up to one (1) week before scheduled midterm examinations** in the university calendar.
+Outside the online adjustment window (and up to **1 week before midterm exams**), file a formal **Dropping Form** from the Office of the University Registrar signed by:
 
-To make it official, obtain the formal **Dropping Form** from the Office of the Registrar and collect signatures from all three signatories before turning it in:
-
-1. Your subject instructor or professor
+1. Your subject instructor
 2. Your College or Campus Dean
 3. The University Registrar
 
-Once processed, your grade sheet records **`D` (Officially Dropped)**. Stopping attendance without filing this form leaves you with **`FDA` or `UD`** (Failure Due to Absences / Unofficially Dropped), which counts as a failure or drop under academic delinquency rules.
+Once processed, your record shows **`D` (Officially Dropped)**. Stopping attendance without formal dropping leaves you with **`FDA` or `UD`** (Failure Due to Absences / Unofficially Dropped).
 
-## Tuition Refund Schedule for Dropping or Withdrawal
+If portal downtime happens during your filing window, save proof of your online submission and check your campus Registrar page for manual fallback instructions.
 
-Under the Student Manual's refund guidelines (written prior to national free-tuition legislation, and still governing fee refunds when tuition applies):
+## Tuition refund rules (when tuition applies)
 
-| When You Drop or Withdraw | Refund / Fee Charge Rule |
+Where paid tuition applies (such as students who exceed free-tuition residency):
+
+| When you drop or withdraw | Fee charge or refund rule |
 | --- | --- |
-| **Before opening of classes** | Full refund of all fees paid, minus the registration fee |
-| **Within Week 1 of classes** | Charged **30%** of total term tuition (remaining tuition refunded) |
-| **Within Week 2 of classes** | Charged **50%** of total term tuition |
-| **Within Week 3 of classes** | Charged **70%** of total term tuition |
-| **After Week 3 of classes** | Charged **100%** of total term tuition (zero refund) |
-| **Medical withdrawal advised by BulSU Physician** | **Full refund** of paid tuition fee regardless of timing |
+| Before opening of classes | Full refund of fees paid, minus the registration fee |
+| Within Week 1 of classes | Charged 30% of total term tuition |
+| Within Week 2 of classes | Charged 50% of total term tuition |
+| Within Week 3 of classes | Charged 70% of total term tuition |
+| After Week 3 of classes | Charged 100% of total term tuition (no refund) |
+| Medical withdrawal advised by BulSU Physician | Full refund of paid tuition regardless of timing |
 
-Remember that dropping two subjects in one semester blocks you from enrolling in requisite subjects next semester, and dropping two subjects while on probation gets you dropped from your course. Read [What Happens When You Fail a Subject?](/articles/what-happens-when-you-fail-a-subject) before dropping multiple classes.
+## Related guides
+
+- [What Happens When You Fail a Subject?](/articles/what-happens-when-you-fail-a-subject)
+- [Academic Load, Prerequisites, and Residency](/articles/academic-load-prerequisites-and-residency)
+- [How to File a Leave of Absence](/articles/how-to-file-a-leave-of-absence)

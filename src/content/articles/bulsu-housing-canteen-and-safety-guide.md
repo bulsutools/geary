@@ -2,44 +2,48 @@
 title: "BulSU Canteen, Dormitories, and Safety Guide"
 category: "campus"
 subcategory: "Health, Safety & Housing"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
 sources:
+  - label: "BulSU Office of Safety, Security, and Disaster Risk Management - Nationwide Simultaneous Earthquake Drill Advisories (Sep-Nov 2026)"
+    url: "https://www.facebook.com/ossdrrm/posts/pfbid0vsG5NgwAtSH4dmd2o47q8tzUjVoh3uronxUriENfmEqEBTKNsL7ayPeqXihJDqL4l"
   - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
-  - label: "Bulacan State University - Main & External Campuses List (Mar 10, 2025)"
+  - label: "Bulacan State University - Main & External Campuses Directory (2025-2026)"
     url: "https://www.facebook.com/bulsuofficial/posts/pfbid02F9iGAMPqLHc9H7Ezzfx4wKq7VhKSPAjw7Hu6d6yaycsWQNCK6XjFoKPxHwpWxXLhl"
-  - label: "BulSU Hagonoy Campus - External Campuses & Programs List (Aug 25, 2026)"
-    url: "https://www.facebook.com/BSUHC/posts/pfbid02XeGSBMAsBUNUQmmR4pFKjXgvmuMwX6NPHsnF4cVY3RRdajMLt2petUVGhpLmJUDbl"
 ---
 
-Across BulSU's Main Campus in **Malolos** and its external campuses (**Bustos, Hagonoy, Meneses, Sarmiento, and San Rafael**, plus **Plaridel Extension** listed in 2026 campus program announcements), Part V of the Student Manual sets standards for dining on campus, student housing, campus security, and emergency evacuation.
+Across BulSU's Main Campus in **Malolos**, its external campuses (**Bustos, Hagonoy, Meneses, Sarmiento, and San Rafael**), and the **Plaridel Extension**, university offices set daily rules for food safety, campus housing, security gates, and disaster drills.
 
-## University Canteen and Food Safety
+## University canteen and dining rules
 
-Food outlets on campus fall under the **Office of Food Services**, which inspects both the **University Canteen and Restaurant** and private food concessionaires under Department of Health (DOH) rules:
+Campus food outlets are supervised by the **Office of Food Services**, which monitors both the University Canteen and private concessionaires under Department of Health standards:
 
-- Food handlers undergo annual medical checkups, and outlets face annual random microbiological food sampling alongside pricing and nutrition reviews.
-- Inside the **University Canteen and Dining Hall**, service is self-service. Students must return soiled trays and empty bottles to the used-tray section and trash bins.
-- Keep noise down during dining hours, and clear tables promptly during peak breakfast and lunch periods so other students have room to eat.
+- Food handlers complete annual medical exams, and stalls undergo random food safety sampling alongside price and nutrition checks.
+- The **University Canteen and Dining Hall** runs on self-service. Return soiled trays and bottles to the designated tray area and dispose of trash properly.
+- Keep noise down and vacate tables promptly during peak breakfast and lunch rushes so other students can eat.
 
-## University Hostel and Accredited Off-Campus Dormitories
+## BulSU Hostel, dormitories, and accredited boarding houses
 
-- **Accredited private boarding houses:** For students commuting from outside Malolos, BulSU's Housing Accrediting Committee inspects nearby dorms and boarding houses for ventilation, lighting, clean beds, water supply, and safety before placing them on the university's endorsed housing list.
-- **University Hostel:** BulSU respects residents' personal privacy, though authorized university staff may enter Hostel rooms for emergencies threatening health or property, resident permission, search warrants, official employee duties, noise abatement from sound equipment, maintenance/repairs, checkout procedures, or between-semester and Christmas breaks.
-- **Athletes' Dormitories:** Supervised by the Sports Development Office for qualified varsity athletes; BulSU assumes no liability for lost, stolen, or damaged personal items.
+- **Accredited off-campus boarding houses:** If you commute from outside Malolos, ask Student Welfare about boarding houses inspected by BulSU's Housing Accrediting Committee for ventilation, lighting, clean beds, water supply, and safety.
+- **BulSU Hostel:** Offers short-stay rooms and function halls on campus, with a **20% discount for BulSU students, employees, and alumni** (confirm current room rates and booking requirements directly with the Hostel office before checking in). While BulSU respects residents' privacy, authorized staff may enter rooms for emergencies threatening health or property, resident permission, search warrants, official duties, noise control, maintenance, checkout, or semester and Christmas breaks.
+- **Athletes' Dormitories:** Supervised by the Sports Development Office for qualified varsity athletes. BulSU assumes no liability for lost, stolen, or damaged personal items.
 
-## Campus Safety, Security, and Emergency Protocols
+## Campus security and disaster drills
 
-Licensed security guards staff all university gates to enforce the **No ID, No Entry** policy, inspect campus hazards, manage traffic, and issue violation slips. During declared crises, the **BulSU Action Team (BulSUAcT)** coordinates campus response with Malolos authorities, PNP, and the City Fire Department.
+Licensed security guards man every university gate to enforce **No ID, No Entry**, manage campus traffic, spot hazards, and issue violation slips. During emergencies and drills, the **Office of Safety, Security, and Disaster Risk Management (OSSDRRM)** and the **BulSU Action Team (BulSUAcT)** coordinate with Malolos authorities, the PNP, and the Bureau of Fire Protection.
 
-### Earthquake Response
+BulSU participates in the quarterly **Nationwide Simultaneous Earthquake Drill (NSED)** announced through [BulSU OSSDRRM on Facebook](https://www.facebook.com/ossdrrm) and the main BulSU page.
 
-1. **Drop, Cover, and Hold On:** Move quickly under a sturdy desk or table, hold one leg, and shield your eyes and head, staying clear of windows and tall bookshelves.
-2. **Stay put until shaking stops:** Check yourself and nearby classmates for injuries and watch for electrical or gas fire hazards.
-3. **Evacuate via stairs only:** Never use elevators after an earthquake. Watch for falling debris and stay outside well clear of buildings, trees, streetlights, and power lines (many injuries happen within 10 feet of entrances).
+### Earthquake response
 
-### Fire Evacuation
+1. **Duck, cover, and hold:** When the alarm sounds or shaking begins, get under a sturdy desk or table, hold one leg, and shield your head and eyes away from windows and tall shelves.
+2. **Wait until shaking stops (or the 1-minute drill bell finishes):** Check yourself and classmates for injuries and watch for electrical or gas hazards.
+3. **Evacuate via stairs only:** Never use elevators. Move calmly to designated open assembly areas away from buildings, trees, streetlights, and power lines (stay well clear of building entrances where debris falls).
 
-- **If inside the building:** Stay calm, mobilize your college response team, pull the nearest fire alarm, call the University Hotline, leave through marked fire exits without locking doors behind you, and help classmates with disabilities (PWDs) evacuate safely.
-- **If outside the building:** Do not pull the building's interior fire alarm; call the University Hotline immediately with your name and exact fire location, and help coordinate safe assembly points.
+### Fire evacuation
+
+- **If you are inside the building:** Stay calm, alert your college response team, pull the nearest fire alarm, notify campus security, exit through marked fire exits without locking doors behind you, and help classmates with disabilities (PWDs) evacuate safely.
+- **If you are outside the building:** Do not pull an interior alarm. Report your name and the exact fire location to security immediately and keep access roads clear for responders.
+
+Need a medical checkup or accident insurance claim after a campus injury? Read [BulSU Medical Services and Student Insurance Guide](/articles/bulsu-medical-and-health-services-guide).

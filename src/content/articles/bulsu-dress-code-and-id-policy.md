@@ -2,44 +2,63 @@
 title: "BulSU Dress Code, Grooming, and ID Policy"
 category: "policies"
 subcategory: "Campus Rules & Dress Code"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
 sources:
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+  - label: "BulSU Office of the Chancellors - Uniform Policy & Mandatory Wearing Advisories A.Y. 2026-2027 (Jun-Jul 2026)"
+    url: "https://www.facebook.com/CICTLSCofficialpage/posts/pfbid0diGFB7rNR8T76R7aJYkUFmEgH9j9yrDu3d6hdEDXppnHW881u5kGxc5f4n1BitvKl"
+  - label: "BulSU College of Engineering LSC - Uniform Guide A.Y. 2026-2027 (Jul 6, 2026)"
+    url: "https://www.facebook.com/BulSUCOELSC/posts/pfbid034EitRwTRUgYt6YX75XYmcpDmWPJSXHgagpFUAQWCAUEja8oHW1Amx4RVjB3M6JXnl"
   - label: "BulSU CBEA LSC - Dress Code Guide A.Y. 2026-2027 (Jun 8, 2026)"
     url: "https://www.facebook.com/BulSUCBEALSC/posts/pfbid0fsR9ZfrnosjXTN4Z4Go3SkYBpX3ihkT9nXbUTaFrMGu2es31zM2yJ1rvcE5ymbaMl"
   - label: "BulSU Meneses Campus LSC - Uniform Guide A.Y. 2026-2027 (May 4, 2026)"
     url: "https://www.facebook.com/bulsumc2627/posts/pfbid0sRQWqombyCRTyYCU2xQ1oy7ZWpHzQtUU7M6Qw6FGTwRLs86csyyc1qryj7BfGALMl"
+  - label: "BulSU Sarmiento Campus LSC - Uniform Guide A.Y. 2026-2027 (Jun 6, 2026)"
+    url: "https://www.facebook.com/SarmientoLSC/posts/pfbid0329cGuBTMv5uSLsSHs7i7UF7ycUnhCeQbZmJn97UcGHFQidKttgN4WQVwC5JQNpwDl"
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
 
-Campus security enforces entry and dress rules right at the university gates under Part I, Section D.IV of the Student Manual. Knowing the weekly schedule prevents awkward gate holds before morning classes or exams.
+Campus security enforces uniform and ID rules right at every BulSU gate. Knowing your weekly dress schedule and what guards accept when you forget your ID saves you from being turned away before morning classes or exams.
 
-## Weekly Uniform Schedule
+## Weekly uniform schedule
 
-Recent college and satellite-campus student council guides for **A.Y. 2026-2027** (such as CBEA and Meneses Campus) organize the week slightly differently from the 2016 manual, moving Fridays to organization shirts while keeping **Wednesday** (and **Saturday** in colleges like CBEA) as wash/civilian days:
+Across BulSU colleges and external campuses, the standard school week follows this schedule:
 
-| Day | Recent 2026 College/Campus Schedule | Notes |
+| Day | Prescribed attire | Notes |
 | --- | --- | --- |
-| **Mon, Tue, Thu** | Prescribed daily uniform | Paired with **black shoes** (2016 manual notes daily uniform Mon/Tue/Thu/Fri too unless org shirt applies). Some colleges require college pins (e.g., BulSU/CBEA pin). |
-| **Friday** | Recognized organization or college shirt | Recent 2026 guides schedule Friday as org/college shirt day (optional per 2016 manual, with daily uniform as fallback). |
-| **Wed, Sat, Sun** | Wash Day / Free Day attire | Decent, proper civilian clothing matching campus values. |
-| **PATHFIT / PE / NSTP** | Prescribed activity uniform | **PATHFIT** T-shirt, shorts, and rubber shoes (or PE/NSTP uniform) worn **only during those class hours**. |
-| **Laboratory work** | Prescribed lab outfit | Required for safety inside laboratory rooms. |
+| Monday, Tuesday, Thursday | Prescribed university uniform | Paired with black shoes, visible BulSU ID lanyard, and required BulSU or college pin |
+| Wednesday | Wash Day | Clean, decent civilian clothing |
+| Friday | Organization or college shirt | Recognized org/college shirt (prescribed daily uniform works as fallback) |
+| Saturday | Wash Day or Proper Civilian | Varies by college or campus (some list Wash Day; others specify smart casual / proper civilian) |
+| PATHFIT / PE / NSTP | Prescribed activity uniform | PATHFIT shirt, shorts, and rubber shoes worn only during those class hours |
+| Laboratory classes | Prescribed lab outfit | Required for safety inside laboratory rooms |
 
-Because small details like necktie, skirt/slacks, or pin requirements vary by college or external campus, check your own college Local Student Council (LSC) uniform post at the start of the semester. The 2016 Student Manual also specifies that cross-dressing is prohibited on campus except during approved social events such as **College Night** and the **Students' Ball**.
+**Opening-of-year grace period:** At the start of a new academic year, freshmen usually get an initial civilian-clothing grace period (about a month) while uniforms are being prepared, whereas 2nd-to-5th-year students shift to mandatory uniform wearing right after the opening week. Even during civilian days or grace periods, attire must remain clean and decent.
 
-## Hair Color, Hairstyle, and Jewelry Rules
+## Uniform variations by college and campus
 
-- **Hair color:** Limited strictly to **black, blond, and brown shades**. Cultural performers are exempted only during official competitions or as required by a show.
-- **Hairstyle:** Male students with long hair must keep it neatly fixed, and specific degree programs (such as hospitality, ROTC/criminology-related trades, or clinical courses) may enforce stricter haircut standards.
-- **Earrings and jewelry:** **Male students are prohibited from wearing earrings.** Female students are advised to avoid wearing excessive jewelry on campus for security reasons.
+Most Main Campus colleges use a white short-sleeved blouse or polo, black pants or skirt, black shoes, BulSU or college pin, and black necktie for women. However, exact uniform details vary by campus and program:
 
-## No ID, No Entry Gate Policy
+- **College pins and collars:** Colleges such as Engineering, CBEA, and CSER specify their own collar pins and tie styles.
+- **External campuses and specialized programs:** Sarmiento general programs and Bustos Teacher Education use blue slacks or skirts, while specialized tracks like Hospitality Management (white chef-style polo), Tourism Management, and Food Processing Technology follow program-specific uniforms and footwear rules.
 
-Wear your university ID visibly whenever you are on campus. Two temporary entry exceptions exist if you do not have your card:
+Always check your own college or campus Local Student Council (LSC) uniform guide before buying sets for a new semester.
 
-- **Left your ID at home:** Present your **Certificate of Registration (COR)** to the gate guard, who writes a remark, dates it, and signs over their printed name on the back of your COR.
-- **Lost your ID:** Report it to OSAS and the Registrar right away. Your notarized **Affidavit of Loss** works as temporary gate entry for **three (3) days only** while you pay for and claim a new card. Full steps are in [How to Replace a Lost Student ID](/articles/how-to-replace-a-lost-student-id).
+## Hair, jewelry, and grooming rules
 
-Security personnel will confiscate any tampered ID immediately and escort you straight to your College Dean.
+Under university grooming standards:
+
+- **Hair color:** Limited to black, blond, and brown shades. Cultural performers are exempted only during official competitions or stage performances that require it.
+- **Hairstyle:** Male students with long hair must keep it neatly fixed. Clinical, hospitality, criminology, and ROTC-related programs may enforce stricter haircut standards.
+- **Jewelry:** Male students are not allowed to wear earrings on campus. Female students are advised to avoid excessive jewelry for personal safety.
+- **Cross-dressing:** Not permitted during regular campus days, with exceptions only for approved social events such as College Night and the Students' Ball.
+
+## No ID, No Entry gate policy
+
+Wear your BulSU ID visibly whenever you enter or walk around campus. Only two temporary entry options work at the gate:
+
+- **Left your ID at home:** Present your current Certificate of Registration (COR) to the gate guard. The guard will write a remark, date it, and sign over their printed name on the back of your COR before letting you enter.
+- **Lost your ID:** Report it to the Office of Student Affairs and Services (OSAS) and the Office of the University Registrar immediately. A notarized Affidavit of Loss works as temporary gate entry for **only 3 days** while you process a replacement card. Follow the full steps in [How to Replace a Lost Student ID](/articles/how-to-replace-a-lost-student-id).
+
+Never lend, alter, or swap photos on a BulSU ID. Security guards confiscate tampered IDs on the spot and escort you straight to your College Dean for disciplinary action.

@@ -2,34 +2,48 @@
 title: "How to Replace a Lost Student ID"
 category: "documents"
 subcategory: "ID & Credentials"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: false
-source: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-sourceUrl: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
+sources:
+  - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Office of the University Registrar"
+    url: "https://www.bulsu.edu.ph/"
+  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
+    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
 
-BulSU enforces a strict **No ID, No Entry** policy across campus gates. If your university ID goes missing, you need to move quickly to keep getting through the gate without triggering a security violation.
+BulSU enforces a strict **No ID, No Entry** policy at every campus gate. If you lose or damage your university ID, apply for a duplicate right away at the Office of the University Registrar. A duplicate ID costs **PHP 150** and takes about **2 working days** to print and release.
 
-## Step-by-Step: Getting a Replacement ID
+## What to prepare
 
-1. **Report the loss right away** to both the Office of Student Affairs and Services (OSAS) and the Office of the Registrar.
-2. **Get a notarized Affidavit of Loss** from a notary public. You must present this document before applying for a replacement card.
-3. **Pay the ID replacement fee** at the Cashier's Office.
-4. **Return to the Registrar** with your Affidavit of Loss and official receipt so they can authorize the release of your new ID card.
+You must be a currently enrolled student to request a duplicate ID. Gather these requirements before lining up at the Registrar:
 
-## How to Enter Campus While Waiting
+- [x] One original valid ID (National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or another accepted ID)
+- [x] Original notarized Affidavit of Loss from a notary public
+- [x] Official Receipt for PHP 150 from the Cashier's Office
+- [x] If someone else is filing or claiming for you: a signed authorization letter or Special Power of Attorney, plus one photocopy of your ID and one photocopy of your representative's ID
 
-If you cannot apply for the replacement immediately, you can still enter campus temporarily using one of two manual-approved options:
+## Step-by-step replacement process
 
-- **Affidavit of Loss (up to 3 days):** Security allows your notarized Affidavit of Loss as temporary gate entry for **only three (3) days**, so apply for your new ID before day three runs out.
-- **Certificate of Registration (forgot ID at home):** If you left your ID at home by mistake, show your Certificate of Registration (COR) at the gate. The guard will write a remark, date, and sign over their printed name on the back of your COR before letting you in.
+1. **Report the loss right away.** Notify both the Office of Student Affairs and Services (OSAS) and the Office of the University Registrar so your lost ID is logged.
+2. **Get a notarized Affidavit of Loss.** Have a notary public prepare and notarize an Affidavit of Loss stating how and when your student ID went missing.
+3. **Verify your enrollment at the Registrar.** Present your valid ID at the Registrar's window so staff can verify your active enrollment in the student portal and issue your payment slip.
+4. **Pay PHP 150 at the Cashier's Office.** Present the payment slip at the Cashier and keep the Official Receipt.
+5. **Submit your documents and receive a claim stub.** Hand your Affidavit of Loss, Official Receipt, and required IDs to the designated Registrar window. Staff will verify your record and print the duplicate card.
+6. **Claim your duplicate ID.** Return on the scheduled release date (about 2 working days) with your claim stub and valid ID.
 
-## What If You Find Your Lost ID Later?
+## How to enter campus while waiting
 
-If your old ID turns up after you reported it missing, visit OSAS so they can cancel the recorded loss notice in your file.
+You have two temporary options at the campus gate, depending on whether your ID is lost or simply left at home:
 
-## Warning Against ID Tampering
+- **Lost ID (notarized Affidavit of Loss):** Security accepts your notarized Affidavit of Loss as a temporary gate pass for **only 3 days**. File your duplicate ID request immediately so you are not locked out after day three.
+- **Forgot your ID at home (Certificate of Registration):** Present your current Certificate of Registration (COR) to the gate guard. The guard will write a remark, date it, and sign over their printed name on the back of your COR before letting you in.
 
-Never alter, swap photos on, or lend/tamper with a BulSU ID. Tampering with an ID is treated as a grave violation. If security catches a tampered ID at the gate, the guard will confiscate it on the spot and escort you straight to your College Dean for disciplinary action.
+## If your old ID turns up later
 
-For everything else checked at campus gates, check [BulSU Dress Code, Grooming, and ID Policy](/articles/bulsu-dress-code-and-id-policy).
+If you find your original ID after reporting it missing, visit OSAS to cancel the loss report on your file.
+
+## Warning against ID tampering
+
+Never alter details on a student ID, swap photos, or lend your card to someone else. BulSU treats ID tampering as a serious offense. If security catches a tampered ID at the gate, the guard will confiscate it on the spot and escort you directly to your College Dean for disciplinary action.
+
+For full rules on wearing your ID and campus attire, read [BulSU Dress Code, Grooming, and ID Policy](/articles/bulsu-dress-code-and-id-policy).

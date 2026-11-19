@@ -2,72 +2,118 @@
 title: "Complete Guide to Scholarships at BulSU"
 category: "scholarships"
 subcategory: "Scholarships & Grants"
-updatedDate: 2026-11-18
+updatedDate: 2026-11-19
 featured: true
 sources:
+  - label: "BulSU OSFAS - Relocation of Scholarships Office to Natividad Hall (Sep 21, 2026)"
+    url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid02sQh8mrdJU7QYSSYaWTguh65R8uzGdHZjSeUKWXb81PCBjvTpyR6zuGMAJsf2BAZil"
+  - label: "BulSU OSFAS - Tulong Dunong Program (TDP) Calls & Validation Advisories (Aug-Nov 2026)"
+    url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid02fzqp8EHJWFEnpANu8XTV31DxsJ46oLPbw2ktGzNvSGJsM9QmHV2smTAGZz6LQ3K6l"
+  - label: "BulSU OSFAS - Tertiary Education Subsidy (TES) Validation & Landbank Advisories (2026)"
+    url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid03fxkXaqMq6aTdGPa3myRvFjD6J9bjw1eTbUaMFwWqy3AyYeyZf9Q8C4T9iZ9SwBsl"
+  - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Gender and Development Center (GAD MFAP)"
+    url: "https://www.bulsu.edu.ph/"
   - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
-  - label: "BulSU OSFAS - Tertiary Education Subsidy (TES) Call A.Y. 2026-2027 (Jul 27, 2026)"
-    url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid024vuQdofXvNYd4fL4MWiR32PJ9m8vatXbFYXs7yzHcg4SekV7wK78ve2qAZKUSreil"
-  - label: "BulSU OSFAS - Tulong Dunong Program (TDP) Call & Annex 2 Checklist (Aug 3, 2026)"
-    url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid02fzqp8EHJWFEnpANu8XTV31DxsJ46oLPbw2ktGzNvSGJsM9QmHV2smTAGZz6LQ3K6l"
 ---
 
-The **BulSU Office of the Student Financial Assistance and Scholarships (OSFAS)** coordinates tuition discounts, government grants, and private benefactor scholarships for BulSU undergraduates. Check current OSFAS posts for exact office window locations, as recent advisories have moved between Gate 2 / Natividad Hall Ground Floor and beside the College of Law. Whether you qualify through grades, family background, athletics, performing arts, or financial need, knowing the exact criteria and 100-point screening test helps you apply cleanly.
+The **Office of the Student Financial Assistance and Scholarships (OSFAS)** manages government grants, private foundation scholarships, and university tuition discounts at BulSU.
 
-## Institutional Tuition Discounts
+**Where to find OSFAS:** The office relocated to the **Ground Floor of Natividad Hall, beside the QAO Office, near Gate 2**, open Monday to Friday from 8:00 AM to 5:00 PM. (Ignore older posts pointing beside the College of Law.) For inquiries, email `scholarship@bulsu.edu.ph`, call `(044) 919 7800 local 1086`, or monitor the official [BulSU OSFAS Facebook page](https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships).
 
-BulSU grants one-semester full (100%) or partial (50%) tuition discounts across six tracks:
+## Government grants (TES and TDP)
 
-- **High School Valedictorians (100%) & Salutatorians (50%):** Applies on your first semester if you graduated from a recognized public or private high school with a graduating class of at least 100 students certified by your principal.
-- **Academic Scholars:**
-  - **Full (100%):** GPA of **1.50 or better**, no grade lower than `2.0` across at least 15 academic units in the preceding two semesters (also granted to the sitting Student Government President).
-  - **Partial (50%):** GPA of **1.75 or better**, no grade lower than `2.0` across at least 15 units in the preceding two semesters (also granted to the sitting SG Vice President if not already on a full scholarship).
-- **BulSU Employee Dependents (100%):** No failing grade in any enrolled subject; submit your previous COG, parent's employee ID, and birth certificate.
-- **Cultural Talents (50% - 100%):** Members qualified for Hyper-Dynamics, Band, Lahing Kayumanggi, Saring Himig, or Euphonistas on adviser recommendation.
-- **Varsity Athletes (50% - 100%):** Recommended by coaches and Sports Development based on SCUAA/UCLAA competition participation and year-round training.
+Most national student subsidies at BulSU run through UniFAST and CHED and are announced on short notice on the OSFAS page.
 
-## Government & Non-Institutional Scholarships
+### Tertiary Education Subsidy (TES)
 
-OSFA coordinates multiple public and private aid programs (exact amounts below are cited from the BOR 2016 Student Manual):
+TES appears through published grantee batch lists and campus validations rather than open walk-in application calls, prioritizing students under the updated Listahanan. If your name appears on an OSFAS TES batch list, watch for two strict deadlines:
 
-- **UniFAST Tertiary Education Subsidy (TES, Jul 2026 call):** Open to officially enrolled BulSU students in their **first undergraduate degree** for the academic year who are **not** existing TES or TDP grantees, CHED Merit Scholars, or recipients of any other government-funded scholarship or grant. Submission windows are short (for example, a 24-hour July 28 to 29, 2026 cutoff) with strict instruction compliance.
-- **Tulong Dunong Program (TDP under Sen. JV Ejercito, Aug 2026 call):** Applies to officially enrolled first-undergraduate-degree students on the **Main Campus only** (second-coursers and existing TES/TDP/CHED Merit/government grantees are ineligible). The August 2026 call required scanning four documents into a **single PDF file** named `BULSU-LASTNAME, FIRSTNAME MIDDLENAME` (for example, `BULSU-DELA CRUZ, JUAN REYES`): (1) signed Student's Application Form (`Annex 2`), (2) signed Certified True Copy of your current Certificate of Registration (COR), (3) signed Barangay Certificate of Indigency, and (4) School ID or any valid ID.
-- **Barangay Scholarship (RA 7160):** **100% tuition discount** for children of elective Barangay officials (excludes Barangay Tanod) with DILG tenure certification and latest COG.
-- **CHED Programs:** Safe Grant (P7,500/sem), Full Merit (P15,000/sem), Partial Merit (P7,500/sem), Grant-in-Aid walk-in (P6,000/sem via ATM), and OTOS (P15,000).
-- **DOST Scholarship:** P9,000 per semester plus book allowances.
-- **ESGP-PA (4Ps Beneficiaries):** Covers full tuition/fees (P10,000/sem allotment), P2,500/sem book allowance, and P3,500 monthly stipend for 10 months.
-- **GSIS, OWWA, PVAO, and AFP:** Full school fees for eligible government employee families, OFW dependents (earning USD 400 or less in OWWA's database), veterans' children, and AFP dependents.
-- **Congressional, Party-List & LGU Assistance:** Variable funding via GAA allocations or direct local executive applications (requires no failing grade unless sponsor sets specific terms).
-- **Private Benefactor Scholarships:** Full or partial tuition and miscellaneous fees for financially disadvantaged students with a **GPA of at least 2.0**, at least 15 academic units, and **no grade of `3.0`** in the previous semester (unless a donor sets custom rules).
+- **Landbank Piso Plus Account:** Listed grantees must open a Landbank Piso Plus account before the cutoff announced by OSFAS so grants can be disbursed.
+- **Semester validation:** Submit your ID, current Certificate of Registration (COR), PWD ID if applicable, and virtual or physical Landbank card screenshots during the 2-to-3-day validation window.
 
-## How OSFA Screens Applicants (100-Point Exam & Interview)
+### Tulong Dunong Program (TDP)
 
-For university-administered grants and private benefactors, prepare these initial documents:
+TDP calls open separately for Main Campus and External Campuses, often with **24-hour online submission windows** and strict slot limits. To qualify:
 
-- Admission confirmation and submitted admission files
-- Latest Certificate of Grades (COG) or Form 138 (target grades around **80% or higher** for endorsement)
-- **Certificate of Indigency** from your Barangay
-- Proof of billing (electric bill) and Certificate of Good Moral Character
+- Officially enrolled in your **first undergraduate degree** at BulSU (second-coursers are not eligible)
+- Not an existing TES or TDP grantee
+- Not a CHED Merit Scholar or recipient of any other government-funded scholarship
 
-OSFA administers two assessments followed by a validation interview:
+Prepare these documents ahead of time so you can upload within the 24-hour window:
 
-1. **Essay test (20 points max)** covering the essence of a scholarship.
-2. **Objective test & interview rubric (80 points across four 20-point areas):**
-   - **Personality (20 pts):** Confidence and poise in answering questions.
-   - **Values (20 pts):** Humility, sincerity, truthfulness, and nationalism.
-   - **Reasoning (20 pts):** Thoughtful answers on how you plan to use the scholarship.
-   - **Economic Condition (20 pts):** Assessed need via electric bill, siblings, home ownership, and parent occupation.
+- [x] Signed Student Application Form (Annex 2), with 2x2 photo when required by the call
+- [x] Signed Certified True Copy of your current Certificate of Registration (COR)
+- [x] Signed Barangay Certificate of Indigency
+- [x] School ID or valid government ID (check if the specific call also asks for your latest Certificate of Grades)
+- [x] All pages merged into a **single PDF file** following the exact upload instructions in the OSFAS post
 
-Once a donor approves your endorsement and signs a MOA, visit the OSFA window to stamp your scholarship details onto your Certificate of Registration (COR) before going to the Accounting Office.
+### Landbank validation rules for grantees
 
-## Keeping or Losing Your Scholarship
+When OSFAS announces Landbank validation for TES or TDP batches, follow these format rules closely or your submission will be rejected:
 
-To renew each semester, visit OSFA for a **renewal form** once your latest grades confirm eligibility:
+- [x] Printed front-and-back copy of your student ID or valid ID with **three original wet signatures** and your active contact number (e-signatures are not accepted)
+- [x] Clear screenshot of your virtual or physical Landbank Visa Debit card showing all card numbers
+- [x] Screenshot of your Landbank banking app clearly showing your account number
 
-- **Zero failures rule:** Government and congressional scholarships require no grade of `5.0` or failed subjects.
-- **ESGP-PA limit:** Failing **more than 2 subjects** despite tutorials and interventions stops your scholarship and triggers a DSWD replacement report.
-- **Cultural Groups:** Full cultural scholars get a warning at **1 failing mark** (must pass next semester) and lose the grant at **3 failing marks**.
-- **Varsity Athletes:** Full scholarships require failing marks in **no more than 10%** of SCUAA-enrolled units.
+Check the latest OSFAS post and office instructions before submitting, since recent validation rounds have shifted between Google Form upload and hard-copy drop-off.
 
-Want to earn wages on campus alongside your studies? Read [How to Apply for Student Assistantships](/articles/how-to-apply-for-student-assistantships).
+## GAD Modified Financial Assistance (GAD MFAP)
+
+BulSU's **Gender and Development Center** runs a separate financial assistance program for qualified students from marginalized groups under the Magna Carta of Women (indigenous peoples, solo parents, differently-abled students, and abused, abandoned, or orphaned students). Applications are free and processed in about **6 to 7 working days** through your college or campus Associate Dean and GAD Coordinator.
+
+Prepare these for initial application (renewals only need the Renewal Form, Interview Form, signed ID photocopy, COR, and COG):
+
+- [x] Application Form and Interview Form (get from your college or campus Associate Dean / GAD Coordinator)
+- [x] Valid ID photocopy with three specimen signatures
+- [x] Photocopy of your current COR and latest COG
+- [x] Recent original Meralco bill and recent original water bill
+- [x] PWD ID or Barangay/MSWDO Certificate of Indigency, if applicable
+
+After submitting to your Associate Dean, complete a face-to-face interview with your GAD Coordinator and wait for qualification notice through your college.
+
+## Private and foundation scholarships through OSFAS
+
+Private partners open scholarship slots through OSFAS throughout the academic year. Like TDP, almost every partner enforces **24-to-48-hour online submission windows**, requires **all documents merged into one single PDF**, rejects late or incomplete entries, and requires an active email and phone number.
+
+Recent active partners posted by OSFAS include:
+
+| Scholarship program | Primary eligibility focus |
+| --- | --- |
+| Juana Aguilar Galang Scholarship | 1st-year priority (2nd-3rd year considered), preference for CICT, CS, COE, and CPTED and Hagonoy residents; mandatory in-house interview |
+| Megaworld Foundation | 2nd-4th year in BS Math (Business Applications), BSBA, or BS Industrial Engineering; family gross income at most PHP 400,000/year; GWA at least 2.25, no grade below 2.50 |
+| Hagonoy and Friends Scholarship Foundation | 1st-year BulSU students residing in Hagonoy, Bulacan |
+| Bounty Cares Foundation | 2nd-year Pulilan residents in BS Industrial Engineering or BS Mechanical Engineering; passed all subjects; endorsed by two former professors |
+| Soroptimist International of Makati (LEAP) | Female 3rd-4th year working students; GWA at least 2.50; family gross income at most PHP 80,000/year |
+| CMEAP Scholarship | 4th-year Civil Engineering students born and residing in Bulacan |
+| Luis Co Chi Kiat Foundation (Puregold) | Financially deserving students across programs; two-stage initial and final document screening |
+
+## Institutional tuition discounts and other national grants
+
+Beyond OSFAS partner calls, BulSU recognizes several baseline university discounts and external government grants. Verify current stipend rates directly with OSFAS or the sponsoring agency before applying, as allowances update periodically:
+
+- **High school valedictorians (100%) and salutatorians (50%):** First-semester tuition discount if you graduated from a recognized high school with at least 100 graduates certified by your principal.
+- **Academic scholars:** Full (100%) tuition discount with a GPA of **1.50 or better**, or partial (50%) with **1.75 or better**, with no grade lower than `2.00` across at least 15 academic units over the preceding two semesters. Sitting Student Government Presidents and Vice Presidents also qualify for full and partial grants respectively.
+- **BulSU employee dependents (100%):** No failing grade in any enrolled subject; submit your latest COG, parent's employee ID, and birth certificate.
+- **Cultural talents and varsity athletes (50% to 100%):** Recommended by advisers, coaches, and Sports Development based on active group or SCUAA/UCLAA competition service.
+- **External national and local grants:** Barangay Scholarship (100% tuition discount for children of elective barangay officials, excluding tanods), DOST, CHED Merit and Grant-in-Aid, ESGP-PA (for 4Ps beneficiaries), GSIS, OWWA, PVAO, AFP, and LGU or congressional assistance.
+
+## How OSFAS screens university-administered applicants
+
+For university-administered grants and general private benefactors (baseline GPA of at least `2.00`, at least 15 academic units, and no grade of `3.00` unless the donor sets custom terms), OSFAS typically collects your admission files, COG or Form 138, Barangay Indigency, electric bill, and Certificate of Good Moral Character, then scores applicants on a **100-point rubric**:
+
+1. **Essay test (20 points):** Written reflection on what the scholarship means to you.
+2. **Objective test and interview (80 points):** Scored across four 20-point criteria: Personality (poise and confidence), Values (humility, sincerity, truthfulness, nationalism), Reasoning (how you will use the support), and Economic Condition (assessed from utility bills, family size, housing, and parent work).
+
+Once approved and a donor agreement is signed, have OSFAS stamp your scholarship details on your COR before heading to the Accounting Office.
+
+## Keeping or losing your scholarship
+
+Visit OSFAS for a **renewal form** every semester as soon as your grades are released. Failing to meet grade rules can suspend or terminate your grant:
+
+- **Government and congressional grants:** Zero failing grades (`5.00`).
+- **ESGP-PA:** Failing more than two subjects despite academic intervention terminates the grant.
+- **Cultural groups:** One failing mark triggers a warning (must be cleared next semester); three failing marks end the scholarship.
+- **Varsity athletes:** Full scholars cannot fail more than 10% of their enrolled units.
+
+Looking for paid campus work instead of (or alongside) a grant? Read [How to Apply for Student Assistantships](/articles/how-to-apply-for-student-assistantships).
