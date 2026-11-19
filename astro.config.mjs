@@ -10,7 +10,7 @@ const site =
     ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
     : process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : 'https://geary.example.com');
+      : 'https://geary.bulsu.tools');
 
 // https://astro.build/config
 export default defineConfig({

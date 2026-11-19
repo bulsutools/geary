@@ -180,7 +180,7 @@ flowchart TD
 ## 5. Integrations & Module Contracts
 
 ### 5.1 Framework Integrations (`astro.config.mjs`)
-- **`site` configuration:** Configured from `process.env.PUBLIC_SITE_URL`, falling back to Vercel production/deployment URLs (`VERCEL_PROJECT_PRODUCTION_URL` / `VERCEL_URL`) and locally `https://geary.example.com`, so canonical URLs, Open Graph URLs, `robots.txt`, and sitemaps resolve consistently across environments.
+- **`site` configuration:** Configured from `process.env.PUBLIC_SITE_URL`, falling back to Vercel production/deployment URLs (`VERCEL_PROJECT_PRODUCTION_URL` / `VERCEL_URL`) and default domain `https://geary.bulsu.tools`, so canonical URLs, Open Graph URLs, `robots.txt`, and sitemaps resolve consistently across environments.
 - **`@astrojs/react`:** Enables selective client hydration of `SearchBar.tsx` inside `.astro` files.
 - **`@astrojs/sitemap`:** Generates `dist/sitemap-index.xml` at build time, excluding `/404` and non-HTML utility routes.
 - **Tailwind CSS (`@tailwindcss/vite`):** Compiles utility classes and `src/styles/global.css` tokens through Astro's Vite plugin pipeline.

@@ -11,7 +11,7 @@ bun install
 bun run dev
 ```
 
-Set `PUBLIC_SITE_URL` in your build environment before deploying so canonical links, Open Graph URLs, `robots.txt`, and `sitemap-index.xml` resolve to your production domain (defaults to `https://geary.example.com`).
+Set `PUBLIC_SITE_URL` in your build environment before deploying so canonical links, Open Graph URLs, `robots.txt`, and `sitemap-index.xml` resolve to your production domain (defaults to `https://geary.bulsu.tools`).
 
 ## Commands
 

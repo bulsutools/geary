@@ -37,6 +37,8 @@ jobs:
 
       - name: Build static site
         run: bun run build
+        env:
+          PUBLIC_SITE_URL: https://geary.bulsu.tools
 
       - name: Unit tests
         run: bun test tests/unit
@@ -62,6 +64,8 @@ jobs:
 
       - name: Build static site
         run: bun run build
+        env:
+          PUBLIC_SITE_URL: https://geary.bulsu.tools
 
       - name: Run Playwright E2E tests
         run: bun run test:e2e
