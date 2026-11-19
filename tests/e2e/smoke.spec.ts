@@ -436,7 +436,7 @@ Test body.
     await expect(page).toHaveTitle('Geary');
     await expect(page.locator('meta[name="description"]')).toHaveAttribute(
       'content',
-      'Student-managed guides for BulSUans, by BulSUans.',
+      'Student-managed information portal for BulSUans, by BulSUans.',
     );
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /^https?:\/\/.+\/$/);
     await expect(page.locator('meta[property="og:type"]')).toHaveAttribute('content', 'website');
