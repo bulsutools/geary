@@ -26,7 +26,7 @@ Set `PUBLIC_SITE_URL` in your build environment before deploying so canonical li
 
 ## Adding or editing student guides
 
-1. Review inclusion rules, style guidelines, and citation rules in [EDITORIAL_CRITERIA.md](./EDITORIAL_CRITERIA.md).
+1. Review writing guidelines, formatting standards, and source rules in [WRITING_FRAMEWORK.md](./WRITING_FRAMEWORK.md).
 2. Add or edit Markdown files inside `src/content/articles/`.
 3. Include valid frontmatter matching `src/content.config.ts`:
    - `title`: Guide headline
@@ -48,7 +48,7 @@ Set `PUBLIC_SITE_URL` in your build environment before deploying so canonical li
 - [TESTING.md](./TESTING.md) - Verification layers and test cases
 - [REQUIREMENTS.md](./REQUIREMENTS.md) - Master Requirements Traceability Matrix
 - [ROADMAP.md](./ROADMAP.md) - Milestones and backlog
-- [EDITORIAL_CRITERIA.md](./EDITORIAL_CRITERIA.md) - Article selection and prose standard
+- [WRITING_FRAMEWORK.md](./WRITING_FRAMEWORK.md) - Editorial, tone, and guide writing framework
 
 ## Primary source attribution
 
