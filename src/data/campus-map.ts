@@ -122,18 +122,8 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       "x": 631.9,
       "y": 346.1
     },
-    "summary": "Historic three-storey academic building near Bulacan Heroes Park housing Graduate School, CAL, and CS.",
+    "summary": "Historic three-storey academic building near Bulacan Heroes Park housing CAL, CS, and CAFA.",
     "locations": [
-      {
-        "id": "grad-school",
-        "name": "Graduate School",
-        "category": "academic",
-        "keywords": [
-          "Masters",
-          "Doctoral",
-          "GSAT"
-        ]
-      },
       {
         "id": "cal",
         "name": "College of Arts & Letters (CAL)",
@@ -154,6 +144,45 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
           "Science",
           "Federizo Hall"
         ]
+      },
+      {
+        "id": "cafa",
+        "name": "College of Architecture and Fine Arts (CAFA)",
+        "category": "academic",
+        "keywords": [
+          "CAFA",
+          "Architecture",
+          "Fine Arts",
+          "Federizo Hall"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "cser-building",
+    "name": "CSER Building",
+    "shortLabel": "CSER Building",
+    "floors": null,
+    "svgPath": "M625.7,430.4 L674.7,386.3 L694.8,408.6 L645.7,452.7 Z",
+    "center": {
+      "x": 660.2,
+      "y": 419.5
+    },
+    "summary": "Academic building near Federizo Hall housing the College of Sports, Exercise and Recreation (CSER).",
+    "locations": [
+      {
+        "id": "cser",
+        "name": "College of Sports, Exercise and Recreation (CSER)",
+        "category": "academic",
+        "keywords": [
+          "CSER",
+          "Sports",
+          "Exercise",
+          "Recreation",
+          "PE",
+          "PATHFIT",
+          "CSER Building"
+        ]
       }
     ]
   },
@@ -167,7 +196,7 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       "x": 156.4,
       "y": 501.0
     },
-    "summary": "Academic and administrative building on the MacArthur Highway (west) side housing the College of Industrial Technology, Office of the Chief Administrative Officer for Administration, and HRMO.",
+    "summary": "Academic building on the MacArthur Highway (west) side housing the College of Industrial Technology.",
     "locations": [
       {
         "id": "cit",
@@ -181,71 +210,32 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
           "NC II",
           "CIT"
         ]
-      },
-      {
-        "id": "cao-admin",
-        "name": "Office of the Chief Administrative Officer for Administration",
-        "floor": "4th Floor",
-        "category": "administration",
-        "keywords": [
-          "CAO",
-          "Chief Administrative Officer",
-          "Administration"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1031"
-      },
-      {
-        "id": "hrmo",
-        "name": "Human Resource Management Office (HRMO)",
-        "floor": "4th Floor",
-        "category": "administration",
-        "keywords": [
-          "HR",
-          "HRMO",
-          "HRMDO",
-          "Admin",
-          "Personnel"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1033"
       }
     ]
   },
   {
     "id": "college-of-law",
-    "name": "Marcelo H. del Pilar (College of Law)",
-    "shortLabel": "College of Law",
+    "name": "Marcelo H. del Pilar Hall",
+    "shortLabel": "Marcelo H. del Pilar Hall",
     "floors": 2,
     "svgPath": "M293.9,499.7 L320.6,475.6 L403.6,567.8 L376.8,591.9 L346.1,557.7 L342.3,561.0 L327.6,544.7 L331.3,541.3 Z",
     "center": {
       "x": 348.7,
       "y": 533.8
     },
-    "summary": "Marcelo H. del Pilar College of Law building; the University Admissions Office (UAO) sits right beside this building.",
+    "summary": "Academic building housing the College of Law (COL).",
     "locations": [
       {
-        "id": "law",
-        "name": "College of Law (Marcelo H. del Pilar)",
+        "id": "col",
+        "name": "College of Law (COL)",
         "category": "academic",
         "keywords": [
+          "COL",
+          "College of Law",
           "Law",
-          "Juris Doctor"
+          "Juris Doctor",
+          "Marcelo H. del Pilar Hall"
         ]
-      },
-      {
-        "id": "uao",
-        "name": "University Admissions Office (UAO)",
-        "floor": "Adjacent Annex (Beside College of Law)",
-        "category": "student-services",
-        "keywords": [
-          "Admission",
-          "ATBulSU",
-          "BSUAT",
-          "Shifter",
-          "Transferee",
-          "Orientation"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1087 | admissions@bulsu.edu.ph",
-        "articleSlug": "how-to-apply-to-bulsu"
       }
     ]
   },
@@ -336,56 +326,8 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       "x": 392.4,
       "y": 349.1
     },
-    "summary": "Seven-storey University Library hub offering print collections, OPAC terminals, online databases, and research help.",
-    "locations": [
-      {
-        "id": "main-library",
-        "name": "Office of the University Library",
-        "category": "library",
-        "keywords": [
-          "Library",
-          "BulSU E-Library",
-          "Main Library",
-          "Circulation",
-          "Reserve",
-          "Fiction",
-          "Theses",
-          "OPAC",
-          "Periodicals",
-          "Study"
-        ],
-        "articleSlug": "bulsu-library-guide"
-      },
-      {
-        "id": "learning-commons",
-        "name": "Learning Commons",
-        "floor": "Ground Floor",
-        "category": "library",
-        "keywords": [
-          "Library",
-          "Study",
-          "Reading Area",
-          "Discussion",
-          "E-Library"
-        ],
-        "articleSlug": "bulsu-library-guide"
-      },
-      {
-        "id": "smart-device-zone",
-        "name": "Smart Device Zone",
-        "floor": "6th Floor",
-        "category": "library",
-        "keywords": [
-          "Library",
-          "Computer",
-          "Laptop",
-          "Research",
-          "Database",
-          "E-Library"
-        ],
-        "articleSlug": "bulsu-library-guide"
-      }
-    ]
+    "summary": "Seven-storey University Library building.",
+    "locations": []
   },
   {
     "id": "flores-hall",
@@ -397,7 +339,7 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       "x": 726.7,
       "y": 496.2
     },
-    "summary": "Main administration building facing Bulacan Heroes Park housing Registrar, Cashier, Accounting, Budget, Health Services, Records Management, and OSAS.",
+    "summary": "Main administration building facing Bulacan Heroes Park housing the Office of the University Registrar and Clinic.",
     "locations": [
       {
         "id": "registrar",
@@ -405,116 +347,34 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
         "floor": "Ground Floor",
         "category": "administration",
         "keywords": [
+          "Registrar",
           "TOR",
           "Transcript",
           "COR",
           "COG",
           "Clearance",
           "LOA",
-          "Readmission",
-          "Dropping",
           "Graduation",
           "Diploma",
           "Transfer Credentials"
         ],
-        "notes": "VoIP (044) 919-7800 local 1001",
         "articleSlug": "how-to-request-transcript-and-certificates"
       },
       {
-        "id": "cashier",
-        "name": "Cashier's Office",
-        "floor": "Ground Floor",
-        "category": "administration",
-        "keywords": [
-          "Payment",
-          "Receipt",
-          "ID Replacement Fee",
-          "BSUAT Fee",
-          "Tuition"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1115 | cashier@bulsu.edu.ph",
-        "articleSlug": "how-to-replace-a-lost-student-id"
-      },
-      {
-        "id": "accounting",
-        "name": "Accounting Office",
-        "floor": "Ground Floor",
-        "category": "administration",
-        "keywords": [
-          "Accounting",
-          "Assessment",
-          "Billing",
-          "Clearance",
-          "Refund"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1006"
-      },
-      {
-        "id": "budget",
-        "name": "Budget Office",
-        "floor": "Ground Floor",
-        "category": "administration",
-        "keywords": [
-          "Budget",
-          "Finance",
-          "Allocation"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1010"
-      },
-      {
         "id": "clinic",
-        "name": "University Health Services",
+        "name": "Clinic",
         "floor": "Ground Floor",
         "category": "student-services",
         "keywords": [
           "Clinic",
+          "University Health Services",
           "Medical",
           "Dental",
           "Health",
           "Medical Certificate",
           "First Aid"
         ],
-        "notes": "VoIP (044) 919-7800 local 1013",
         "articleSlug": "bulsu-medical-and-health-services-guide"
-      },
-      {
-        "id": "records-management",
-        "name": "Records Management Office",
-        "floor": "2nd Floor",
-        "category": "administration",
-        "keywords": [
-          "Records",
-          "Archive",
-          "Certification",
-          "Documents"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1032"
-      },
-      {
-        "id": "osas-main",
-        "name": "Office of the Student Affairs and Services (OSAS) – Main Campus",
-        "floor": "Office No. 5, 2nd Floor",
-        "category": "student-services",
-        "keywords": [
-          "OSAS",
-          "Student Affairs",
-          "Student Services",
-          "Clearance",
-          "Main Campus"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1024"
-      },
-      {
-        "id": "osas-external",
-        "name": "Office of the Student Affairs and Services (OSAS) – External Campus",
-        "floor": "2nd Floor",
-        "category": "student-services",
-        "keywords": [
-          "OSAS",
-          "Student Affairs",
-          "External Campus"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1025"
       }
     ]
   },
@@ -620,7 +480,34 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       "y": 643.4
     },
     "summary": "CON Canteen near the central walkway.",
-    "locations": []
+    "locations": [
+      {
+        "id": "tindahan-ni-ka-ekek",
+        "name": "Tindahan ni Ka Ekek",
+        "category": "food-housing",
+        "keywords": [
+          "Tindahan ni Ka Ekek",
+          "Ka Ekek",
+          "Tindahan",
+          "Store",
+          "CON Canteen",
+          "Food",
+          "Snacks"
+        ]
+      },
+      {
+        "id": "campus-chicken",
+        "name": "Campus Chicken",
+        "category": "food-housing",
+        "keywords": [
+          "Campus Chicken",
+          "Chicken",
+          "CON Canteen",
+          "Food",
+          "Meals"
+        ]
+      }
+    ]
   },
   {
     "id": "bsu-canteen",
@@ -634,6 +521,31 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
     },
     "summary": "Main University Canteen building.",
     "locations": []
+  },
+  {
+    "id": "chocolate-building",
+    "name": "Chocolate Building",
+    "shortLabel": "Chocolate Building",
+    "floors": null,
+    "svgPath": "M808.8,348.3 L825.1,333.5 L906.5,423.8 L890.1,438.5 Z",
+    "center": {
+      "x": 857.6,
+      "y": 386.0
+    },
+    "summary": "Academic building across from the Main Canteen near Gate 3 housing the College of Criminal Justice Education (CCJE).",
+    "locations": [
+      {
+        "id": "ccje",
+        "name": "College of Criminal Justice Education (CCJE)",
+        "category": "academic",
+        "keywords": [
+          "CCJE",
+          "Criminology",
+          "Criminal Justice",
+          "Chocolate Building"
+        ]
+      }
+    ]
   },
   {
     "id": "srlc-building",
@@ -712,40 +624,20 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       "x": 479.3,
       "y": 596.5
     },
-    "summary": "College of Education Building near Gate 2 housing Student Welfare and OSOA.",
+    "summary": "Three-storey academic building near Gate 2 housing the College of Professional Teacher Education (CPTEd).",
     "locations": [
       {
-        "id": "osw",
-        "name": "Office of the Student Welfare and Development (OSW) – Main Campus",
-        "floor": "Ground Floor",
-        "category": "student-services",
+        "id": "cpted",
+        "name": "College of Professional Teacher Education (CPTEd)",
+        "category": "academic",
         "keywords": [
-          "Student Insurance",
-          "Grievance",
-          "Complaint",
-          "DSW",
-          "Accident Claim",
-          "OSW"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1077",
-        "articleSlug": "how-to-file-a-student-complaint"
-      },
-      {
-        "id": "osoa",
-        "name": "Office of the Student Organization and Activities (OSOA)",
-        "floor": "Ground Floor",
-        "category": "student-services",
-        "keywords": [
-          "OSOA",
-          "Student Orgs",
-          "Student Organizations",
-          "Balangayan",
-          "Posting Approval",
-          "Event Permit",
-          "Club"
-        ],
-        "notes": "VoIP (044) 919-7800 local 1077",
-        "articleSlug": "bulsu-student-organizations-guide"
+          "CPTEd",
+          "CPTE",
+          "COED",
+          "Education",
+          "Teacher Education",
+          "Roxas Hall"
+        ]
       }
     ]
   }

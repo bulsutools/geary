@@ -15,29 +15,34 @@ const ARTICLES_DIR = resolve(import.meta.dir, '..', '..', 'src', 'content', 'art
 
 describe('TC-UNIT-06: Campus map search, directory integrity, and viewBox math', () => {
   test('matches indoor locations cleanly and identifies their parent building', () => {
-    const registrarMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'Registrar');
-    expect(registrarMatches.length).toBeGreaterThan(0);
-    expect(registrarMatches[0]?.buildingId).toBe('flores-hall');
-    expect(registrarMatches[0]?.buildingName).toBe('Flores Hall');
+    const cictMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'CICT');
+    expect(cictMatches.length).toBeGreaterThan(0);
+    expect(cictMatches[0]?.buildingId).toBe('pimentel-hall');
+    expect(cictMatches[0]?.buildingName).toBe('Pimentel Hall');
 
-    const osoaMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'OSOA');
-    expect(osoaMatches.length).toBeGreaterThan(0);
-    expect(osoaMatches[0]?.buildingId).toBe('roxas-hall');
-    expect(osoaMatches[0]?.buildingName).toBe('Roxas Hall');
+    const ccjeMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'CCJE');
+    expect(ccjeMatches.length).toBeGreaterThan(0);
+    expect(ccjeMatches[0]?.buildingId).toBe('chocolate-building');
+    expect(ccjeMatches[0]?.buildingName).toBe('Chocolate Building');
+
+    const kaEkekMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'Ka Ekek');
+    expect(kaEkekMatches.length).toBeGreaterThan(0);
+    expect(kaEkekMatches[0]?.buildingId).toBe('con-canteen');
+    expect(kaEkekMatches[0]?.buildingName).toBe('CON Canteen');
   });
 
   test('filters by location category without throwing on special regex characters', () => {
     const emptyWithSpecialChars = searchCampusLocations(
       CAMPUS_BUILDINGS,
-      '([registrar?.*])',
-      'library'
+      '([cict?.*])',
+      'academic'
     );
     expect(Array.isArray(emptyWithSpecialChars)).toBe(true);
     expect(emptyWithSpecialChars).toHaveLength(0);
 
-    const libraries = searchCampusLocations(CAMPUS_BUILDINGS, '', 'library');
-    expect(libraries.length).toBeGreaterThanOrEqual(3);
-    expect(libraries.every((m) => m.category === 'library')).toBe(true);
+    const foodLocations = searchCampusLocations(CAMPUS_BUILDINGS, '', 'food-housing');
+    expect(foodLocations.length).toBeGreaterThanOrEqual(2);
+    expect(foodLocations.every((m) => m.category === 'food-housing')).toBe(true);
   });
 
   test('every location articleSlug in CAMPUS_BUILDINGS points to an existing article markdown file', () => {
