@@ -10,7 +10,7 @@ sources:
   - label: "Bulacan State University - Public Statement on Freedom of Expression and Responsibilities (Oct 1, 2025)"
     url: "https://www.facebook.com/bulsuofficial/posts/pfbid02YiXunGxRvxWQPj25JdjE3HRHS3a4oG8o8HuLtQcu5gbyeESWc9ofPQRagCGraCNhl"
   - label: "BulSU SG Academic Affairs Committee - Grade Transparency Explainer (Apr 15, 2026)"
-    url: "https://www.facebook.com/BulSUSG2026"
+    url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02x54QJy4RE7JgCjLosqSoc1ot8p53syY91KCZmbvAYgV1gwBBtzagXgrZuKJl&id=61573139957540"
   - label: "BulSU Bustos LSC - Magna Carta of Students Overview (Jul 28, 2026)"
     url: "https://www.facebook.com/BulSUBustosLSC/posts/pfbid02ZWHb5uEbAVAvGjoDdUAyVxYswwiHp14nEikF2xwdyxwMs8PdQgmV5eujCqiUALjWl"
 ---

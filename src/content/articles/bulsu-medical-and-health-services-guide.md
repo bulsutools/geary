@@ -6,7 +6,7 @@ updatedDate: 2026-11-19
 featured: true
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Health Services & Office of Student Welfare"
-    url: "https://www.bulsu.edu.ph/"
+    url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
   - label: "BulSU Health Services Unit Main Campus - Clinic Operating Hours (Apr 2026)"
     url: "https://www.facebook.com/bulsuclinicmain/posts/pfbid02gzPvs32XkgdR38GxSXBEeh2XGq9yk3xdj2mwMpFUC7J6ZmawSCrpfZhfxaeytExul"
   - label: "BulSU Admissions Office - Enrollment Medical & Dental Exam Requirements (Apr 30, 2026)"

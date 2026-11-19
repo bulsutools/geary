@@ -12,7 +12,7 @@ sources:
   - label: "BulSU OSFAS - Tertiary Education Subsidy (TES) Validation & Landbank Advisories (2026)"
     url: "https://www.facebook.com/BulSUStudentFinancialAssistanceandScholarships/posts/pfbid03fxkXaqMq6aTdGPa3myRvFjD6J9bjw1eTbUaMFwWqy3AyYeyZf9Q8C4T9iZ9SwBsl"
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Gender and Development Center (GAD MFAP)"
-    url: "https://www.bulsu.edu.ph/"
+    url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
   - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---

@@ -6,7 +6,7 @@ updatedDate: 2026-11-19
 featured: false
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Office of the University Library"
-    url: "https://www.bulsu.edu.ph/"
+    url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
   - label: "BulSU e-Library - Regular Operating Hours & Exam Week Advisories (2025-2026)"
     url: "https://www.facebook.com/BulSUeLibrary/posts/pfbid0227Xz6Z1oi4wj8wy5io3kEcYAiu1gG2YdokLmWKmERiZACskCS9MjynKg73LAfUhXl"
   - label: "BulSU e-Library - Automated Library Transaction System Training (Oct 6, 2026)"

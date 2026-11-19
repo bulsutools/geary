@@ -8,6 +8,7 @@ sources:
   - label: "BulSU Freshman Undergraduate Admissions Policy (Updated Guidelines BulSU Freshmen 2027-2028, Student Policy Development Office / UAO - PDF)"
     url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
   - label: "BulSU Citizen's Charter 2026 (1st Edition) - University Admissions Office, pp. 128-129"
+    url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
   - label: "BulSU Admissions Office - Programs Offered & Grade Requirements (Sep 19, 2025)"
     url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0TJz8Fsn2ag7B6vY2VW3LpdhsPRdvNZLYPeqwGh5JCLbFdE3pkt5qKV7AZiEV39z7l"
   - label: "BulSU Admissions Office - ATBulSU 2026-2027 Documentary Requirements (Sep 17, 2025)"

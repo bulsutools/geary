@@ -8,6 +8,7 @@ sources:
   - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
   - label: "BulSU Citizen's Charter 2026 (1st Edition) - University Admissions Office, p. 130"
+    url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
   - label: "BulSU Freshman Undergraduate Admissions Policy (Transferee / Shifter Portal Restriction)"
     url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
   - label: "BulSU Admissions Office - Available Programs for Shifters, Transferees & Second-Degree Coursers A.Y. 2026-2027 (May 2026)"
