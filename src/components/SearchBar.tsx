@@ -7,6 +7,17 @@ interface SearchBarProps {
   enableGlobalShortcut?: boolean;
 }
 
+const HERO_PLACEHOLDERS = [
+  'Search Geary...',
+  'How to request a TOR or COG?',
+  'How to apply for scholarships?',
+  'BulSU grading system & INC...',
+  'Lost my BulSU student ID...',
+  'Can I graduate with honors?',
+  'How to shift or transfer?',
+  'e-Library Turnitin & iPads...',
+] as const;
+
 let cachedIndex: SearchIndexItem[] | null = null;
 let pendingFetch: Promise<SearchIndexItem[]> | null = null;
 
@@ -42,6 +53,9 @@ export default function SearchBar({
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const [isHydrated, setIsHydrated] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
+  const [placeholderVisible, setPlaceholderVisible] = useState(true);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +65,38 @@ export default function SearchBar({
   useEffect(() => {
     setIsHydrated(true);
   }, []);
+
+  const isHero = variant === 'hero';
+
+  useEffect(() => {
+    if (!isHero || isFocused || query.length > 0) {
+      setPlaceholderVisible(true);
+      return;
+    }
+
+    if (
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      return;
+    }
+
+    let swapTimer: number | undefined;
+    const interval = window.setInterval(() => {
+      setPlaceholderVisible(false);
+      swapTimer = window.setTimeout(() => {
+        setPlaceholderIndex((prev) => (prev + 1) % HERO_PLACEHOLDERS.length);
+        setPlaceholderVisible(true);
+      }, 300);
+    }, 3500);
+
+    return () => {
+      window.clearInterval(interval);
+      if (swapTimer !== undefined) {
+        window.clearTimeout(swapTimer);
+      }
+    };
+  }, [isHero, isFocused, query]);
 
   const trimmedQuery = query.trim();
   const results = trimmedQuery ? filterAndRankArticles(items, trimmedQuery) : [];
@@ -159,7 +205,6 @@ export default function SearchBar({
     }
   };
 
-  const isHero = variant === 'hero';
   const activeOptionId =
     activeIndex >= 0 && results[activeIndex]
       ? `${listboxId}-opt-${activeIndex}`
@@ -202,10 +247,14 @@ export default function SearchBar({
           aria-autocomplete="list"
           aria-activedescendant={activeOptionId}
           data-search-ready={isHydrated ? 'true' : 'false'}
-          placeholder="Search..."
+          placeholder={isHero ? '' : 'Search...'}
           onFocus={() => {
+            setIsFocused(true);
             setIsOpen(true);
             void ensureIndexLoaded();
+          }}
+          onBlur={() => {
+            setIsFocused(false);
           }}
           onChange={(event) => {
             const nextValue = event.target.value;
@@ -221,6 +270,17 @@ export default function SearchBar({
               : 'h-10 rounded-lg border-border-strong pl-9 pr-9 sm:pr-12 text-base sm:text-sm'
           }`}
         />
+
+        {isHero && query.length === 0 && (
+          <span
+            aria-hidden="true"
+            className={`pointer-events-none absolute left-11 right-14 truncate text-left text-base text-ink-muted transition-opacity duration-300 ease-in-out ${
+              placeholderVisible ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            {HERO_PLACEHOLDERS[placeholderIndex]}
+          </span>
+        )}
 
         {query.length > 0 ? (
           <button
