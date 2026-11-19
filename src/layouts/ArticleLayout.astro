@@ -43,7 +43,7 @@ const jsonLd = [
   }),
   buildBreadcrumbJsonLd([
     { name: 'Home', url: new URL('/', baseOrigin).href },
-    { name: 'Categories', url: new URL('/categories', baseOrigin).href },
+    { name: 'Articles', url: new URL('/articles', baseOrigin).href },
     { name: categoryMeta.title, url: new URL(`/categories/${categoryMeta.slug}`, baseOrigin).href },
     { name: article.data.title },
   ]),
@@ -68,7 +68,7 @@ const jsonLd = [
       <Breadcrumbs
         items={[
           { label: 'Home', href: '/' },
-          { label: 'Categories', href: '/categories' },
+          { label: 'Articles', href: '/articles' },
           { label: categoryMeta.title, href: `/categories/${categoryMeta.slug}` },
           { label: article.data.title },
         ]}

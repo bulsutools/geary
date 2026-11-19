@@ -27,7 +27,7 @@ const subcategoryGroups = groupArticlesBySubcategory(categoryArticles);
 const baseOrigin = Astro.site ?? new URL(Astro.url.origin);
 const breadcrumbJsonLd = buildBreadcrumbJsonLd([
   { name: 'Home', url: new URL('/', baseOrigin).href },
-  { name: 'Categories', url: new URL('/categories', baseOrigin).href },
+  { name: 'Articles', url: new URL('/articles', baseOrigin).href },
   { name: category.title },
 ]);
 ---
@@ -43,7 +43,7 @@ const breadcrumbJsonLd = buildBreadcrumbJsonLd([
       <Breadcrumbs
         items={[
           { label: 'Home', href: '/' },
-          { label: 'Categories', href: '/categories' },
+          { label: 'Articles', href: '/articles' },
           { label: category.title },
         ]}
       />

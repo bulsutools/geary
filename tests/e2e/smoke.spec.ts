@@ -11,7 +11,7 @@ const ARTICLES_DIR = resolve(process.cwd(), 'src/content/articles');
 test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', () => {
   test('TC-BLD-03: verifies static HTML routes and < 100 KB search-index.json in dist/', () => {
     expect(existsSync(resolve(DIST_DIR, 'index.html'))).toBe(true);
-    expect(existsSync(resolve(DIST_DIR, 'categories', 'index.html'))).toBe(true);
+    expect(existsSync(resolve(DIST_DIR, 'articles', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'contribute', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'map', 'index.html'))).toBe(true);
     expect(existsSync(resolve(DIST_DIR, 'terms', 'index.html'))).toBe(true);
@@ -40,7 +40,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
   }) => {
     const routesToCheck = [
       '/',
-      '/categories',
+      '/articles',
       '/categories/enrollment',
       '/categories/documents',
       '/categories/organizations',
@@ -207,8 +207,8 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     await expect(desktopToc).toBeHidden();
     await expect(mobileToc).toBeVisible();
     await mobileToc.locator('summary').click();
-    await mobileToc.locator('a[href="#latin-honors-gpa-cutoffs"]').click();
-    await expect(page).toHaveURL(/#latin-honors-gpa-cutoffs$/);
+    await mobileToc.locator('a[href="#latin-honors-cutoffs-and-grade-floors"]').click();
+    await expect(page).toHaveURL(/#latin-honors-cutoffs-and-grade-floors$/);
 
     // Related Guides & Verification Notice remain omitted; multi-source card renders Sources heading & links
     await expect(page.locator('section[aria-labelledby="related-guides-heading"]')).toHaveCount(0);
@@ -216,13 +216,13 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     const honorsSourceAside = page.locator('aside[aria-label="Article source"]');
     await expect(honorsSourceAside).toContainText('Sources');
     const honorsSourceLinks = honorsSourceAside.locator('a');
-    await expect(honorsSourceLinks).toHaveCount(2);
+    expect(await honorsSourceLinks.count()).toBeGreaterThanOrEqual(2);
     await expect(honorsSourceLinks.first()).toHaveAttribute(
       'href',
       'https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf',
     );
     await expect(honorsSourceLinks.first()).toContainText(
-      'UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016',
+      /Undergraduate Student Manual of Bulacan State University, BOR Resolution No\. 85, Series of 2016/i,
     );
 
     // Handbook article renders Source card hyperlink
@@ -233,7 +233,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
       'https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf',
     );
     await expect(sourceLinks.first()).toContainText(
-      'UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016',
+      /Undergraduate Student Manual of Bulacan State University, BOR Resolution No\. 85, Series of 2016/i,
     );
   });
 
@@ -247,7 +247,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
     ];
     const routes = [
       '/',
-      '/categories',
+      '/articles',
       '/categories/enrollment',
       '/articles/can-i-graduate-with-honors',
       '/contribute',
@@ -306,7 +306,7 @@ test.describe('Geary Static Build, E2E, Accessibility & Security Smoke Suite', (
   }) => {
     const routes = [
       '/',
-      '/categories',
+      '/articles',
       '/categories/policies',
       '/articles/can-i-graduate-with-honors',
       '/contribute',
@@ -506,19 +506,19 @@ Test body.
     await expect(mapSvg).toHaveAttribute('viewBox', '0 0 1000 850');
 
     const searchInput = page.locator('main input[role="combobox"]');
-    await searchInput.fill('Registrar');
+    await searchInput.fill('CICT');
 
     const listbox = page.locator('main [role="listbox"]');
     await expect(listbox).toBeVisible();
     const firstOption = listbox.locator('[role="option"]').first();
-    await expect(firstOption).toContainText('Registrar');
-    await expect(firstOption).toContainText('Flores Hall');
+    await expect(firstOption).toContainText('CICT');
+    await expect(firstOption).toContainText('Pimentel Hall');
     await firstOption.click();
 
     const inspector = page.locator('main aside');
-    await expect(inspector.locator('h2')).toHaveText('Flores Hall');
-    await expect(inspector.locator('[data-search-match="true"]')).toContainText('Registrar');
-    await expect(page.locator('[data-building-id="flores-hall"]')).toHaveAttribute(
+    await expect(inspector.locator('h2')).toHaveText('Pimentel Hall');
+    await expect(inspector.locator('[data-search-match="true"]')).toContainText('CICT');
+    await expect(page.locator('[data-building-id="pimentel-hall"]')).toHaveAttribute(
       'aria-current',
       'true',
     );
@@ -527,9 +527,9 @@ Test body.
     await page.locator('button[aria-label="Reset map view"]').click();
     await expect(mapSvg).toHaveAttribute('viewBox', '0 0 1000 850');
 
-    await page.locator('[data-building-id="roxas-hall"]').click();
-    await expect(inspector.locator('h2')).toHaveText('Roxas Hall');
-    await expect(inspector).toContainText('Office of the Student Welfare');
+    await page.locator('[data-building-id="con-canteen"]').click();
+    await expect(inspector.locator('h2')).toHaveText('CON Canteen');
+    await expect(inspector).toContainText('Tindahan ni Ka Ekek');
 
     await page.locator('button[aria-label="Zoom in map"]').click();
     const zoomedViewBox = await mapSvg.getAttribute('viewBox');

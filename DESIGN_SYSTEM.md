@@ -102,18 +102,18 @@ Geary's design philosophy—**low cognitive load, intuitive navigation, and a di
 - **Global Max-Width Container:** `max-w-6xl` (`1152px`) centered with `mx-auto px-4 sm:px-6 lg:px-8`.
 - **Zero Horizontal Overflow Rule:** Every route must maintain `document.documentElement.scrollWidth <= window.innerWidth` across `375px`, `768px`, and `1280px`.
 
-| Breakpoint | Viewport Width | Navigation Header | Home Category Grid | Subcategory / Related Grid | Article Reading Layout |
+| **Breakpoint** | **Viewport Width** | **Navigation Header** | **Home Discovery Grids** | **Subcategory / Related Grid** | **Article Reading Layout** |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Mobile (Default)** | `< 768px` | Brand mark + Search trigger + Hamburger drawer toggle (`>= 44×44px`) | `1` column (`grid-cols-1`) | `1` column (`grid-cols-1`) | Single stack: Header → Collapsed `<details>` TOC → Prose (`100%` up to `65ch`) → Related |
-| **Tablet (`md`)** | `768px – 1023px` | Brand mark + Inline category links + Compact SearchBar | `2` columns (`md:grid-cols-2`) | `2` columns (`md:grid-cols-2`) | Single stack (`max-w-prose mx-auto`) with collapsed `<details>` TOC |
-| **Desktop (`lg`)** | `>= 1024px` | Full single-row top nav (`h-16` / `64px`) | `3` columns (`lg:grid-cols-3`, 5 cards flow cleanly) | `2`–`3` columns (`lg:grid-cols-2` / `3`) | Two-column CSS grid: `[minmax(0, 65ch)_260px]` with sticky `"On this page"` `<aside>` TOC (`top-24`) |
+| **Mobile (Default)** | `< 768px` | Brand mark + Search trigger + Hamburger drawer toggle (`>= 44×44px`) | `1` column (`grid-cols-1`) for Featured and Recently Updated | `1` column (`grid-cols-1`) | Single stack: Header → Collapsed `<details>` TOC → Prose (`100%` up to `65ch`) → Related |
+| **Tablet (`md`)** | `768px – 1023px` | Brand mark + Inline category links + Compact SearchBar | `2` columns (`md:grid-cols-2`) for Featured and Recently Updated | `2` columns (`md:grid-cols-2`) | Single stack (`max-w-prose mx-auto`) with collapsed `<details>` TOC |
+| **Desktop (`lg`)** | `>= 1024px` | Full single-row top nav (`h-16` / `64px`) | `3` columns (`lg:grid-cols-3`) for Featured and Recently Updated | `2`–`3` columns (`lg:grid-cols-2` / `3`) | Two-column CSS grid: `[minmax(0, 65ch)_260px]` with sticky `"On this page"` `<aside>` TOC (`top-24`) |
 
 ---
 
 ## 5. Component Specifications & Interactive States
 
 ### 5.1 Global Header & Geary Brand Mark (`Header.astro`)
-- **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`. Left: **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring). Center/Right: `Home` (`/`), `Categories` (`/categories`), `Campus Map` (`/map`), and `Contribute` (`/contribute`) links (`>= 768px`) + Header `<SearchBar variant="header" />` + accessible mobile drawer toggle (`< 768px`).
+- **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`. Left: **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring). Center/Right: `Home` (`/`), `Articles` (`/articles`), `Campus Map` (`/map`), and `Contribute` (`/contribute`) links (`>= 768px`) + Header `<SearchBar variant="header" />` + accessible mobile drawer toggle (`< 768px`).
 - **Interactive States:**
   - *Default:* `text-[#495057]` navigation links, `min-h-[44px]` mobile tap target.
   - *Hover:* `text-[#8B1538]` with `150ms` transition; gear SVG rotates `90deg` smoothly (`300ms ease-out`) and returns to `0deg` when unhovered.

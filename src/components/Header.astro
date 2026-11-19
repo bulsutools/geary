@@ -4,16 +4,16 @@ import SearchBar from './SearchBar';
 
 interface Props {
   activeCategory?: CategorySlug;
-  activeNav?: 'home' | 'categories' | 'contribute' | 'map';
+  activeNav?: 'home' | 'articles' | 'contribute' | 'map';
   headerSearchShortcut?: boolean;
 }
 
 const { activeCategory, activeNav, headerSearchShortcut = true } = Astro.props;
-const currentSection = activeNav ?? (activeCategory ? 'categories' : undefined);
+const currentSection = activeNav ?? (activeCategory ? 'articles' : undefined);
 
 const NAV_LINKS = [
   { label: 'Home', href: '/', key: 'home' as const },
-  { label: 'Categories', href: '/categories', key: 'categories' as const },
+  { label: 'Articles', href: '/articles', key: 'articles' as const },
   { label: 'Campus Map', href: '/map', key: 'map' as const },
   { label: 'Contribute', href: '/contribute', key: 'contribute' as const },
 ];

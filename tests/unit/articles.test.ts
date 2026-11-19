@@ -1,12 +1,15 @@
 /// <reference types="bun" />
 import { describe, expect, test } from 'bun:test';
 import {
+  formatLocalDateKey,
   getArticlePreview,
   getArticleSlug,
   getCategoryPreviewArticles,
   getFeaturedArticles,
+  getRecentlyUpdatedArticles,
   getRelatedArticles,
   groupArticlesBySubcategory,
+  pickDailyItems,
   type ArticleLike,
 } from '../../src/lib/articles';
 
@@ -117,5 +120,28 @@ describe('Article taxonomy and grouping helpers (TC-UNIT-04)', () => {
       ).length,
     ).toBeLessThanOrEqual(43);
     expect(getArticlePreview({ data: { title: 'Fallback Title' } })).toBe('Fallback Title');
+  });
+
+  test('picks deterministic daily explore items, shuffles cleanly, and sorts recently updated guides', () => {
+    const pool = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'];
+    const day1First = pickDailyItems(pool, '2026-11-19', 3, 0);
+    const day1Again = pickDailyItems(pool, '2026-11-19', 3, 0);
+    const day1Shuffled = pickDailyItems(pool, '2026-11-19', 3, 1);
+    const day2 = pickDailyItems(pool, '2026-11-20', 3, 0);
+
+    expect(day1First).toHaveLength(3);
+    expect(day1First).toEqual(day1Again);
+    expect(new Set(day1First).size).toBe(3);
+    expect(day1Shuffled).not.toEqual(day1First);
+    expect(day2).not.toEqual(day1First);
+    expect(pickDailyItems([], '2026-11-19', 3)).toEqual([]);
+    expect(formatLocalDateKey(new Date(2026, 10, 19))).toBe('2026-11-19');
+
+    const recent = getRecentlyUpdatedArticles(MOCK_ARTICLES, 3);
+    expect(recent.map((a) => a.data.title)).toEqual([
+      'Campus Map',
+      'Beta Academic Record',
+      'Alpha Form Guide',
+    ]);
   });
 });

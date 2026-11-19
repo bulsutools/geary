@@ -82,7 +82,7 @@ flowchart TB
 
 ### 3.2 Astro Islands Hydration Boundary
 - **Zero-JS Static Components:** `BaseLayout.astro`, `ArticleLayout.astro`, `Header.astro`, `Footer.astro`, `Breadcrumbs.astro`, `CategoryCard.astro`, `ArticleCard.astro`, `TableOfContents.astro`, and `VerificationBanner.astro` compile strictly to static HTML and CSS.
-- **Selective React Hydration (`client:load`):** Only `SearchBar.tsx` hydrates a React tree on the client. Using `client:load` ensures global keyboard shortcuts (`/`, `Ctrl+K` / `Cmd+K`) register immediately upon page load.
+- **Selective React Hydration (`client:load` / `client:idle`):** `SearchBar.tsx` (`client:load`) registers global keyboard shortcuts (`/`, `Ctrl+K` / `Cmd+K`) immediately on load, `CampusMap.tsx` (`client:load` on `/map`) drives interactive SVG pan/zoom/search, and `ExploreSpotlight.tsx` (`client:load` on `/`) rotates 3 daily guides by local calendar date.
 - **Minimal Progressive Enhancement (`< 1 KB`):** Mobile navigation drawer state inside `Header.astro` uses a tiny inline vanilla script, and mobile Table of Contents disclosure uses native HTML `<details>`/`<summary>`.
 
 ### 3.3 Content-to-Build Propagation
@@ -128,6 +128,7 @@ flowchart TD
 
     subgraph Islands["Hydrated React Islands"]
         I_SRCH["SearchBar.tsx (variant: hero or header)"]
+        I_EXPL["ExploreSpotlight.tsx (Daily Rotating Picks + Shuffle on /)"]
         I_MAP["CampusMap.tsx (2D Interactive SVG Map on /map)"]
     end
 
@@ -142,6 +143,7 @@ flowchart TD
     C_HDR --> I_SRCH
 
     P_HOME --> I_SRCH
+    P_HOME --> I_EXPL
     P_HOME --> C_ACARD
     P_HOME --> C_CCARD
 
@@ -272,7 +274,7 @@ geary/
 ├── REQUIREMENTS.md                  # ISO 29148 Master Requirements Traceability Matrix (RTM)
 ├── ROADMAP.md                       # ISO 12207 Project Milestones, Backlog & Known Issues
 ├── AGENTS.md                        # Repository agent development instructions
-├── EDITORIAL_CRITERIA.md            # Article selection & humanizer quality gate
+├── WRITING_FRAMEWORK.md             # Editorial, tone & humanizer writing standard
 ├── README.md                        # Contributor quickstart, commands & spec index
 ├── package.json                     # Project dependencies & scripts (dev, check, build, test)
 ├── bun.lock                         # Bun deterministic dependency lockfile

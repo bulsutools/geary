@@ -2,12 +2,28 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SearchBar from '../components/SearchBar';
-import ArticleCard from '../components/ArticleCard.astro';
-import { getFeaturedArticles } from '../lib/articles';
+import ExploreSpotlight, { type ExploreItem } from '../components/ExploreSpotlight';
+import {
+  formatArticleDate,
+  formatLocalDateKey,
+  getArticlePreview,
+  getArticleSlug,
+  getRecentlyUpdatedArticles,
+} from '../lib/articles';
 import { buildWebsiteJsonLd } from '../lib/seo';
 
 const allArticles = await getCollection('articles');
-const featuredArticles = getFeaturedArticles(allArticles);
+const recentlyUpdatedArticles = getRecentlyUpdatedArticles(allArticles, 6);
+
+const featuredPool: ExploreItem[] = [...allArticles]
+  .sort((a, b) => a.data.title.localeCompare(b.data.title))
+  .map((entry) => ({
+    slug: getArticleSlug(entry),
+    title: entry.data.title,
+    preview: getArticlePreview(entry),
+  }));
+
+const initialDateKey = formatLocalDateKey(new Date());
 const baseOrigin = Astro.site ?? new URL(Astro.url.origin);
 const websiteJsonLd = buildWebsiteJsonLd(baseOrigin.href);
 ---
@@ -58,29 +74,63 @@ const websiteJsonLd = buildWebsiteJsonLd(baseOrigin.href);
     </div>
   </section>
 
+  <ExploreSpotlight
+    client:load
+    items={featuredPool}
+    initialDateKey={initialDateKey}
+    count={3}
+  />
+
   {
-    featuredArticles.length > 0 && (
-      <section aria-labelledby="featured-guides-heading" class="py-12">
+    recentlyUpdatedArticles.length > 0 && (
+      <section aria-labelledby="recently-updated-heading" class="border-t border-border-subtle py-10 sm:py-12">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <div class="mb-6 flex items-baseline justify-between gap-4">
+          <div class="mb-6">
             <h2
-              id="featured-guides-heading"
+              id="recently-updated-heading"
               class="font-heading text-xl sm:text-2xl font-bold text-ink-primary"
             >
-              Featured
+              Recently Updated
             </h2>
-            <a
-              href="/categories"
-              class="text-sm font-semibold text-brand-crimson hover:text-brand-crimson-hover hover:underline underline-offset-2 transition-colors whitespace-nowrap"
-            >
-              Browse all categories →
-            </a>
           </div>
 
           <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
-            {featuredArticles.map((article) => (
-              <ArticleCard article={article} />
-            ))}
+            {recentlyUpdatedArticles.map((article) => {
+              const slug = getArticleSlug(article);
+              const preview = getArticlePreview(article);
+
+              return (
+                <a
+                  href={`/articles/${slug}`}
+                  class="group flex flex-col justify-between rounded-xl border border-border-subtle bg-white p-5 transition-colors duration-150 hover:border-brand-crimson"
+                >
+                  <div>
+                    <time
+                      datetime={article.data.updatedDate.toISOString().slice(0, 10)}
+                      class="mb-1.5 block text-xs font-medium text-ink-muted"
+                    >
+                      {formatArticleDate(article.data.updatedDate)}
+                    </time>
+
+                    <h3 class="font-heading text-base font-semibold leading-snug text-ink-primary transition-colors duration-150 group-hover:text-brand-crimson">
+                      {article.data.title}
+                    </h3>
+                  </div>
+
+                  <div class="mt-1.5 flex items-end justify-between gap-3">
+                    <p class="line-clamp-2 flex-1 text-sm leading-relaxed text-ink-secondary">
+                      {preview}
+                    </p>
+                    <span
+                      aria-hidden="true"
+                      class="shrink-0 text-base font-semibold leading-none text-brand-crimson transition-all duration-150 group-hover:translate-x-0.5 group-hover:text-brand-crimson-hover"
+                    >
+                      →
+                    </span>
+                  </div>
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>

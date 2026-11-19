@@ -177,3 +177,75 @@ export function getRelatedArticles<T extends ArticleLike>(
     .sort((a, b) => a.data.title.localeCompare(b.data.title))
     .slice(0, limit);
 }
+
+/**
+ * Return the most recently updated articles. When dates tie, non-featured guides
+ * appear first so the Home page's Recently Updated section surfaces fresh guides
+ * beyond Featured, then ties break alphabetically by title.
+ */
+export function getRecentlyUpdatedArticles<T extends ArticleLike>(
+  articles: readonly T[],
+  limit = 6,
+): T[] {
+  return [...articles]
+    .sort((a, b) => {
+      const dateDiff = b.data.updatedDate.getTime() - a.data.updatedDate.getTime();
+      if (dateDiff !== 0) return dateDiff;
+      if (a.data.featured !== b.data.featured) {
+        return a.data.featured ? 1 : -1;
+      }
+      return a.data.title.localeCompare(b.data.title);
+    })
+    .slice(0, limit);
+}
+
+/** Format a local calendar date key (`YYYY-MM-DD`) for deterministic daily rotation. */
+export function formatLocalDateKey(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
+/**
+ * Deterministically pick `count` items seeded by `dateKey` (`YYYY-MM-DD`).
+ * Incrementing `offset` steps cleanly through non-overlapping batches for manual shuffle.
+ */
+export function pickDailyItems<T>(
+  items: readonly T[],
+  dateKey: string,
+  count = 3,
+  offset = 0,
+): T[] {
+  if (items.length === 0 || count <= 0) return [];
+  const take = Math.min(count, items.length);
+
+  let seed = 2166136261;
+  for (let i = 0; i < dateKey.length; i += 1) {
+    seed ^= dateKey.charCodeAt(i);
+    seed = Math.imul(seed, 16777619);
+  }
+  let state = seed >>> 0;
+  const nextRand = () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+
+  const shuffled = [...items];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(nextRand() * (i + 1));
+    const tmp = shuffled[i];
+    shuffled[i] = shuffled[j];
+    shuffled[j] = tmp;
+  }
+
+  const safeOffset = ((offset % shuffled.length) + shuffled.length) % shuffled.length;
+  const start = (safeOffset * take) % shuffled.length;
+  const result: T[] = [];
+  for (let i = 0; i < take; i += 1) {
+    result.push(shuffled[(start + i) % shuffled.length]);
+  }
+  return result;
+}
