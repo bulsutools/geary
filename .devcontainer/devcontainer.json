@@ -1,0 +1,4 @@
+{
+  "name": "geary",
+  "extends": "https://github.com/bulsutools/devcontainer"
+}
