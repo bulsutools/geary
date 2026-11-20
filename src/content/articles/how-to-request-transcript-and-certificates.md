@@ -3,12 +3,9 @@ title: "How to Request Your TOR and Certificates"
 category: "documents"
 subcategory: "Academic Records & Clearances"
 updatedDate: 2026-11-19
-featured: true
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Office of the University Registrar & OSAS"
     url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
   - label: "BulSU Office of the University Registrar - Admission Documents & SF-10 Advisory (Sep 22, 2025)"
     url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02isc7fhmA8JZAhKJLhiVvExnDTzsAiiJXobLRV4CsGnBSn9N5Rusv4xWZ3cESUaxal&id=100084548907241"
   - label: "BulSU Joint Memorandum No. 14, Series of 2025 - Registrar Processing Turnarounds (Jul 22, 2025)"
@@ -48,11 +45,11 @@ Actual release dates can run faster than the maximum turnaround listed above. Un
 
 Bring complete requirements on your first visit so you do not lose your place in line:
 
-- [x] One original valid ID (National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or school ID)
-- [x] Accomplished Clearance Form if your document requires one (get it at the Registrar window or download and print it from the BulSU website)
-- [x] Documentary stamp (1 piece per TOR, CAV, RLE, or English Proficiency certificate; available at the BulSU Cashier's Office, Treasury Office, or BIR)
-- [x] Supporting attachments specific to your request (such as photocopies of your TOR/COR for CTC, a passport-size photo with name tag on a white background for board-exam TORs, or a notarized Affidavit of Loss for a duplicate diploma)
-- [x] If someone else is filing or claiming for you: a signed authorization letter or Special Power of Attorney, plus one photocopy of your ID and one photocopy of your representative's ID
+- One original valid ID (National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or school ID)
+- Accomplished Clearance Form if your document requires one (get it at the Registrar window or download and print it from the BulSU website)
+- Documentary stamp (1 piece per TOR, CAV, RLE, or English Proficiency certificate; available at the BulSU Cashier's Office, Treasury Office, or BIR)
+- Supporting attachments specific to your request (such as photocopies of your TOR/COR for CTC, a passport-size photo with name tag on a white background for board-exam TORs, or a notarized Affidavit of Loss for a duplicate diploma)
+- If someone else is filing or claiming for you: a signed authorization letter or Special Power of Attorney, plus one photocopy of your ID and one photocopy of your representative's ID
 
 ## Step-by-step walk-in request process
 

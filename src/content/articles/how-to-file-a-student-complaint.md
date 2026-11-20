@@ -3,10 +3,7 @@ title: "How to File a Student Complaint"
 category: "policies"
 subcategory: "Rights, Discipline & Grievances"
 updatedDate: 2026-11-19
-featured: false
 sources:
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
   - label: "BulSU SG Academic Affairs Committee - TAMBAD 2026 Grade Consultation Grievance (Nov 11, 2026)"
     url: "https://www.facebook.com/permalink.php?story_fbid=pfbid02khKjQ4YVz8jJZLNsrwj5SidqMsURn1YX7Y8Ci6k9rAouyXNiSzvqRwXpwggb7T3xl&id=61573139957540"
   - label: "BulSU SG Office of the Vice President - BulSU Student Grievance Desk (Sep 9, 2026)"
@@ -33,10 +30,10 @@ Whether your issue involves unexplained grades, lack of academic consideration d
 
 Pull your documentation together before submitting any grievance so the receiving office can act right away:
 
-- [x] Written narrative stating your full name, student details, course or office involved, exact dates, and a clear factual account of what happened
-- [x] Supporting screenshots, emails, grade sheets, class messages, or documents
-- [x] Sworn witness statements or affidavits (if filing a formal disciplinary complaint)
-- [x] Active email address and mobile number for follow-ups
+- Written narrative stating your full name, student details, course or office involved, exact dates, and a clear factual account of what happened
+- Supporting screenshots, emails, grade sheets, class messages, or documents
+- Sworn witness statements or affidavits (if filing a formal disciplinary complaint)
+- Active email address and mobile number for follow-ups
 
 ## Grade consultation and weather-related grievances
 

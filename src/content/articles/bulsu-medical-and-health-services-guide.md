@@ -3,7 +3,6 @@ title: "BulSU Medical Services and Student Insurance Guide"
 category: "campus"
 subcategory: "Health, Safety & Housing"
 updatedDate: 2026-11-19
-featured: true
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Health Services & Office of Student Welfare"
     url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
@@ -13,8 +12,6 @@ sources:
     url: "https://www.facebook.com/BulSUAdmissionsOffice/posts/pfbid0DjUHRCk6GfUFZr8QQRFaXS86r65MwRQjMfzJxumCJVbnAYK9rTUtyfkYRVS3QQDYl"
   - label: "BulSU Office of the Student Welfare Main Campus - Enhanced Student Insurance Guide (Jun-Jul 2026)"
     url: "https://www.facebook.com/reel/879433951291298/"
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
 
 Enrolled BulSU students receive two built-in health protections: free walk-in care and medical certificates at **University Health Services**, and 24/7 **Enhanced Student Accident Insurance** processed through the **Office of Student Welfare (OSW)**.
@@ -54,15 +51,15 @@ Every bona fide enrolled BulSU student is covered **24 hours a day, 7 days a wee
 
 ### What to prepare for an accident claim
 
-- [x] Accomplished Accident Insurance Claim Form (from OSW)
-- [x] One original Incident Report signed by you
-- [x] One original Medical Certificate from your attending physician
-- [x] Original official receipts for hospitalization, medicines, laboratory tests, radiology, and accident-related procedures
-- [x] Original Hospital Statement of Account (showing admission and discharge dates if confined) and original medicine prescriptions
-- [x] Original and photocopy of your BulSU ID, plus one original Certificate of Registration (COR)
-- [x] Photo of the accident or injury
-- [x] **If animal or insect bite:** Vaccination Certificate and copy of your anti-rabies vaccination record
-- [x] **If vehicular accident:** Original Police Report plus original and photocopy of an updated Driver's License (if you were driving)
+- Accomplished Accident Insurance Claim Form (from OSW)
+- One original Incident Report signed by you
+- One original Medical Certificate from your attending physician
+- Original official receipts for hospitalization, medicines, laboratory tests, radiology, and accident-related procedures
+- Original Hospital Statement of Account (showing admission and discharge dates if confined) and original medicine prescriptions
+- Original and photocopy of your BulSU ID, plus one original Certificate of Registration (COR)
+- Photo of the accident or injury
+- **If animal or insect bite:** Vaccination Certificate and copy of your anti-rabies vaccination record
+- **If vehicular accident:** Original Police Report plus original and photocopy of an updated Driver's License (if you were driving)
 
 ### Additional requirements for accidental death claims
 

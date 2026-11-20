@@ -3,12 +3,9 @@ title: "How to Obtain Transfer Credentials"
 category: "documents"
 subcategory: "ID & Credentials"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Office of the University Registrar"
     url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
   - label: "BulSU Freshman Undergraduate Admissions Policy (Updated Guidelines 2027-2028)"
     url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
 ---
@@ -21,11 +18,11 @@ If you are a newly admitted freshman who has already enrolled in a BulSU program
 
 Requirements depend on whether you already graduated from BulSU or are transferring out before finishing your degree:
 
-- [x] One original valid ID (National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or school ID)
-- [x] Accomplished Clearance Form (required if you have not graduated yet; get it at the Registrar window or download it from the BulSU website)
-- [x] Original Form 137 / SF-10 (for freshmen) or original TOR from your prior college (for previous transferees) remarked `Copy for: Bulacan State University`, if you have not submitted it yet
-- [x] Official Receipt for PHP 25 from the Cashier's Office
-- [x] If filing or claiming through a representative: a signed authorization letter or Special Power of Attorney, plus one photocopy of your ID and one photocopy of your representative's ID
+- One original valid ID (National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or school ID)
+- Accomplished Clearance Form (required if you have not graduated yet; get it at the Registrar window or download it from the BulSU website)
+- Original Form 137 / SF-10 (for freshmen) or original TOR from your prior college (for previous transferees) remarked `Copy for: Bulacan State University`, if you have not submitted it yet
+- Official Receipt for PHP 25 from the Cashier's Office
+- If filing or claiming through a representative: a signed authorization letter or Special Power of Attorney, plus one photocopy of your ID and one photocopy of your representative's ID
 
 ## Step-by-step process
 

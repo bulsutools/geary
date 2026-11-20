@@ -3,7 +3,6 @@ title: "BulSU Graduation Requirements"
 category: "academics"
 subcategory: "Internships & Graduation"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
@@ -37,11 +36,11 @@ Every candidate for graduation must complete all four requirements:
 
 Your Registrar releases a TOR marked "Graduated" only after you finish all graduation requirements and file your Application for Graduation. Make sure these records are complete in your student file:
 
-- [x] School Form 10 (SF10 / Form 137)
-- [x] Original School Form 9 (SF9 / Grade 12 Report Card)
-- [x] Certificate of Good Moral Character
-- [x] Philippine Statistics Authority (PSA) Birth Certificate
-- [x] Honorable Dismissal and official TOR copy for BulSU (transferees only)
+- School Form 10 (SF10 / Form 137)
+- Original School Form 9 (SF9 / Grade 12 Report Card)
+- Certificate of Good Moral Character
+- Philippine Statistics Authority (PSA) Birth Certificate
+- Honorable Dismissal and official TOR copy for BulSU (transferees only)
 
 If your TOR cannot be printed because of record discrepancies, watch your email for resolution instructions from your campus Registrar.
 

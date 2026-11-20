@@ -3,7 +3,6 @@ title: "How to Apply for Student Assistantships"
 category: "scholarships"
 subcategory: "Work & Financial Support"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "BulSU PPESO - Institutional Student Assistant (ISA) Program A.Y. 2026-2027 (Jul 2, 2026)"
     url: "https://www.facebook.com/bulsu.ppeso/posts/pfbid0jbDVz9DTGPQJinuN1hzsV4BVHQ4KnRGTsyhcxaGH7bRdtSqNmQDzqbw52dWvS7nJl"
@@ -11,8 +10,6 @@ sources:
     url: "https://www.facebook.com/bulsu.ppeso/posts/pfbid0378ND8KvtHBFA4ZSkWFDFFf6ZCb4ScNdm4groTodTWsLkMpkij83WFm5NKFs8XSVul"
   - label: "BulSU PPESO - Institutional Student Assistants Orientation / Work Ethics (Aug 11, 2026)"
     url: "https://www.facebook.com/bulsu.ppeso/posts/pfbid02vtUanAN9tfNWnjFgYsU1ohLLWNreUZVxeUTBcs52aFYzEHU9kTGkCNHeqdi4KUXil"
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
 
 If you want paid on-campus work that fits around your classes, apply for BulSU's **Institutional Student Assistant (ISA)** program. Applications are managed by the **BulSU Placement and Public Employment Service Office (PPESO)** at the **Placement Office, Ground Floor, Roxas Hall**.
@@ -34,15 +31,15 @@ Requirements differ depending on whether you are applying for the first time or 
 
 **For new ISA applicants:**
 
-- [x] Accomplished ISA Application Form (picked up at the Placement Office during the announced distribution window)
-- [x] Certificate of Registration (COR) for the current semester
-- [x] Certificate of Grades (COG) from the previous semester
-- [x] Updated Class Schedule showing your daily vacant hours
-- [x] Signed parental consent form, if requested during office screening
+- Accomplished ISA Application Form (picked up at the Placement Office during the announced distribution window)
+- Certificate of Registration (COR) for the current semester
+- Certificate of Grades (COG) from the previous semester
+- Updated Class Schedule showing your daily vacant hours
+- Signed parental consent form, if requested during office screening
 
 **For returning ISAs:**
 
-- [x] Recommendation Letter for reappointment from your assigned office
+- Recommendation Letter for reappointment from your assigned office
 
 ## Step-by-step application process
 

@@ -3,12 +3,9 @@ title: "How to Replace a Lost Student ID"
 category: "documents"
 subcategory: "ID & Credentials"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Office of the University Registrar"
     url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
 
 BulSU enforces a strict **No ID, No Entry** policy at every campus gate. If you lose or damage your university ID, apply for a duplicate right away at the Office of the University Registrar. A duplicate ID costs **PHP 150** and takes about **2 working days** to print and release.
@@ -17,10 +14,10 @@ BulSU enforces a strict **No ID, No Entry** policy at every campus gate. If you 
 
 You must be a currently enrolled student to request a duplicate ID. Gather these requirements before lining up at the Registrar:
 
-- [x] One original valid ID (National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or another accepted ID)
-- [x] Original notarized Affidavit of Loss from a notary public
-- [x] Official Receipt for PHP 150 from the Cashier's Office
-- [x] If someone else is filing or claiming for you: a signed authorization letter or Special Power of Attorney, plus one photocopy of your ID and one photocopy of your representative's ID
+- One original valid ID (National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or another accepted ID)
+- Original notarized Affidavit of Loss from a notary public
+- Official Receipt for PHP 150 from the Cashier's Office
+- If someone else is filing or claiming for you: a signed authorization letter or Special Power of Attorney, plus one photocopy of your ID and one photocopy of your representative's ID
 
 ## Step-by-step replacement process
 

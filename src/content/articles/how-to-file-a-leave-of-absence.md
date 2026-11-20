@@ -3,7 +3,6 @@ title: "How to File a Leave of Absence"
 category: "enrollment"
 subcategory: "Leave & Readmission"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
@@ -47,11 +46,11 @@ The Office of the University Registrar announces each semester's filing cutoff o
 
 Check your College Dean or campus admissions page before your return semester for local requirements. For reference, Sarmiento Campus returning students submitted:
 
-- [x] Re-admission Letter addressed to the Campus Dean
-- [x] Completed Clearance Form
-- [x] Medical Certificate, if your absence was due to physical illness
-- [x] Psychological Evaluation, if your absence was due to a mental health condition
-- [x] Report of Grades (requested in some semesters; confirm whether your campus needs it)
+- Re-admission Letter addressed to the Campus Dean
+- Completed Clearance Form
+- Medical Certificate, if your absence was due to physical illness
+- Psychological Evaluation, if your absence was due to a mental health condition
+- Report of Grades (requested in some semesters; confirm whether your campus needs it)
 
 ## Curriculum rules when you return
 

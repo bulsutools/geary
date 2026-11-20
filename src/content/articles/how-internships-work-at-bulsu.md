@@ -3,10 +3,7 @@ title: "How Internships and Job Placement Work at BulSU"
 category: "academics"
 subcategory: "Internships & Graduation"
 updatedDate: 2026-11-19
-featured: false
 sources:
-  - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
   - label: "BulSU CarDSI - General Internship Orientation 2026 (Nov 10, 2026)"
     url: "https://www.facebook.com/cardsis/posts/pfbid0yh6KYrz3BdMNmbDfAUAxFFpfspFZkQfMddt2XV5gFmfSwwyVruoWtqR8foausVBul"
   - label: "BulSU College of Industrial Technology - CIT SIP OJT Orientation & MOA Guidelines (Sep 11 & Sep 22, 2026)"
@@ -39,13 +36,13 @@ Because pre-deployment checklists (medical clearance, insurance, and MOA deadlin
 
 Once deployed, interns are expected to:
 
-- [x] Contact your site supervisor a few days before your start date
-- [x] Notify your SIP Coordinator on the day you start logging hours
-- [x] Attend any host-site orientation required by the company
-- [x] Maintain an analytical field learning journal
-- [x] Stay in regular contact with your SIP Coordinator and attend required campus seminars
-- [x] Arrange for your SIP Coordinator to visit your host site
-- [x] Complete formal wrap-up, thank-you, and clearance checks with your SIP Coordinator
+- Contact your site supervisor a few days before your start date
+- Notify your SIP Coordinator on the day you start logging hours
+- Attend any host-site orientation required by the company
+- Maintain an analytical field learning journal
+- Stay in regular contact with your SIP Coordinator and attend required campus seminars
+- Arrange for your SIP Coordinator to visit your host site
+- Complete formal wrap-up, thank-you, and clearance checks with your SIP Coordinator
 
 Misconduct or violating campus or company rules can lead CarDSI to pull you from your placement and file disciplinary sanctions.
 

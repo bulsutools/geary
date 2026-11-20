@@ -1,8 +1,10 @@
-# Geary Article & Guide Writing Framework
+# Geary Article Writing Framework
 
 **Document type:** Editorial and Writing Standard
 
-**Applies to:** All articles, student guides, tutorials, and informational content published on Geary.
+**Applies to:** All articles, tutorials, and informational content published on Geary.
+
+**Terminology rule:** Always refer to Geary's published entries as **articles** (never "guides") in UI copy, metadata, labels, and site prose.
 
 ## 1. Editorial Philosophy
 
@@ -137,7 +139,7 @@ List everything readers must have ready before starting:
 * Fees and accepted payment methods.
 * Required accounts, portals, or credentials.
 
-Use checklists for items readers must gather or verify. Clearly separate mandatory, conditional, and optional items—never frame optional documents as mandatory.
+Use bullet lists for items readers must gather or verify. Clearly separate mandatory, conditional, and optional items—never frame optional documents as mandatory.
 
 ### 4.3 Step-by-Step Instructions
 
@@ -179,9 +181,9 @@ Use bullet lists (`-` or `*`) for unordered related items, options, or facts. Ea
 
 Use numbered lists (`1.`) strictly for sequential steps, chronological actions, or ranked items. Never number unrelated points.
 
-### 5.4 Checklists
+### 5.4 No Checkbox Lists
 
-Use checked Markdown checkboxes (`- [x]`) when readers need to track preparation or completion (e.g., document lists, pre-submission checks). Never use unchecked checkboxes (`- [ ]`). Do not use checkboxes for general informational lists.
+Never use Markdown checkbox/task lists (`- [ ]` or `- [x]`) in articles. Always use regular bullet lists (`-`) instead for required documents, pre-submission items, or verification lists.
 
 ### 5.5 Tables
 
@@ -232,13 +234,13 @@ Because many BulSU offices and colleges publish their latest schedules, memos, a
 
 Prioritize sources by authority and recency:
 
-1. Latest official announcements on verified Facebook pages (University Admissions Office, Office of the Registrar, colleges, student councils, and official university pages), including updates retrieved via Meta AI from those posts.
-2. Official PDF documents (admission guidelines, student handbooks, memos, downloadable forms, and policy releases).
-3. Official BulSU websites and portals.
+1. Recent official BulSU PDFs and Board of Regents (BOR) resolutions (e.g., Citizen's Charter 2026, updated admission guidelines, official policy memos).
+2. Latest official announcements on verified Facebook pages (University Admissions Office, Office of the University Registrar, OSAS, colleges, BulSU SG, and LSCs), including updates verified from those posts.
+3. Official BulSU websites and portals (`bulsu.edu.ph`).
 4. Direct statements from authorized university personnel.
-5. Other credible sources, only when official sources are unavailable.
+5. **2016 Undergraduate Student Manual (BOR Res. No. 85, S. 2016) — fallback only:** Use only for standing statutory rules (e.g., grading scale, residency/graduation rules, student rights, disciplinary classifications) that have not been superseded by (1)–(3). Do not rely on it for current procedures, fees, deadlines, or schedules, and omit it from an article's `sources` when newer official sources already cover the topic completely.
 
-When an official Facebook post updates or supersedes an older PDF or website page, treat the newer official announcement as current and note the effective date or academic year.
+When a newer official PDF or Facebook announcement updates or supersedes an older document (especially the 2016 Student Manual), treat the newer official announcement as current and note the effective date or academic year.
 
 ### 7.2 Verification
 
@@ -330,7 +332,7 @@ When genuinely relevant published Geary articles exist, list them briefly at the
 
 ### Formatting and Resources
 
-* [ ] Markdown is clean, consistent, and mobile-friendly.
+* [ ] Markdown is clean, consistent, and mobile-friendly (no checkbox/task lists `- [ ]` or `- [x]`).
 * [ ] Bold, italic, and especially inline code are used sparingly and only where necessary.
 * [ ] Inline source references are brief and used only when helpful for context or action—full citations live in the Sources card.
 * [ ] External sources mentioned in the text (such as Facebook posts or portals) use descriptive inline links when verified URLs exist.

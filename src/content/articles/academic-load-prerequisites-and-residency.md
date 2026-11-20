@@ -3,7 +3,6 @@ title: "Academic Load, Prerequisites, and Residency"
 category: "academics"
 subcategory: "Enrollment & Load Changes"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
@@ -51,9 +50,9 @@ When a subject you need is not offered or conflicts with your schedule, BulSU pr
 
 Colleges and external campuses announce short petition filing windows before or during enrollment (especially for graduating students). Typical face-to-face petition packets require:
 
-- [x] Signed petition letter listing the unoffered subject
-- [x] Signed commitment letter (confirming payment for petitioned subjects)
-- [x] Photocopy of a parent or guardian's valid ID, signed on the copy
+- Signed petition letter listing the unoffered subject
+- Signed commitment letter (confirming payment for petitioned subjects)
+- Photocopy of a parent or guardian's valid ID, signed on the copy
 
 Requests route from student submission to faculty assignment, Dean endorsement, Chancellor's Office, Office of the University Registrar, and Accounting. Check your college or campus Registrar page for exact local deadlines and forms.
 

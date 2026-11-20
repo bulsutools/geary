@@ -3,7 +3,6 @@ title: "How to Shift Programs in BulSU"
 category: "enrollment"
 subcategory: "Shifting & Transferring"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
@@ -53,10 +52,10 @@ For reference, Sarmiento Campus held its A.Y. 2026-2027 Shifters, Transferees, a
 
 Prepare scanned copies for online filing and matching physical copies for your Malolos Campus appointment:
 
-- [x] Letter of intent
-- [x] Certified copy of grades (Certificate of Grades or Transcript of Records)
-- [x] Clearance
-- [x] Original and photocopy of your current Certificate of Registration (COR) and class cards
+- Letter of intent
+- Certified copy of grades (Certificate of Grades or Transcript of Records)
+- Clearance
+- Original and photocopy of your current Certificate of Registration (COR) and class cards
 
 ## Application steps
 

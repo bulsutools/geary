@@ -46,7 +46,7 @@ Every product requirement in this PRD carries a strict release priority:
 
 | Req ID | Priority | Requirement Statement |
 | :--- | :--- | :--- |
-| **REQ-ART-01** | **P0** | The system shall publish student guides authored in Markdown and validate required metadata fields—`title`, `category`, `subcategory`, `updatedDate`, and `featured`—during site compilation. |
+| **REQ-ART-01** | **P0** | The system shall publish student articles authored in Markdown and validate required metadata fields—`title`, `category`, `subcategory`, and `updatedDate`—during site compilation. |
 | **REQ-ART-02** | **P0** | The system shall render standard and tabular Markdown elements—including headings, numbered procedures, bulleted lists, tables, callout blockquotes, and links—into clear, readable HTML pages. |
 | **REQ-ART-03** | **P0** | Every article view shall display an informative header containing breadcrumbs, article title, and formatted *Last Updated* date. |
 | **REQ-ART-04** | **P1** | The system shall automatically generate an "On this page" Table of Contents from an article's major and minor section headings—displayed as a sticky sidebar on desktop and a collapsible disclosure panel above the article on mobile—and hide it completely when fewer than 2 headings exist. |
@@ -85,13 +85,11 @@ Every product requirement in this PRD carries a strict release priority:
 | **REQ-CAT-02** | **P0** | The Home page shall present a Category Directory showing all five categories with each category's summary description, live guide count, and direct preview links to top guides. |
 | **REQ-CAT-03** | **P0** | Each category page shall group its guides visually under `subcategory` headings rather than presenting a chronological blog timeline. |
 | **REQ-CAT-04** | **P1** | Category and article pages shall display clickable breadcrumb navigation (`Home › [Category Name]` and `Home › [Category Name] › [Article Title]`) for spatial orientation. |
-| **REQ-CAT-05** | **P1** | The Home page shall surface daily rotating guides inside a **Featured** section alongside a **Recently Updated** section sorted by `updatedDate`. |
+| **REQ-CAT-05** | **P1** | The Home page shall surface daily randomized guides inside a **Featured** section displaying 6 cards at a time and cycling through 3 daily groups (18 guides refreshed each calendar day). |
 
 #### Product Behavior
 - **Intent-Based Discovery:** Unlike a blog sorted by date, Geary organizes information around what a student needs to accomplish.
-- **Home Discovery Hub:** Below the hero search area, students see two scannable sections without extra clicks:
-  1. **Featured:** Deterministically rotates 3 guides daily across the handbook seeded by the visitor's local calendar date (`YYYY-MM-DD`) so interesting guides surface periodically without a backend.
-  2. **Recently Updated:** Up to 6 most recently updated guides sorted by `updatedDate` descending with visible updated dates.
+- **Home Featured Rotation:** Below the hero search area, the **Featured** section deterministically randomizes 3 non-overlapping groups of 6 guides seeded by the visitor's local calendar date (`YYYY-MM-DD`), automatically cycling through the 3 groups (pausing on hover/focus and under `prefers-reduced-motion`) with subtle indicator controls to jump between groups.
 - **Category Index Views:** Opening any category displays breadcrumbs, category summary, and guides neatly grouped under their sub-topic headings (e.g., *Shifting & Transferring*, *Document Requests*, *Food & Dining*). If a category has zero guides yet, the page displays a helpful empty-state message with a link back to Home.
 
 #### Acceptance Criteria
@@ -104,7 +102,7 @@ Every product requirement in this PRD carries a strict release priority:
 - **AC-CAT-04 (`REQ-CAT-04`):**
   - *Given* any category or article page, *When* clicking `Home` or `[Category Name]` in the breadcrumb trail, *Then* the browser navigates cleanly to the corresponding parent page.
 - **AC-CAT-05 (`REQ-CAT-05`):**
-  - *Given* guides marked as `featured`, *When* visiting the Home page, *Then* those guides appear in the Featured / Essential Guides section while non-featured guides are excluded from it.
+  - *Given* the Home page, *When* loaded, *Then* the Featured section displays 6 articles from the active group and cycles through 3 daily randomized non-overlapping groups seeded by local calendar date.
 
 ---
 

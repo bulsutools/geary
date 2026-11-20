@@ -3,7 +3,6 @@ title: "BulSU Library Guide"
 category: "campus"
 subcategory: "Campus Facilities"
 updatedDate: 2026-11-19
-featured: false
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Office of the University Library"
     url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
@@ -11,8 +10,6 @@ sources:
     url: "https://www.facebook.com/BulSUeLibrary/posts/pfbid0227Xz6Z1oi4wj8wy5io3kEcYAiu1gG2YdokLmWKmERiZACskCS9MjynKg73LAfUhXl"
   - label: "BulSU e-Library - Automated Library Transaction System Training (Oct 6, 2026)"
     url: "https://www.facebook.com/BulSUeLibrary/posts/pfbid02ons4RYQghqDZtGNeYLz5awmwsYPksQxP2nz7WxTX9NQKN3Zw1MWjWgbfJwPzUsqFl"
-  - label: "UNDERGRADUATE STUDENT MANUAL OF BULACAN STATE UNIVERSITY, BOR Resolution No. 85, Series of 2016"
-    url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
 ---
 
 The BulSU e-Library on the Main Campus gives registered students free study spaces, iPads, computer stations, print and digital collections, online research help, and official Turnitin plagiarism checking.
@@ -44,9 +41,9 @@ All library-registered Laboratory High School, undergraduate, and graduate stude
 
 Prepare your file before submitting through the [Main Campus Plagiarism Check Form](https://bit.ly/bulsuplagscan) (external campuses may use a separate campus link):
 
-- [x] One PDF copy containing your Title Page, author names, college/department, and Chapters 1 to 5 (or 1 to 9), **excluding** preliminary pages and appendices
-- [x] For group papers, only one member per group should submit
-- [x] For Graduate School students, an endorsement letter from the Graduate School Office
+- One PDF copy containing your Title Page, author names, college/department, and Chapters 1 to 5 (or 1 to 9), **excluding** preliminary pages and appendices
+- For group papers, only one member per group should submit
+- For Graduate School students, an endorsement letter from the Graduate School Office
 
 **Passing limits:** BulSU requires **10% or lower** plagiarism similarity and **35% or lower** AI score. Papers within both limits receive an emailed **Plagiarism Certificate** and **AI Use Declaration Form** (plus Confidentiality Agreement and Open Access Permission forms for theses and capstones). Papers above either limit receive the similarity report for revision before resubmission. For in-person plagiarism or AI checking questions, visit the **4th or 5th floor of the BulSU e-Library**.
 

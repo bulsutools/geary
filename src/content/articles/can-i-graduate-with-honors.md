@@ -2,8 +2,7 @@
 title: "Can I Graduate With Honors?"
 category: "academics"
 subcategory: "Internships & Graduation"
-updatedDate: 2026-11-19
-featured: false
+updatedDate: 2026-11-20
 sources:
   - label: "Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016"
     url: "https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf"
@@ -44,6 +43,8 @@ In addition to GWA and grade floors, candidates must satisfy:
 2. Add all Grade Points and divide by total academic units (`Total Grade Points / Total Units = Final GWA`).
 
 For example, five 3-unit subjects with grades `1.00`, `1.00`, `1.00`, `1.25`, and `1.50` total `17.25` grade points across `15.0` units, giving a GWA of `1.150`. **NSTP is excluded from the GWA calculation**, though you still must pass it. Confirm rounding rules directly with the Office of the University Registrar if your GWA lands right on a boundary.
+
+You can use the [BulSU GWA Calculator](https://gwacalculatorbulsu.netlify.app/) to compute your GWA.
 
 ## Annual Gold Gear Awards (President's and Dean's Lists)
 
