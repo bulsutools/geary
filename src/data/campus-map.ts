@@ -702,6 +702,19 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
     ]
   },
   {
+    "id": "bulsu-sg-office",
+    "name": "BulSU Student Government Office",
+    "shortLabel": "BulSU SG Office",
+    "floors": null,
+    "svgPath": "M683.3,383.9 L699.7,369.2 L714.4,385.5 L698.0,400.2 Z",
+    "center": {
+      "x": 698.9,
+      "y": 384.7
+    },
+    "summary": "BulSU Student Government office beside CSER Building.",
+    "locations": []
+  },
+  {
     "id": "alvarado-hall",
     "name": "Alvarado Hall",
     "shortLabel": "Alvarado Hall",
@@ -1029,7 +1042,7 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       "x": 726.7,
       "y": 496.2
     },
-    "summary": "Main administration building facing Bulacan Heroes Park housing the Office of the University Registrar and Clinic.",
+    "summary": "Main administration building facing Bulacan Heroes Park housing the Office of the University Registrar and BulSU Clinic Main.",
     "locations": [
       {
         "id": "registrar",
@@ -1052,10 +1065,11 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       },
       {
         "id": "clinic",
-        "name": "Clinic",
+        "name": "BulSU Clinic Main",
         "floor": "Ground Floor",
         "category": "student-services",
         "keywords": [
+          "BulSU Clinic Main",
           "Clinic",
           "University Health Services",
           "Medical",
@@ -1152,20 +1166,6 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
           "Valencia Hall"
         ],
         "articleSlug": "bulsu-medical-and-health-services-guide"
-      },
-      {
-        "id": "sg-office",
-        "name": "Student Government Office",
-        "floor": "In front of Valencia Hall",
-        "category": "student-services",
-        "keywords": [
-          "SG",
-          "BulSU SG",
-          "Student Government",
-          "SSC",
-          "Supreme Student Council",
-          "Valencia Hall"
-        ]
       },
       {
         "id": "cser-lsc-office",
@@ -1345,16 +1345,6 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
           "CICT",
           "Lab",
           "Classroom",
-          "Pimentel Hall"
-        ]
-      },
-      {
-        "id": "pimentel-parking-lot",
-        "name": "Pimentel Hall Parking Lot",
-        "floor": "1st Floor",
-        "category": "student-services",
-        "keywords": [
-          "Parking",
           "Pimentel Hall"
         ]
       },
@@ -1619,7 +1609,7 @@ export const CAMPUS_BUILDINGS: readonly CampusBuilding[] = [
       },
       {
         "id": "nstp-lsc-student-center",
-        "name": "LSC / Student Center Office",
+        "name": "CICT LSC Office",
         "category": "student-services",
         "keywords": [
           "LSC",
