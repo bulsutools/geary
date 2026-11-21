@@ -30,7 +30,7 @@ Follow this sequence with your college's Student Internship Program (SIP) Coordi
 4. **Contact the approved HTEs** to confirm internship slots and schedule interviews.
 5. **Complete and sign all placement documents before deployment.** Placement becomes official only after you, the agency representative, your SIP Coordinator, and your parent sign the agreement documents. Colleges such as CIT also require a notarized Memorandum of Agreement (MOA) before deployment.
 
-Pre-deployment requirements—including medical clearance, insurance, and MOA deadlines—vary by college. Confirm your exact packet with your SIP Coordinator.
+Pre-deployment requirements, including medical clearance, insurance, and MOA deadlines, vary by college. Confirm your exact packet with your SIP Coordinator.
 
 ## Duties during your practicum
 
@@ -58,5 +58,5 @@ PPESO runs free career readiness and employment programs for students, graduatin
 ## Contacts
 
 - PPESO Office: Ground Floor, Roxas Hall
-- Email: `bulsu.ppeso@bulsu.edu.ph`
+- Email: **bulsu.ppeso@bulsu.edu.ph**
 - Facebook: [BulSU-PPESO](https://www.facebook.com/bulsu.ppeso) and [BulSU CarDSI](https://www.facebook.com/cardsis)
