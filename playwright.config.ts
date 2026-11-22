@@ -8,7 +8,7 @@ export default defineConfig({
   reporter: 'list',
   use: {
     baseURL: 'http://localhost:4322',
-    channel: 'chrome',
+    channel: process.env.PW_CHANNEL ?? 'chrome',
     headless: true,
   },
   webServer: {

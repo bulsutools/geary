@@ -44,7 +44,7 @@ This Software Requirements Specification (SRS) defines the formal software-level
 | :--- | :--- |
 | **CON-TECH-01** | The software shall build in Astro static output mode (`output: 'static'`) with zero server-side rendering (SSR) adapters or runtime edge functions. |
 | **CON-TECH-02** | Layout and component presentation shall be styled using **Tailwind CSS** utility classes and design tokens. |
-| **CON-TECH-03** | **React** shall be hydrated strictly via Astro island directives (`client:load` or `client:idle`) and limited to stateful client interactivity (`<SearchBar />`, `<ExploreSpotlight />`, and `<CampusMap />`). |
+| **CON-TECH-03** | **React** shall be hydrated strictly via Astro island directives (`client:load` or `client:idle`) and limited to stateful client interactivity (`<SearchBar />`, `<ExploreSpotlight />`, `<CampusMap />`, and `<ClearanceWizard />`). |
 | **CON-TECH-04** | **TypeScript** and **Zod** shall enforce compile-time type checking and build-time frontmatter schema validation across all content and data modules. |
 
 ### 2.2 Financial & Operational Constraints
@@ -65,7 +65,7 @@ This Software Requirements Specification (SRS) defines the formal software-level
 
 | ID | Constraint Statement |
 | :--- | :--- |
-| **CON-GOV-01** | Software capabilities are locked strictly to the five MVP capabilities (Articles/Markdown, 7-Category Hierarchy, Client-Side Search Bar, Low-Cognitive-Load BulSUan UI/UX, and Interactive 2D Campus Map); AI/RAG chatbots, authentication, user submissions, and BulSU SIS integrations are prohibited. The existing embedded contribution form is a documented governance exception pending a dedicated scope decision. |
+| **CON-GOV-01** | Software capabilities are locked strictly to the six approved capabilities (Articles/Markdown, 7-Category Hierarchy, Client-Side Search Bar, Low-Cognitive-Load BulSUan UI/UX, Interactive 2D Campus Map, and the Interactive Document Request Wizard); AI/RAG chatbots, authentication, user submissions, and BulSU SIS integrations are prohibited. The existing embedded contribution form is a documented governance exception pending a dedicated scope decision. |
 | **CON-GOV-02** | The software shall display an explicit unofficial disclaimer across the global footer and article views stating that Geary is student-maintained and unaffiliated with Bulacan State University administration. |
 
 ---
@@ -82,6 +82,7 @@ This Software Requirements Specification (SRS) defines the formal software-level
 | `/categories/[slug]` | Category directory listing guides grouped by `subcategory` with breadcrumb navigation. |
 | `/articles/[slug]` | Distraction-free reading view with metadata header, responsive TOC, Markdown prose, disclaimer, and related guides. |
 | `/404.html` | Branded recovery page embedding the search bar and links to all seven categories. |
+| `/wizard` | Interactive document-request checklist page (`#<request-id>` deep links select a request). |
 | `/search-index.json` | Static JSON search payload consumed by `<SearchBar />`. |
 
 #### `UI-INT-02`: Responsive Viewport Breakpoints
@@ -116,6 +117,7 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | `source` | `string` (`min >= 1`) | No | `—` |
 | `sourceUrl` | Valid URL `string` | No | `—` |
 | `sources` | `Array<{ label: string; url?: string }>` (`min >= 1`) | No | `—` |
+| `wizard` | `Array<WizardRequest>` (`SW-INT-05`) | No | `—` |
 
 #### `SW-INT-03`: Static Search Index Payload Contract (`GET /search-index.json`)
 
@@ -128,6 +130,21 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | `categoryLabel` | `string` | Human-readable category title resolved from `SW-INT-01`. |
 | `subcategory` | `string` | Sub-topic grouping label. |
 | `headings` | `string[]` | Extracted plain-text `h2` and `h3` headings. |
+
+#### `SW-INT-05`: Article `wizard` Frontmatter Contract (`WizardRequest`)
+
+Optional `wizard` array on article frontmatter (`SW-INT-02`) declaring document-request checklists single-sourced inside the guide:
+
+| Field | Type / Constraint | Description |
+| :--- | :--- | :--- |
+| `id` | `string` matching `^[a-z0-9]+(-[a-z0-9]+)*$` | URL-hash-safe request identifier; unique across the whole collection. |
+| `title` | Non-empty `string` | Human-readable request name shown in the picker and checklist header. |
+| `summary` | `string` | Optional one-line picker description. |
+| `office` | `string` | Issuing office name where the guide records it. |
+| `fee` | `string` | Published fee text exactly as stated in the guide. |
+| `processingTime` | `string` | Published processing-time text exactly as stated in the guide. |
+| `guideAnchor` | `string` | Optional `h2`/`h3` heading anchor inside the same article for deep links. |
+| `requirements` | `Array<{ label: string; note?: string }>` (`min >= 1`) | Ordered checklist items; `note` carries conditional detail. |
 
 ### 3.3 Communications Interfaces (`COM-INT-01`)
 - All HTML, CSS, JavaScript, and JSON assets shall be delivered via standard **HTTPS** (`GET` requests) from static hosting.
@@ -298,6 +315,40 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 
 ---
 
+### 4.6 Document Request Wizard Subsystem (`/wizard`)
+
+#### `SRS-FUNC-WIZ-01`: Wizard Request Aggregation
+- **Inputs:** Validated articles collection containing optional `wizard` frontmatter (`SW-INT-05`).
+- **Processing Logic:** Flatten every article's `wizard` entries into `WizardRequestView` objects (`id`, `title`, `summary`, `office`, `fee`, `processingTime`, `guideAnchor`, `requirements`, plus resolved `articleSlug`, `articleTitle`, `articleCategory`) and assert request `id` uniqueness across the collection.
+- **Outputs:** Serialized request list passed as props to `<ClearanceWizard client:load />` on `/wizard`.
+- **Error Handling:** Duplicate `id` values or schema violations abort `astro build` / `astro check` with Zod diagnostics (`ERR-09` family).
+
+#### `SRS-FUNC-WIZ-02`: Request Picker & Checklist Rendering
+- **Inputs:** Serialized `WizardRequestView[]` and optional URL hash `#<request-id>`.
+- **Processing Logic:** Render a picker of all request types; on selection render summary rows (office, fee, processing time where declared), an ordered requirements checklist with per-item `note` detail, a progress counter (`x of y`), a reset control, and a link to the full source guide (`/articles/<slug>` plus `guideAnchor` when present).
+- **Outputs:** Interactive checklist UI inside the React island.
+- **Error Handling:** Unknown or malformed hash request IDs fall back to the picker view without errors (`ERR-10`).
+
+#### `SRS-FUNC-WIZ-03`: Checklist State Persistence (`localStorage`)
+- **Inputs:** Checkbox toggle events per request `id` and requirement index.
+- **Processing Logic:** Persist checked indices per request under a single `localStorage` key (`geary:wizard:v1`) as JSON; restore on mount; tolerate corrupt or unavailable storage by starting from an empty checklist.
+- **Outputs:** Durable per-browser checklist progress across visits.
+- **Error Handling:** `localStorage` access wrapped in `try/catch`; corrupt JSON resets cleanly (`ERR-10`).
+
+#### `SRS-FUNC-WIZ-04`: Shareable URL Hash State
+- **Inputs:** Selected request `id` and checked requirement indices.
+- **Processing Logic:** Encode state as `#<request-id>` or `#<request-id>:<comma-separated indices>`; write via `history.replaceState` (no navigation, no backend); on load, `parseWizardHash` validates format and known request IDs, applying shared checks over stored ones.
+- **Outputs:** Copy-pasteable share links preserving request and checklist progress.
+- **Error Handling:** Malformed hashes (`#`, `#:`, out-of-range indices) parse to safe defaults (`ERR-10`).
+
+#### `SRS-FUNC-WIZ-05`: Wizard Entry Points
+- **Inputs:** Articles collection and category registry.
+- **Processing Logic:** Render a wizard entry card on `/categories/[slug]` when that category contains wizard-backed articles, listing available request types; article bodies link to `/wizard#<request-id>` via "check off your requirements" anchors authored in Markdown.
+- **Outputs:** Discoverable paths from category directories and guide prose into matching checklists.
+- **Error Handling:** Categories without wizard content render no wizard card.
+
+---
+
 ## 5. Non-Functional Requirements *(ISO 29148 Clause 9.6.3.3 & ISO/IEC 25010)*
 
 ### 5.1 Performance Efficiency
@@ -305,7 +356,7 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | ID | Quality Requirement | Target / Metric |
 | :--- | :--- | :--- |
 | **SRS-NFR-PERF-01** | All routes shall pre-render as static HTML at build time with zero server compute per request. | `0 ms` origin compute time; 100% static output. |
-| **SRS-NFR-PERF-02** | Content pages shall ship zero client-side UI framework JS outside `<SearchBar />` and minimal menu toggles. | `0` unnecessary React roots on static prose. |
+| **SRS-NFR-PERF-02** | Content pages shall ship zero client-side UI framework JS outside hydrated React islands (`<SearchBar />`, `<ExploreSpotlight />`, `<CampusMap />`, `<ClearanceWizard />`) and minimal menu toggles. | `0` unnecessary React roots on static prose. |
 | **SRS-NFR-PERF-03** | The static `/search-index.json` file shall remain compact for cellular networks. | `< 100 KB` uncompressed JSON for MVP dataset. |
 | **SRS-NFR-PERF-04** | Synchronous client search filtering shall complete within one animation frame. | `< 16 ms` filtering time on up to `200` articles. |
 
@@ -338,3 +389,4 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | :--- | :--- | :--- |
 | **SRS-NFR-SEC-01** | User search input echoed in UI states shall rely strictly on React JSX escaping with zero raw HTML injection (`dangerouslySetInnerHTML`). | Resistant to DOM-based XSS via search queries. |
 | **SRS-NFR-SEC-02** | Static deployment shall store or transmit zero user PII, cookies, credentials, or server secrets. | Zero runtime PII or credential attack surface. |
+| **SRS-NFR-SEC-03** | Wizard checklist state shall remain client-side only: `localStorage` and URL hash, never transmitted to any origin. | Zero network requests carrying checklist state. |

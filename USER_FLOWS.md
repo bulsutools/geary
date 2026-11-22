@@ -32,6 +32,7 @@ User classes referenced throughout these flows are defined in [PROJECT_CHARTER.m
 | **MODE-02** | **Interactive Client Search** | Student focuses the Search Bar or triggers `/` or `Ctrl+K` (`Cmd+K`). | Client-side search loads and caches the static search index, ranks multi-term queries, and supports full keyboard result selection. |
 | **MODE-03** | **Degraded / Off-Nominal Recovery** | Search yields zero results, index fetch fails on unstable mobile data, or student opens a broken URL. | System surfaces calm recovery cues—category quick-jump links, retry guidance, or the branded `404` page. |
 | **MODE-04** | **Build-Time Content Authoring & Validation** | Maintainer adds or edits a Markdown article and compiles the site. | Automated build checks validate frontmatter metadata, regenerate static pages, and update the search index. |
+| **MODE-05** | **Interactive Request Checklist** | Student opens `/wizard` or follows a `#<request-id>` deep link from an article or category card. | React island renders request picker and requirements checklist; checkbox state persists in `localStorage` and URL hash without backend calls. |
 
 ---
 
@@ -180,6 +181,19 @@ sequenceDiagram
 
 ---
 
+### `UJ-07`: Check Off Document-Request Requirements (`/wizard`)
+- **Actor:** `ACT-03` (Continuing Undergraduate gathering requirements during enrollment or graduation season)
+- **Trigger:** Student needs to know exactly what to bring for a TOR, Good Moral Character, ID replacement, or transfer credential request.
+- **Operational Mode:** `MODE-05`
+- **Journey Steps:**
+  1. Student opens `/wizard` directly, taps a wizard card on the `documents` category page, or follows a "check off your requirements" link inside a guide (`/wizard#<request-id>`).
+  2. The wizard opens the matching request checklist showing office, published fee, processing time, and ordered requirements.
+  3. Student checks off items as they gather documents; progress counter updates and the URL hash mirrors the checked state for sharing.
+  4. Student taps the guide link to read full procedure context, or resets the checklist when starting over.
+- **Expected Outcome:** Student leaves knowing precisely what they have versus what they still need, with progress surviving reloads and shareable via link.
+
+---
+
 ## 4. Use Cases, Alternative Flows & Exception Scenarios (`UC-01` to `UC-05`) *(ISO 29148 Clauses 6.2.1.3 & 9.5.3)*
 
 ---
@@ -318,6 +332,33 @@ sequenceDiagram
 
 ---
 
+### `UC-07`: Track Document-Request Requirements in the Wizard
+
+| Field | Details |
+| :--- | :--- |
+| **Actors** | `ACT-01`, `ACT-02`, `ACT-03` |
+| **Operational Modes** | `MODE-05` (Nominal), `MODE-03` (Malformed hash/storage fallback) |
+| **Preconditions** | At least one article declares `wizard` frontmatter; client browser supports JavaScript and `localStorage`. |
+| **Postconditions** | Checklist progress persists locally and can be shared via URL hash; full context remains one click away in the source guide. |
+
+#### Main Success Scenario (Basic Flow)
+1. Student opens `/wizard` (directly, via a category wizard card, or via an article's "check off your requirements" link).
+2. Picker lists every declared request type with its source guide.
+3. Student selects a request; summary rows show office, fee, and processing time where published.
+4. Student toggles requirement checkboxes; progress (`x of y`) and URL hash update; state saves to `localStorage`.
+5. Student follows the guide link to `/articles/<slug>` for full procedure detail.
+
+#### Alternative Flows
+- **`AF-07A` (Shared Link):** Student opens `/wizard#<request-id>:<indices>` shared by a classmate; wizard selects that request with the shared checks applied on top of local state.
+- **`AF-07B` (Reset Checklist):** Student taps reset to clear all checked items for the active request only.
+- **`AF-07C` (Switch Request):** Student returns to the picker and selects a different request; each request keeps independent checklist state.
+
+#### Exception / Off-Nominal Scenarios
+- **`EF-07A` (Unknown Request in Hash):** Hash references a request `id` no article declares → wizard falls back to the picker view without errors (`ERR-10`).
+- **`EF-07B` (Corrupt or Blocked Storage):** `localStorage` unavailable or holds invalid JSON → wizard starts from an empty checklist and keeps working (`ERR-10`).
+
+---
+
 ## 5. Off-Nominal, Exception & Error Scenario Matrix *(ISO 29148 Clause 9.3.5)*
 
 | Error ID | Scenario | Operational Mode | Trigger Condition | Expected System Behavior | User Recovery Path |
@@ -331,3 +372,4 @@ sequenceDiagram
 | **ERR-07** | Wide table / long URL on mobile | `MODE-01` | Multi-column table or long URL on `375px` screen | Scroll table horizontally within its own container; wrap long URLs cleanly | Swipe horizontally inside table only |
 | **ERR-08** | Nonexistent / broken route | `MODE-03` | Mistyped or outdated bookmark URL | Serve branded `/404.html` with Search Bar and 7 category links | Search or navigate to Home / Category |
 | **ERR-09** | Invalid Markdown frontmatter | `MODE-04` | Missing/invalid metadata or unrecognized category slug | Abort build immediately with clear validation diagnostic | Correct frontmatter and re-run build |
+| **ERR-10** | Corrupt wizard hash or storage | `MODE-05` | Malformed `#` hash, unknown request id, or invalid `localStorage` JSON | Fall back to picker/empty checklist with zero errors | Re-select request or re-check items |

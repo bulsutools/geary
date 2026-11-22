@@ -43,6 +43,10 @@ When executing the build phase (including via `/goal`):
 - [x] Implemented the static `/map` route, campus-map dataset, literal building/location search, SVG pan/zoom/reset controls, accessible building selection, and building inspector (`REQ-MAP-01`–`04`, `SRS-FUNC-MAP-01`–`02`).
 - [x] Added map unit and browser verification (`TC-UNIT-06`, `TC-E2E-07`) and recorded the implementation in the RTM (`RTM-21`).
 
+### `M7.1`: Document Request Wizard (`[x]` Completed)
+- [x] Implemented `/wizard` with article-frontmatter-sourced request checklists, `localStorage` persistence, shareable URL hash state, category entry cards, and article deep links (`REQ-WIZ-01`–`05`, `SRS-FUNC-WIZ-01`–`05`).
+- [x] Added wizard unit and browser verification (`TC-UNIT-07`, `TC-E2E-09`) and recorded the implementation in the RTM (`RTM-23`, `RTM-NFR-15`).
+
 ---
 
 ## 3. Implementation Milestones & Life-Cycle Gates (`M1` to `M5`) *(ISO 12207 Clauses 6.3.1 & 6.4)*
@@ -91,6 +95,7 @@ When executing the build phase (including via `/goal`):
 - [x] **`BL-20` (`P0`):** Run the full verification pipeline (`bun run check`, `bun test`, `bun run build`, `bun run test:e2e`, `bun audit`), resolve any discovered issues, verify `0` failures across all `TC-*` gates (`TESTING.md` §4), and mark all rows in [REQUIREMENTS.md](./REQUIREMENTS.md) as `[x] Verified`.
 - [x] **`BL-21` (`P0`):** Implement and verify the interactive 2D campus map (`/map`), including the static data contract, location/building search, accessible SVG selection, inspector, viewport controls, `TC-UNIT-06`, and `TC-E2E-07` (`REQ-MAP-01`–`04`, `RTM-21`).
 - [x] **`BL-22` (`P1`, Post-MVP):** Implement the approved dark-mode design contract in [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) §2.2, including a Header theme menu with Light, Dark, and System default choices; persisted preference; no-flash bootstrap; tokenized surfaces; and light/dark accessibility verification (`TC-E2E-08`, `TC-A11Y-03`).
+- [x] **`BL-23` (`P0`/`P1`, Post-MVP):** Implement the interactive document-request wizard (`/wizard`, `F-06`): `wizard` article frontmatter schema (`SW-INT-05`), `src/lib/wizard.ts` aggregation + hash/storage helpers, `ClearanceWizard.tsx` React island, category entry cards, article "check off your requirements" links, `TC-UNIT-07`, and `TC-E2E-09` (`REQ-WIZ-01`–`05`, `RTM-23`, `RTM-NFR-15`).
 
 ---
 

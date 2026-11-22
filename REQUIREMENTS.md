@@ -52,6 +52,7 @@ This document serves as the single authoritative traceability ledger across Gear
 | **RTM-19** | `OBJ-04` | `REQ-UI-04` / `AC-UI-04` (`P1`) | `UI-INT-03` | `UJ-02`, `UJ-03` | `public/favicon.svg`, `Header.astro`, `index.astro`, `DESIGN_SYSTEM.md` §5.1, §6 | `BL-05`, `BL-10`, `BL-13` | `TC-A11Y-01`, `TC-E2E-04` | `[x] Verified` |
 | **RTM-20** | `OBJ-03`, `OBJ-04` | `REQ-UI-05` / `AC-UI-05` (`P1`) | `SRS-FUNC-RND-06`, `UI-INT-01` | `UC-04`, `ERR-08` | `src/pages/404.astro`, `SearchBar.tsx` | `BL-14`, `BL-17` | `TC-BLD-03`, `TC-E2E-05`, `TC-A11Y-01` | `[x] Verified` |
 | **RTM-21** | `OBJ-01`, `OBJ-03`, `OBJ-05` | `REQ-MAP-01`–`04` / `AC-MAP-01`–`04` (`P0`) | `SW-INT-04`, `SRS-FUNC-MAP-01`, `SRS-FUNC-MAP-02`, `SRS-FUNC-UI-01` | `UC-06` | `src/data/campus-map.ts`, `src/lib/map-search.ts`, `CampusMap.tsx`, `src/pages/map.astro`, `Header.astro` | `BL-21` | `TC-BLD-03`, `TC-UNIT-06`, `TC-E2E-04`, `TC-E2E-07`, `TC-A11Y-01` | `[x] Verified` |
+| **RTM-23** | `OBJ-02`, `OBJ-03` | `REQ-WIZ-01`–`05` / `AC-WIZ-01`–`05` (`P0`/`P1`) | `SW-INT-02`, `SW-INT-05`, `UI-INT-01`, `SRS-FUNC-WIZ-01`–`05`, `SRS-NFR-SEC-03` | `UJ-07`, `UC-07`, `AF-07A`–`C`, `EF-07A`–`B`, `ERR-09`, `ERR-10`, `MODE-05` | `src/content.config.ts` (`wizard` schema), `src/lib/wizard.ts`, `ClearanceWizard.tsx`, `src/pages/wizard.astro`, `src/pages/categories/[slug].astro`, `src/content/articles/*.md`, `DESIGN_SYSTEM.md` §5.10 | `BL-23` | `TC-UNIT-07`, `TC-E2E-09`, `TC-BLD-03` | `[x] Verified` |
 
 ### 2.1 Planned Post-MVP Enhancement Traceability
 
@@ -79,6 +80,7 @@ This document serves as the single authoritative traceability ledger across Gear
 | **RTM-NFR-12** | `OBJ-05` | `SRS-NFR-MAINT-02` | Portability (*Adaptability*) | Pure static `dist/` output without vendor-locked runtime adapters | `BL-02`, `BL-20` | `TC-BLD-03` | `[x] Verified` |
 | **RTM-NFR-13** | `OBJ-03` | `SRS-NFR-SEC-01` | Security (*Integrity*) | Standard JSX text rendering inside `SearchBar.tsx` | `BL-17` | `TC-SEC-01`, `TC-UNIT-02` | `[x] Verified` |
 | **RTM-NFR-14** | `OBJ-05` | `SRS-NFR-SEC-02` | Security (*Confidentiality & Integrity*) | Zero secrets/PII, dependency audit hygiene (`bun.lock`) | `BL-01`, `BL-20` | `TC-SEC-02` | `[x] Verified` |
+| **RTM-NFR-15** | `OBJ-03` | `SRS-NFR-SEC-03` | Security (*Confidentiality*) | `ClearanceWizard.tsx` + `src/lib/wizard.ts` (`localStorage`/hash only, zero transmission) | `BL-23` | `TC-UNIT-07`, `TC-E2E-09` | `[x] Verified` |
 
 ---
 
@@ -90,16 +92,16 @@ This document serves as the single authoritative traceability ledger across Gear
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **`CON-TECH-01`** | §7.2 | `astro.config.mjs` configured for static SSG (`output: 'static'`, zero SSR adapters). | `BL-02` | `TC-BLD-03` | `[x] Verified` |
 | **`CON-TECH-02`** | §7.2 | Styling via `@tailwindcss/vite` and `src/styles/global.css`. | `BL-01`, `BL-02`, `BL-04` | `TC-BLD-03`, `TC-A11Y-01` | `[x] Verified` |
-| **`CON-TECH-03`** | §7.2 | `@astrojs/react` hydrated strictly via `client:load` on `<SearchBar />` only. | `BL-02`, `BL-17` | `TC-BLD-01`, `TC-E2E-01` | `[x] Verified` |
+| **`CON-TECH-03`** | §7.2 | `@astrojs/react` hydrated strictly via `client:load` on `<SearchBar />`, `<ExploreSpotlight />`, `<CampusMap />`, and `<ClearanceWizard />`. | `BL-02`, `BL-17`, `BL-21`, `BL-23` | `TC-BLD-01`, `TC-E2E-01`, `TC-E2E-09` | `[x] Verified` |
 | **`CON-TECH-04`** | §7.2 | `tsconfig.json` strict TS + `astro/zod` frontmatter validation in `src/content.config.ts`. | `BL-06`, `BL-07` | `TC-BLD-01`, `TC-BLD-02` | `[x] Verified` |
 | **`CON-FIN-01`** | `OBJ-05`, §7.1 | 100% static `dist/` compatible with free-tier CDN hosting (`$0.00/month`). | `BL-02`, `BL-20` | `TC-BLD-03` | `[x] Verified` |
 | **`CON-FIN-02`** | `OBJ-05`, §7.1 | Zero runtime servers, managed databases, CMS subscriptions, or paid APIs. | `BL-02`, `BL-15` | `TC-BLD-03` | `[x] Verified` |
 | **`CON-DATA-01`** | `OBJ-01` | UTF-8 Markdown guides managed under `src/content/articles/` in Git. | `BL-07`, `BL-09` | `TC-BLD-02` | `[x] Verified` |
 | **`CON-DATA-02`** | `OBJ-03`, `OBJ-05` | Build-time static JSON index emitted at `dist/search-index.json`. | `BL-15` | `TC-BLD-03`, `TC-UNIT-05` | `[x] Verified` |
-| **`CON-GOV-01`** | §6.2, §7.3 | Strict MVP feature lock (zero AI/RAG chatbot, user accounts, comments, or SIS integrations). | `BL-01`–`BL-20` | Scope Audit (§5) | `[x] Verified` |
+| **`CON-GOV-01`** | §6.2, §7.3 | Strict scope lock (zero AI/RAG chatbot, user accounts, comments, or SIS integrations) covering the six approved capabilities including the document-request wizard (`F-06`). | `BL-01`–`BL-23` | Scope Audit (§5) | `[x] Verified` |
 | **`CON-GOV-02`** | §7.4 | Unofficial BulSU student hub disclaimers in `VerificationBanner.astro` and `Footer.astro`. | `BL-10`, `BL-11` | `TC-BLD-03`, `TC-A11Y-02` | `[x] Verified` |
 
-### 4.2 Off-Nominal & Error Scenarios (`ERR-01` to `ERR-09`)
+### 4.2 Off-Nominal & Error Scenarios (`ERR-01` to `ERR-10`)
 
 | Error ID | Linked PRD / SRS IDs | Handling Component / Module | Backlog ID | Verification Gate | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -112,6 +114,7 @@ This document serves as the single authoritative traceability ledger across Gear
 | **`ERR-07`** | `SRS-FUNC-UI-04`, `SRS-NFR-USAB-04` | `src/styles/global.css`, `ArticleLayout.astro` | `BL-04`, `BL-12` | `TC-E2E-04` | `[x] Verified` |
 | **`ERR-08`** | `REQ-UI-05`, `SRS-FUNC-RND-06` | `src/pages/404.astro` | `BL-14` | `TC-E2E-05`, `TC-A11Y-01` | `[x] Verified` |
 | **`ERR-09`** | `REQ-ART-01`, `SRS-FUNC-CNT-01`, `SRS-FUNC-CNT-02` | `src/content.config.ts` | `BL-07` | `TC-BLD-02` | `[x] Verified` |
+| **`ERR-10`** | `REQ-WIZ-04`, `SRS-FUNC-WIZ-02`–`04` | `src/lib/wizard.ts`, `ClearanceWizard.tsx` | `BL-23` | `TC-UNIT-07`, `TC-E2E-09` | `[x] Verified` |
 
 ---
 
