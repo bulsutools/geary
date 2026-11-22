@@ -42,7 +42,7 @@ This Software Requirements Specification (SRS) defines the formal software-level
 
 | ID | Constraint Statement |
 | :--- | :--- |
-| **CON-TECH-01** | The software shall build in Astro static output mode (`output: 'static'`) with zero server-side rendering (SSR) adapters or runtime edge functions. |
+| **CON-TECH-01** | The software shall build in Astro static output mode (`output: 'static'`) with zero server-side rendering (SSR) adapters or runtime edge functions. The optional read-only MCP Worker (`mcp/`, `F-06`) is a separate deployable artifact outside the site build and does not relax this constraint for site routes. |
 | **CON-TECH-02** | Layout and component presentation shall be styled using **Tailwind CSS** utility classes and design tokens. |
 | **CON-TECH-03** | **React** shall be hydrated strictly via Astro island directives (`client:load` or `client:idle`) and limited to stateful client interactivity (`<SearchBar />`, `<ExploreSpotlight />`, and `<CampusMap />`). |
 | **CON-TECH-04** | **TypeScript** and **Zod** shall enforce compile-time type checking and build-time frontmatter schema validation across all content and data modules. |
@@ -52,7 +52,7 @@ This Software Requirements Specification (SRS) defines the formal software-level
 | ID | Constraint Statement |
 | :--- | :--- |
 | **CON-FIN-01** | Total recurring operational, hosting, storage, and third-party service cost shall remain strictly **$0.00/month**. |
-| **CON-FIN-02** | The software shall not depend on runtime backend servers, managed databases, headless CMS subscriptions, or paid third-party APIs (including LLM or hosted search endpoints). |
+| **CON-FIN-02** | The software shall not depend on runtime backend servers, managed databases, headless CMS subscriptions, or paid third-party APIs (including LLM or hosted search endpoints). Exception: the optional public read-only MCP Worker (`mcp/`) serves only the static `/corpus.json` build artifact and stores no state or credentials. |
 
 ### 2.3 Data & Content Constraints
 
@@ -83,6 +83,7 @@ This Software Requirements Specification (SRS) defines the formal software-level
 | `/articles/[slug]` | Distraction-free reading view with metadata header, responsive TOC, Markdown prose, disclaimer, and related guides. |
 | `/404.html` | Branded recovery page embedding the search bar and links to all seven categories. |
 | `/search-index.json` | Static JSON search payload consumed by `<SearchBar />`. |
+| `/corpus.json` | Static JSON article corpus consumed by the MCP Worker (`F-06`). |
 
 #### `UI-INT-02`: Responsive Viewport Breakpoints
 - **Mobile (`< 768px`):** Single-column layout, collapsed header navigation toggle, collapsible `<details>` TOC above article prose, and horizontally scrollable table containers.
@@ -128,6 +129,31 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | `categoryLabel` | `string` | Human-readable category title resolved from `SW-INT-01`. |
 | `subcategory` | `string` | Sub-topic grouping label. |
 | `headings` | `string[]` | Extracted plain-text `h2` and `h3` headings. |
+
+#### `SW-INT-05`: Static Article Corpus Payload Contract (`GET /corpus.json`)
+
+Build-time JSON dump of the full `articles` content collection consumed by the MCP Worker. Each article record carries:
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `slug` | `string` | Route identifier matching `/articles/[slug]`. |
+| `title` | `string` | Article display title. |
+| `category` / `categoryLabel` | `CategorySlug` / `string` | Canonical slug and human-readable label from `SW-INT-01`. |
+| `subcategory` | `string` | Sub-topic grouping label. |
+| `updatedDate` | ISO `string` | Article freshness timestamp. |
+| `preview` | `string` | Plain-text preview identical to `SW-INT-03`. |
+| `sources` | `{ label: string; url?: string }[]` | Deduplicated citations resolved by `resolveArticleSources`. |
+| `content` | `string` | Raw `.md` file bytes (YAML frontmatter plus body), byte-identical to `src/content/articles/<slug>.md`. |
+
+The payload also embeds the `SW-INT-01` category metadata array so the Worker resolves labels without importing site code.
+
+#### `SW-INT-06`: MCP Streamable HTTP Endpoint Contract (`mcp/` Worker)
+
+- Transport: JSON-RPC 2.0 over HTTP `POST` (Streamable HTTP; server responds with `application/json`, no SSE stream).
+- Methods: `initialize`, `ping`, `tools/list`, `tools/call`, plus `notifications/*` acknowledged with `202`.
+- Tools (read-only, no auth): `search_articles(query, category?)`, `get_article(slug)`, `list_categories()`, `get_freshness()`.
+- Errors: JSON-RPC codes `-32700`/`-32600`/`-32601`/`-32602`/`-32603`; unknown tool arguments or slugs surface as `isError: true` tool results, never worker crashes.
+- CORS: `Access-Control-Allow-Origin: *` on all responses so browser-based MCP clients can connect.
 
 ### 3.3 Communications Interfaces (`COM-INT-01`)
 - All HTML, CSS, JavaScript, and JSON assets shall be delivered via standard **HTTPS** (`GET` requests) from static hosting.
@@ -295,6 +321,30 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 - **Inputs:** Selected building ID, highlighted location ID, zoom scale (`1` to `3`), and SVG viewBox pan offsets.
 - **Processing Logic:** Highlight selected building footprint (`#8B1538` fill, `#D4A017` ring), smoothly zoom/pan viewBox onto building center when selected from search, and populate the side/bottom inspector panel with the building name and contained location names.
 - **Outputs:** Synchronized 2D vector map + building detail panel plus accessible keyboard building index.
+
+---
+
+### 4.6 Read-Only MCP Server Subsystem (`F-06`)
+
+#### `SRS-FUNC-MCP-01`: Corpus Fetch & Cache
+- **Inputs:** `CORPUS_URL`/`SITE_URL` Worker environment variables (default `https://geary.bulsu.tools/corpus.json`).
+- **Processing Logic:** Fetch `SW-INT-05` once per isolate, cache the parsed corpus in module scope, and reuse it across requests.
+- **Outputs:** In-memory `Corpus` object; fetch failures return JSON-RPC `-32603`.
+
+#### `SRS-FUNC-MCP-02`: Article Search Tool (`search_articles`)
+- **Inputs:** `query` string, optional `category` enum from `SW-INT-01`.
+- **Processing Logic:** Literal case-insensitive token matching (never `RegExp` on user input) across title, subcategory, preview, and Markdown body with frontmatter stripped; rank title matches above body matches; cap results.
+- **Outputs:** Ranked `{ slug, title, category, subcategory, updatedDate, preview }[]`.
+
+#### `SRS-FUNC-MCP-03`: Article Retrieval Tool (`get_article`)
+- **Inputs:** `slug` string.
+- **Processing Logic:** Exact slug lookup in the corpus; return `SW-INT-05` `content` verbatim alongside parsed frontmatter fields.
+- **Outputs:** Full source Markdown on hit; `isError` tool result naming the unknown slug on miss.
+
+#### `SRS-FUNC-MCP-04`: Discovery & Freshness Tools (`list_categories`, `get_freshness`)
+- **Inputs:** None.
+- **Processing Logic:** Group corpus articles into the `SW-INT-01` category tree by `subcategory`; compute minimum `updatedDate` per category.
+- **Outputs:** Category/subcategory tree with article listings; per-category oldest `updatedDate` and article counts.
 
 ---
 

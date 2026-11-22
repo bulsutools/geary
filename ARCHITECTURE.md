@@ -257,8 +257,14 @@ export interface SearchIndexItem {
 }
 ```
 
+#### `src/pages/corpus.json.ts`
+Build-time `GET` endpoint exporting the full article corpus (`SW-INT-05`) consumed by the MCP Worker. Each record carries `slug`, `title`, `category`, `categoryLabel`, `subcategory`, ISO `updatedDate`, `preview`, resolved `sources`, and `content` — the raw `.md` file bytes (frontmatter plus body) captured via Vite `import.meta.glob('...', { query: '?raw' })` so `get_article` returns source-identical Markdown. The payload embeds the `CATEGORIES` registry for label resolution.
+
+#### `mcp/` — Read-Only MCP Worker (`F-06`)
+Optional Cloudflare Worker (`mcp/worker.ts`, configured by `mcp/wrangler.toml`) exposing the handbook to MCP clients over Streamable HTTP JSON-RPC (`SW-INT-06`). It fetches and caches `/corpus.json` once per isolate (`CORPUS_URL`/`SITE_URL` vars, default `https://geary.bulsu.tools`), then serves four read-only tools — `search_articles`, `get_article`, `list_categories`, `get_freshness` — implemented as pure functions in `mcp/corpus.ts`. No auth, no state, no site-code imports.
+
 ### 5.3 External Runtime Integrations
-Geary has no external runtime dependency for its core information hub: there are no databases, hosted search SaaS, LLM APIs, authentication services, or third-party tracking scripts. The existing `/contribute` page embeds a Google Form as an optional third-party submission surface; it is a documented governance exception that requires a dedicated scope decision before further expansion.
+Geary has no external runtime dependency for its core information hub: there are no databases, hosted search SaaS, LLM APIs, authentication services, or third-party tracking scripts. The optional `mcp/` Cloudflare Worker is a separate read-only deployable that serves only the static `/corpus.json` artifact; it is not part of the site build and holds no credentials. The existing `/contribute` page embeds a Google Form as an optional third-party submission surface; it is a documented governance exception that requires a dedicated scope decision before further expansion.
 
 ---
 
@@ -292,6 +298,10 @@ geary/
 │   ├── favicon.svg                  # Minimalist Geary geometric gear icon
 │   ├── googled56ea9e672e7afb1.html  # Google Search Console ownership verification
 │   └── og-image.png                 # Shared 1200x630 Open Graph social preview card
+├── mcp/                             # Optional read-only MCP Worker (F-06, SW-INT-06)
+│   ├── worker.ts                    #   Streamable HTTP JSON-RPC fetch handler + corpus cache
+│   ├── corpus.ts                    #   Pure tool logic: search/get_article/list_categories/get_freshness
+│   └── wrangler.toml                #   Worker config (geary-mcp, workers.dev, SITE_URL var)
 ├── tests/                           # Lean unit & Playwright E2E/Axe smoke tests
 │   ├── unit/
 │   │   ├── search.test.ts           # Bun test suite for query scoring & index contract
@@ -332,6 +342,7 @@ geary/
         ├── 404.astro                # Branded recovery page with SearchBar & categories (`noindex`)
         ├── robots.txt.ts            # Build-time generator referencing Astro.site sitemap
         ├── search-index.json.ts     # Build-time generator for /search-index.json
+        ├── corpus.json.ts           # Build-time generator for /corpus.json (MCP corpus)
         ├── categories/
         │   ├── index.astro          # Categories directory page (7 CategoryCards)
         │   └── [slug].astro         # Subcategory-grouped category directory pages

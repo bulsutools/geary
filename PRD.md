@@ -16,12 +16,13 @@
 | **Status** | Approved for Implementation |
 
 ### 1.2 Purpose
-This Product Requirements Document (PRD) defines the MVP feature set, product behavior, release priorities, and verifiable acceptance criteria for **Geary**, bounded strictly to its five confirmed product capabilities:
+This Product Requirements Document (PRD) defines the MVP feature set, product behavior, release priorities, and verifiable acceptance criteria for **Geary**, bounded strictly to its confirmed product capabilities:
 1. **Articles & Markdown Content (`F-01`)**
 2. **Categories & Purposeful Organization (`F-02`)**
 3. **Instant Client-Side Search Bar (`F-03`)**
 4. **Low-Cognitive-Load UI/UX & BulSUan Identity (`F-04`)**
 5. **Interactive 2D Campus Map (`F-05`)**
+6. **Read-Only MCP Server for AI Assistants (`F-06`)**
 
 ---
 
@@ -183,3 +184,24 @@ Every product requirement in this PRD carries a strict release priority:
 - **AC-MAP-02 (`REQ-MAP-02`):** *Given* any clickable building on the map, *When* clicked, *Then* the building highlights in BulSU Crimson (`#8B1538`) and the inspector displays its name and contained locations/offices.
 - **AC-MAP-03 (`REQ-MAP-03`):** *Given* a query such as `"Registrar"` or `"Scholarship"` typed into the campus map search bar, *When* matching locations appear, *Then* each result shows its parent building name (`Flores Hall`, `College of Law Annex / Near College of Law`, etc.), and selecting it focuses that building on the map and shows the matched location in the inspector.
 - **AC-MAP-04 (`REQ-MAP-04`):** *Given* pan/zoom buttons and reset control, *When* triggered by mouse or keyboard, *Then* the SVG viewport zooms cleanly and resets back to full campus view.
+
+### 3.6 Feature 6: Read-Only MCP Server for AI Assistants (`F-06`)
+
+#### Requirements Specification
+
+| Req ID | Priority | Requirement Statement |
+| :--- | :--- | :--- |
+| **REQ-MCP-01** | **P1** | The system shall expose a public, unauthenticated Cloudflare Worker MCP endpoint speaking JSON-RPC 2.0 over Streamable HTTP (`tools/list` and `tools/call`) with no write tools. |
+| **REQ-MCP-02** | **P1** | The `search_articles` tool shall accept a `query` string and optional `category` filter drawn from the 7 canonical category slugs (`SW-INT-01`) and return ranked matches across article title, subcategory, preview, and Markdown body. |
+| **REQ-MCP-03** | **P1** | The `get_article` tool shall return the complete source Markdown of one article (frontmatter plus body) byte-identical to `src/content/articles/` for a valid `slug`, and shall return a clean tool-level error for unknown slugs. |
+| **REQ-MCP-04** | **P1** | The `list_categories` and `get_freshness` tools shall expose the category/subcategory article tree and the oldest `updatedDate` per category so agents can discover scope and warn about stale content. |
+
+#### Product Behavior
+- **Build-Time Corpus:** The Worker serves a corpus JSON emitted at build time by `src/pages/corpus.json.ts`, containing every published article's slug, metadata, resolved sources, preview, and raw Markdown. The Worker fetches and caches this dump; it never reads the content collection at runtime.
+- **Read-Only Public Surface:** All four tools are pure lookups over the static corpus. Unknown slugs, invalid categories, and malformed JSON-RPC payloads return protocol or tool-level errors without crashing the Worker.
+
+#### Acceptance Criteria
+- **AC-MCP-01 (`REQ-MCP-01`):** *Given* an MCP client, *When* it POSTs `initialize`, `tools/list`, and `tools/call` JSON-RPC messages to the Worker endpoint, *Then* it receives spec-shaped responses listing `search_articles`, `get_article`, `list_categories`, and `get_freshness`.
+- **AC-MCP-02 (`REQ-MCP-02`):** *Given* a query such as `"TOR request"` with or without a `category` filter, *When* `search_articles` runs, *Then* matching articles rank by title/body relevance and out-of-enum categories are rejected.
+- **AC-MCP-03 (`REQ-MCP-03`):** *Given* a published slug, *When* `get_article` runs, *Then* the returned Markdown equals the source file verbatim; *Given* an unknown slug, *Then* a clean error is returned.
+- **AC-MCP-04 (`REQ-MCP-04`):** *Given* the corpus, *When* `list_categories` or `get_freshness` runs, *Then* the full 7-category tree with subcategory groupings and per-category oldest `updatedDate` values is returned.

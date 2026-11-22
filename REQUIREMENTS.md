@@ -58,6 +58,7 @@ This document serves as the single authoritative traceability ledger across Gear
 | RTM ID | Charter Obj | Requirement & Priority | Target Source & Design Artifacts | Backlog ID | Planned Verification | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **RTM-22** | `OBJ-02`, `OBJ-04` | Dark Mode design contract (`P1`, post-MVP) | `DESIGN_SYSTEM.md` §2.2; `ThemeToggle.astro`, `BaseLayout.astro` bootstrap, tokenized surfaces & `CampusMap.tsx` | `BL-22` | `TC-E2E-08`, `TC-A11Y-03` | `[x] Verified` |
+| **RTM-23** | `OBJ-03`, `OBJ-05` | `REQ-MCP-01`–`04` / `AC-MCP-01`–`04` (`P1`, post-MVP) | `SW-INT-05`, `SW-INT-06`, `SRS-FUNC-MCP-01`–`04`; `src/pages/corpus.json.ts`, `mcp/worker.ts`, `mcp/corpus.ts` | `BL-23` | `TC-BLD-03`, `TC-UNIT-07` | `[x] Verified` |
 
 ---
 

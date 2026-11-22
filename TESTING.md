@@ -74,6 +74,7 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **Pass/Fail Acceptance Criteria:**
   - `dist/index.html`, `dist/map/index.html`, `dist/contribute/index.html`, `dist/terms/index.html`, `dist/privacy/index.html`, `dist/404.html`, all `dist/categories/<slug>/index.html` routes, and all `dist/articles/<slug>/index.html` routes exist.
   - `dist/search-index.json` is valid JSON, size is `< 100 KB`, and item count matches the published article collection count.
+  - `dist/corpus.json` is valid JSON, its `articles` count matches the published collection count, and every record's `content` field equals the corresponding `src/content/articles/<slug>.md` file bytes.
 
 #### `TC-BLD-04`: Internal Link & Anchor Integrity
 - **ISO 25010 Characteristic:** Reliability (*Availability*)
@@ -127,6 +128,13 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **Preconditions / Inputs:** The pure campus-map search and viewport helpers with representative building and location data.
 - **Verification Procedure:** Execute `tests/unit/map-search.test.ts` to verify location-first matching, parent-building labels, literal query safety, and bounded pan/zoom/reset viewBox calculations.
 - **Pass/Fail Acceptance Criteria:** Office and building queries resolve to the expected parent building; viewport calculations remain within their supported bounds; empty or unmatched queries return safely without throwing.
+
+#### `TC-UNIT-07`: MCP Corpus Tools & JSON-RPC Dispatch
+- **ISO 25010 Characteristic:** Functional Suitability (*Functional Correctness*) & Reliability (*Fault Tolerance*)
+- **Linked Requirements:** `REQ-MCP-01`–`04`, `SW-INT-05`, `SW-INT-06`, `SRS-FUNC-MCP-02`–`04`
+- **Preconditions / Inputs:** `tests/unit/mcp.test.ts` fixture corpus plus `mcp/corpus.ts` tool functions and `mcp/worker.ts` `handleJsonRpc` dispatcher.
+- **Verification Procedure:** Assert `initialize`/`tools/list`/`tools/call`/`ping` responses, `search_articles` ranking and `category` filtering, `get_article` verbatim content and clean unknown-slug `isError`, `list_categories` tree shape, `get_freshness` oldest-date computation, and JSON-RPC error codes for malformed payloads, unknown methods, and notifications.
+- **Pass/Fail Acceptance Criteria:** All four tools return spec-shaped results; unknown slugs produce `isError: true` tool results (not thrown exceptions); invalid categories and malformed JSON produce correct JSON-RPC errors; `0` uncaught exceptions.
 
 ---
 
@@ -250,7 +258,7 @@ To keep developer feedback fast during MVP implementation, tests execute in four
 | :--- | :--- | :--- |
 | `bun run check` | `astro check` | `TC-BLD-01` (TypeScript & Astro diagnostics) |
 | `bun run build` | `astro build` | `TC-BLD-02`, `TC-BLD-03` (Zod validation + `dist/` generation) |
-| `bun test` (`bun run test:unit`) | `bun test` | `TC-UNIT-01`–`05` (Search scorer, special chars, grouping, JSON contract) |
+| `bun test` (`bun run test:unit`) | `bun test` | `TC-UNIT-01`–`07` (Search scorer, special chars, grouping, JSON contract, MCP tools) |
 | `bun run test:e2e` | `playwright test` | `TC-BLD-04`, `TC-E2E-01`–`05`, `TC-A11Y-01`–`02`, `TC-SEC-01` |
 
 ### 4.1 GitHub Actions Continuous Integration (CI) Automation

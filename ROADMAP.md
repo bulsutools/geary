@@ -91,6 +91,7 @@ When executing the build phase (including via `/goal`):
 - [x] **`BL-20` (`P0`):** Run the full verification pipeline (`bun run check`, `bun test`, `bun run build`, `bun run test:e2e`, `bun audit`), resolve any discovered issues, verify `0` failures across all `TC-*` gates (`TESTING.md` §4), and mark all rows in [REQUIREMENTS.md](./REQUIREMENTS.md) as `[x] Verified`.
 - [x] **`BL-21` (`P0`):** Implement and verify the interactive 2D campus map (`/map`), including the static data contract, location/building search, accessible SVG selection, inspector, viewport controls, `TC-UNIT-06`, and `TC-E2E-07` (`REQ-MAP-01`–`04`, `RTM-21`).
 - [x] **`BL-22` (`P1`, Post-MVP):** Implement the approved dark-mode design contract in [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) §2.2, including a Header theme menu with Light, Dark, and System default choices; persisted preference; no-flash bootstrap; tokenized surfaces; and light/dark accessibility verification (`TC-E2E-08`, `TC-A11Y-03`).
+- [x] **`BL-23` (`P1`, Post-MVP):** Implement the read-only MCP server (`F-06`): `src/pages/corpus.json.ts` build-time corpus dump (`SW-INT-05`), `mcp/` Cloudflare Worker with Streamable HTTP JSON-RPC and `search_articles`/`get_article`/`list_categories`/`get_freshness` tools (`SW-INT-06`, `SRS-FUNC-MCP-01`–`04`), and `TC-UNIT-07`/`TC-BLD-03` verification (`REQ-MCP-01`–`04`, `RTM-23`).
 
 ---
 
