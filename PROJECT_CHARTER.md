@@ -68,26 +68,27 @@ To serve as the go-to, **unofficial centralized student information hub** for Bu
 3. **Client-Side Search Bar:** Providing instant keyword discovery across published guides entirely within the user's browser with zero backend cost.
 4. **Low-Cognitive-Load UI/UX & BulSUan Visual Identity:** Establishing a calm, mobile-first reading layout and intuitive navigation tailored to BulSU students.
 5. **Interactive 2D Campus Map & Location Finder:** Providing an SVG-based BulSU Malolos Main Campus schematic (`/map`) with clickable buildings, indoor office/service listings, and instant location search with zero backend dependencies.
+6. **Ask-the-Handbook Q&A (`/ask`):** Answering student questions in plain language strictly from published articles, with inline citations to source articles and per-source last-updated dates.
 
 ### 6.2 Out-of-Scope (Explicitly Excluded from MVP)
-- **AI / RAG Chatbot:** An AI chatbot trained on the Student Handbook PDF is explicitly **excluded/scrapped** from the MVP to eliminate API costs, rate limits, and policy hallucination risks.
+- **General-Purpose AI Chatbot:** A free-form AI chatbot is excluded from the MVP. The single approved exception is the citation-grounded `/ask` Q&A feature (`F-06`), which answers only from the published article corpus, cites its sources, and declines questions the corpus does not cover.
 - **User Accounts & Authentication:** No student logins, profiles, or user-generated sessions.
-- **Dynamic Backends & Databases:** No runtime server APIs, comments sections, voting systems, or managed external databases.
+- **Dynamic Backends & Databases:** No runtime server APIs, comments sections, voting systems, or managed external databases. The single `/api/ask` answer endpoint (stateless, ephemeral, no storage) is the approved exception for `F-06`.
 - **Official Portal Integration:** No integration with official BulSU enrollment portals, SIS, or administrative systems.
-- **Unapproved Auxiliary Features:** Any capability beyond the five confirmed MVP capabilities is deferred post-MVP to preserve focus and prevent scope creep.
+- **Unapproved Auxiliary Features:** Any capability beyond the six confirmed MVP capabilities is deferred post-MVP to preserve focus and prevent scope creep.
 
 ---
 
 ## 7. Project Constraints
 
 ### 7.1 Financial Constraints
-- **Zero Operational Cost:** Total recurring cost for hosting, storage, search, and delivery must remain strictly **$0.00/month**, deploying cleanly to free-tier static web hosting.
+- **Zero Operational Cost:** Total recurring cost for hosting, storage, search, and delivery must remain strictly **$0.00/month**, deploying cleanly to free-tier static web hosting. The `/ask` answer endpoint uses Cloudflare Workers AI within the account's included free allocation; no paid API plan is permitted.
 
 ### 7.2 Technical Baseline Constraint
 - **Mandated Tech Stack:** Built strictly with **Astro + Tailwind CSS + React islands** (using React hydration only where client-side interactivity is strictly required).
 
 ### 7.3 Scope & UX Constraints
-- **Strict MVP Boundary:** Development is confined strictly to the five confirmed MVP capabilities.
+- **Strict MVP Boundary:** Development is confined strictly to the six confirmed MVP capabilities.
 - **Low Cognitive Load Mandate:** Visual styling and navigation must actively minimize reading friction and distraction.
 
 ### 7.4 Operational & Legal Constraints

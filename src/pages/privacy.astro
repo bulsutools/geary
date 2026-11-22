@@ -48,12 +48,15 @@ import Breadcrumbs from '../components/Breadcrumbs.astro';
         On the optional <a href="/contribute">Contribute</a> page, Geary embeds a third-party Google Form with email collection and sign-in limits turned off. Loading that <code>docs.google.com</code> form connects your browser directly to Google under Google&apos;s own privacy policy. Any contributor credit name or follow-up contact you voluntarily enter is reviewed solely by Geary maintainers to attribute credit or ask clarification questions, and is never sold or shared for marketing.
       </p>
 
-      <h2>3. Client-Side Search, Campus Map &amp; Daily Rotation</h2>
+      <h2>3. Client-Side Search, Campus Map, Daily Rotation &amp; Ask the Handbook</h2>
       <p>
         When you use the search bar, your browser downloads a static JSON file (<code>/search-index.json</code>) containing article titles, headings, and summaries. All filtering and ranking run locally inside your browser; your search terms are never sent to a Geary server or stored by us.
       </p>
       <p>
         The interactive <a href="/map">Main Campus map</a> and the Home page&apos;s daily rotating Featured section also run entirely in your browser using static files and your device&apos;s local calendar date. Geary never requests GPS or browser geolocation permissions.
+      </p>
+      <p>
+        On the <a href="/ask">Ask the handbook</a> page, your browser first retrieves relevant article passages locally from a static file (<code>/ask-index.json</code>) — your question is not sent anywhere at that stage. Only when the question is submitted does a single request go to Geary&apos;s <code>/api/ask</code> endpoint, which forwards the question and the matched public article excerpts to Cloudflare Workers AI to generate a cited answer. That endpoint stores nothing, sets no cookies, and keeps no logs of your question; the only data that leaves your device is that one request containing your question text and public handbook content.
       </p>
 
       <h2>4. Hosting &amp; Standard Server Logs</h2>

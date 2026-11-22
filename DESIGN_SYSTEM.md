@@ -163,7 +163,7 @@ Normal text and meaningful control boundaries must retain at least `4.5:1` contr
 
 ### 5.1 Global Header & Geary Brand Mark (`Header.astro`)
 - **Anatomy:** Sticky/top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`.
-  - *Desktop (`>= 768px`):* **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring) on the left, `Home` (`/`), `Articles` (`/articles`), `Campus Map` (`/map`), and `Contribute` (`/contribute`) links, and `<SearchBar variant="header" />` (`md:w-48 lg:w-60`) on the right.
+  - *Desktop (`>= 768px`):* **Geary** wordmark + minimalist 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring) on the left, `Home` (`/`), `Articles` (`/articles`), `Ask` (`/ask`), `Campus Map` (`/map`), and `Contribute` (`/contribute`) links, and `<SearchBar variant="header" />` (`md:w-48 lg:w-60`) on the right.
   - *Mobile (`< 768px`):* On Home (`/`), `<SearchBar variant="header" />` is hidden and the gear mark + **Geary** wordmark are centered beside the right-aligned drawer toggle. On all interior pages, only the gear mark shows on the left (`sr-only md:not-sr-only` wordmark) and `<SearchBar variant="header" />` stretches across the full available space (`flex-1`) between the gear mark and the drawer toggle.
 - **Interactive States:**
   - *Default:* `text-[#495057]` navigation links, `min-h-[44px]` mobile tap target.
@@ -213,6 +213,12 @@ Normal text and meaningful control boundaries must retain at least `4.5:1` contr
 - **Layout:** Responsive split container (`lg:grid-cols-[minmax(0,1fr)_360px]`) pairing the interactive SVG viewport on the left/top with a sticky building inspector panel on desktop (stacked cleanly below on mobile).
 - **Map Surface & Building States:** Campus grounds on `canvas-paper` (`#F8F9FA`) / `#F1F3F5`, footpaths in `#DEE2E6`, parks in `#E8F3EA`, resting clickable buildings in `white` with `border-strong` (`#CED4DA`) strokes, hovered buildings in `brand-crimson-wash` (`#FDF2F4`) with `#8B1538` stroke, and selected buildings filled `#8B1538` with `#D4A017` highlight outline (`>= 2px`).
 - **Controls:** Accessible zoom in (`+`), zoom out (`-`), reset view buttons overlaid cleanly on the map canvas, drag/scroll pan inside the bounded SVG canvas, a standalone search bar (no extra label, filter, or quick-jump ribbons), and a minimal right-hand inspector showing only the selected building's name and contained locations.
+
+### 5.10 Ask-the-Handbook Panel (`AskPanel.tsx` on `/ask`)
+- **Anatomy:** Centered `max-w-prose` column matching article readability. A labeled question `<input>` (`h-[52px]`, `bg-surface-card`, `rounded-xl`, crimson `:focus-visible` ring) with an `Ask` submit button (`bg-brand-crimson-solid`, white label, `min-h-[44px]`), optional example-question chips (`rounded-full` pills on `surface-subtle`), and an `aria-live="polite"` answer region below.
+- **Answer Card:** `bg-surface-card border border-border-subtle rounded-xl p-5` containing the answer text (`whitespace-pre-line`, `text-ink-primary`) with inline `[n]` citation markers rendered as compact crimson links (`text-brand-crimson font-semibold`, `aria-label="Source n: <title>")`, `>= 44px` is not required for inline text links but they keep visible focus rings), followed by a "Sources" list: each entry links the article title, shows `categoryLabel · subcategory`, and a `Last updated <date>` line in `text-ink-secondary`.
+- **Fallback States:** Not-covered and service-unavailable variants reuse the search zero-match pattern — calm notice text plus 7 category pills and an `/articles` link. Loading shows a skeleton-free "Thinking..." status line (`role="status"`).
+- **Interactive States:** Submit button disables while a request is in flight; chips and inputs preserve `:focus-visible` outlines; zero horizontal overflow at `375px`.
 
 ---
 

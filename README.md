@@ -1,6 +1,6 @@
 # Geary - The Better BulSU Student Handbook
 
-Geary is an unofficial, student-managed static article hub for Bulacan State University (BulSU) students built with Astro, Tailwind CSS, and React. Always verify time-sensitive fees, schedules, and forms directly with the concerned university office.
+Geary is an unofficial, student-managed static article hub for Bulacan State University (BulSU) students built with Astro, Tailwind CSS, and React. Always verify time-sensitive fees, schedules, and forms directly with the concerned university office. Ask the handbook a question at `/ask` for cited answers drawn from published articles.
 
 ## Quickstart
 

@@ -5,7 +5,7 @@ import ThemeToggle from './ThemeToggle.astro';
 
 interface Props {
   activeCategory?: CategorySlug;
-  activeNav?: 'home' | 'articles' | 'contribute' | 'map';
+  activeNav?: 'home' | 'articles' | 'ask' | 'contribute' | 'map';
   headerSearchShortcut?: boolean;
 }
 
@@ -16,6 +16,7 @@ const isHome = activeNav === 'home';
 const NAV_LINKS = [
   { label: 'Home', href: '/', key: 'home' as const },
   { label: 'Articles', href: '/articles', key: 'articles' as const },
+  { label: 'Ask', href: '/ask', key: 'ask' as const },
   { label: 'Campus Map', href: '/map', key: 'map' as const },
   { label: 'Contribute', href: '/contribute', key: 'contribute' as const },
 ];

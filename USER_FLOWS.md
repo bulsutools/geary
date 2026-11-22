@@ -32,6 +32,7 @@ User classes referenced throughout these flows are defined in [PROJECT_CHARTER.m
 | **MODE-02** | **Interactive Client Search** | Student focuses the Search Bar or triggers `/` or `Ctrl+K` (`Cmd+K`). | Client-side search loads and caches the static search index, ranks multi-term queries, and supports full keyboard result selection. |
 | **MODE-03** | **Degraded / Off-Nominal Recovery** | Search yields zero results, index fetch fails on unstable mobile data, or student opens a broken URL. | System surfaces calm recovery cues—category quick-jump links, retry guidance, or the branded `404` page. |
 | **MODE-04** | **Build-Time Content Authoring & Validation** | Maintainer adds or edits a Markdown article and compiles the site. | Automated build checks validate frontmatter metadata, regenerate static pages, and update the search index. |
+| **MODE-05** | **Ask-the-Handbook Q&A** | Student submits a natural-language question on `/ask`. | Client retrieves evidence chunks locally from `/ask-index.json`, then a single `POST /api/ask` call returns a cited answer or a not-covered fallback. |
 
 ---
 
@@ -76,11 +77,18 @@ flowchart TD
     BAD_URL --> P404["Custom 404 Page (/404.html)"]
     P404 -->|"Search or Category Links"| MATCH
     P404 -->|"Back to Home"| HOME
+
+    ASK_PAGE["Ask Page (/ask)"] -->|"Submit question"| RETRIEVE{"Client Retrieval: evidence found?"}
+    RETRIEVE -->|"No / weak evidence"| NOT_COV["Not-Covered Notice + 7 Category Links"]
+    RETRIEVE -->|"Top-k chunks"| API_CALL["POST /api/ask (Workers AI)"]
+    API_CALL -->|"Cited answer"| ANSWER["Answer Card: [n] citations + Sources w/ updatedDate"]
+    API_CALL -->|"NOT_COVERED / error"| NOT_COV
+    ANSWER -->|"Click citation"| ART_PAGE
 ```
 
 ---
 
-## 3. Operational Scenarios / End-to-End User Journeys (`UJ-01` to `UJ-06`) *(ISO 29148 Clause 9.3.5)*
+## 3. Operational Scenarios / End-to-End User Journeys (`UJ-01` to `UJ-07`) *(ISO 29148 Clause 9.3.5)*
 
 ### `UJ-01`: Urgent Search-First Lookup (Checking `INC` or `TOR`)
 - **Actor:** `ACT-03` (Continuing Undergraduate on mobile between classes)
@@ -180,7 +188,22 @@ sequenceDiagram
 
 ---
 
-## 4. Use Cases, Alternative Flows & Exception Scenarios (`UC-01` to `UC-05`) *(ISO 29148 Clauses 6.2.1.3 & 9.5.3)*
+### `UJ-07`: Ask the Handbook a Question
+- **Actor:** `ACT-01`, `ACT-02`, or `ACT-03`
+- **Trigger:** Student phrases a question in plain language (e.g., "how do I apply for a scholarship") instead of guessing search keywords.
+- **Operational Mode:** `MODE-05` (Nominal), `MODE-03` (Not-covered / service-failure fallback)
+- **Journey Steps:**
+  1. Student opens `/ask` via the Header `Ask` link or a direct URL.
+  2. Student types a question (or taps an example question) and submits.
+  3. The browser lazily downloads `/ask-index.json` once and retrieves the top matching article passages locally.
+  4. With sufficient evidence, the island posts the question plus retrieved chunks to `/api/ask`; the Workers AI model answers strictly from those excerpts.
+  5. The answer card renders inline `[n]` citations linking to `/articles/[slug]` and a Sources list showing each article's title, category, and *Last updated* date.
+  6. If evidence is weak or the model reports `NOT_COVERED`, the page shows a not-covered notice with links to all seven categories and `/articles`.
+- **Expected Outcome:** Student gets a direct, cited answer in seconds, or a calm pointer to browse — never an invented policy.
+
+---
+
+## 4. Use Cases, Alternative Flows & Exception Scenarios (`UC-01` to `UC-07`) *(ISO 29148 Clauses 6.2.1.3 & 9.5.3)*
 
 ---
 
@@ -318,6 +341,34 @@ sequenceDiagram
 
 ---
 
+### `UC-07`: Ask the Handbook a Question (`/ask`)
+
+| Field | Details |
+| :--- | :--- |
+| **Actors** | `ACT-01`, `ACT-02`, `ACT-03` |
+| **Operational Modes** | `MODE-05` (Nominal), `MODE-03` (Not-covered / service-failure fallback) |
+| **Preconditions** | Site built with `/ask-index.json`; `/api/ask` Pages Function deployed with a Workers AI `AI` binding on Cloudflare Pages. |
+| **Postconditions** | Student reads a cited answer or reaches the guides-index fallback; nothing is stored server-side. |
+
+#### Main Success Scenario (Basic Flow)
+1. Student opens `/ask` and submits a natural-language question.
+2. `<AskPanel />` lazily fetches and caches `/ask-index.json`, then retrieves ranked evidence chunks entirely in the browser.
+3. The island `POST`s `{ query, sources }` to `/api/ask`; the Pages Function validates the payload and calls Workers AI with a grounded prompt.
+4. The model answers using only the supplied excerpts with inline `[n]` citations, or returns `NOT_COVERED`.
+5. The answer card renders citations as links to `/articles/<slug>` plus a Sources list with title, category, and *Last updated* date per article.
+
+#### Alternative Flows
+- **`AF-07A` (Example Question Chips):** Student taps a suggested question (e.g., "How do I request a TOR?") to prefill and submit without typing.
+- **`AF-07B` (Direct Citation Navigation):** Student clicks an inline `[n]` marker or a Sources entry to open the full article for complete steps and official-office verification.
+
+#### Exception / Off-Nominal Scenarios
+- **`EF-07A` (Insufficient Evidence):** Retrieved chunks fall below the evidence threshold → no `/api/ask` call is made; not-covered notice with 7 category pills and `/articles` link renders.
+- **`EF-07B` (Model Reports Not Covered):** Endpoint returns the `NOT_COVERED` sentinel → same not-covered UI; no invented content displayed.
+- **`EF-07C` (Ask Service Unavailable):** `/ask-index.json` fails to load or `/api/ask` returns non-OK (including missing `AI` binding) → calm service-unavailable notice with retry and category links.
+- **`EF-07D` (Malformed Model Output):** Out-of-range or malformed `[n]` markers render as literal text; answer remains readable.
+
+---
+
 ## 5. Off-Nominal, Exception & Error Scenario Matrix *(ISO 29148 Clause 9.3.5)*
 
 | Error ID | Scenario | Operational Mode | Trigger Condition | Expected System Behavior | User Recovery Path |
@@ -331,3 +382,6 @@ sequenceDiagram
 | **ERR-07** | Wide table / long URL on mobile | `MODE-01` | Multi-column table or long URL on `375px` screen | Scroll table horizontally within its own container; wrap long URLs cleanly | Swipe horizontally inside table only |
 | **ERR-08** | Nonexistent / broken route | `MODE-03` | Mistyped or outdated bookmark URL | Serve branded `/404.html` with Search Bar and 7 category links | Search or navigate to Home / Category |
 | **ERR-09** | Invalid Markdown frontmatter | `MODE-04` | Missing/invalid metadata or unrecognized category slug | Abort build immediately with clear validation diagnostic | Correct frontmatter and re-run build |
+| **ERR-10** | Ask corpus fetch failure | `MODE-03` | `/ask-index.json` fails to download | Catch error safely; show service-unavailable notice + retry + 7 category links | Retry or browse categories |
+| **ERR-11** | Question not covered by corpus | `MODE-03` | Weak retrieval evidence or model `NOT_COVERED` | Show not-covered notice + 7 category pills + `/articles` link; zero invented claims | Refine question or browse guides |
+| **ERR-12** | Answer service error | `MODE-03` | `/api/ask` returns non-OK or times out | Show calm unavailable notice + retry; no partial/fabricated answer | Retry or use Search/articles |

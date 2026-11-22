@@ -42,9 +42,9 @@ This Software Requirements Specification (SRS) defines the formal software-level
 
 | ID | Constraint Statement |
 | :--- | :--- |
-| **CON-TECH-01** | The software shall build in Astro static output mode (`output: 'static'`) with zero server-side rendering (SSR) adapters or runtime edge functions. |
+| **CON-TECH-01** | The software shall build in Astro static output mode (`output: 'static'`) with zero server-side rendering (SSR) adapters. Exactly one runtime endpoint is permitted: the stateless `/api/ask` Cloudflare Pages Function (`functions/api/ask.ts`) that proxies question+retrieved-chunk payloads to Workers AI and stores nothing. |
 | **CON-TECH-02** | Layout and component presentation shall be styled using **Tailwind CSS** utility classes and design tokens. |
-| **CON-TECH-03** | **React** shall be hydrated strictly via Astro island directives (`client:load` or `client:idle`) and limited to stateful client interactivity (`<SearchBar />`, `<ExploreSpotlight />`, and `<CampusMap />`). |
+| **CON-TECH-03** | **React** shall be hydrated strictly via Astro island directives (`client:load` or `client:idle`) and limited to stateful client interactivity (`<SearchBar />`, `<ExploreSpotlight />`, `<CampusMap />`, and `<AskPanel />`). |
 | **CON-TECH-04** | **TypeScript** and **Zod** shall enforce compile-time type checking and build-time frontmatter schema validation across all content and data modules. |
 
 ### 2.2 Financial & Operational Constraints
@@ -52,7 +52,7 @@ This Software Requirements Specification (SRS) defines the formal software-level
 | ID | Constraint Statement |
 | :--- | :--- |
 | **CON-FIN-01** | Total recurring operational, hosting, storage, and third-party service cost shall remain strictly **$0.00/month**. |
-| **CON-FIN-02** | The software shall not depend on runtime backend servers, managed databases, headless CMS subscriptions, or paid third-party APIs (including LLM or hosted search endpoints). |
+| **CON-FIN-02** | The software shall not depend on runtime backend servers, managed databases, headless CMS subscriptions, or paid third-party APIs. The sole permitted external inference call is Cloudflare Workers AI invoked through the `/api/ask` Pages Function within the account's included allocation; no paid API plan, Vectorize database, or embeddings pipeline is required for the client-side retrieval variant. |
 
 ### 2.3 Data & Content Constraints
 
@@ -60,12 +60,13 @@ This Software Requirements Specification (SRS) defines the formal software-level
 | :--- | :--- |
 | **CON-DATA-01** | All student guide content shall reside as UTF-8 Markdown (`.md`) files under Git version control. |
 | **CON-DATA-02** | Searchable guide metadata and section headings shall be compiled at build time into a single static JSON file (`/search-index.json`). |
+| **CON-DATA-03** | The ask-the-handbook corpus (article metadata plus body text chunked into retrievable passages) shall be compiled at build time into a single static JSON file (`/ask-index.json`); no embeddings index or vector database is stored server-side. |
 
 ### 2.4 Scope, Legal & Governance Constraints
 
 | ID | Constraint Statement |
 | :--- | :--- |
-| **CON-GOV-01** | Software capabilities are locked strictly to the five MVP capabilities (Articles/Markdown, 7-Category Hierarchy, Client-Side Search Bar, Low-Cognitive-Load BulSUan UI/UX, and Interactive 2D Campus Map); AI/RAG chatbots, authentication, user submissions, and BulSU SIS integrations are prohibited. The existing embedded contribution form is a documented governance exception pending a dedicated scope decision. |
+| **CON-GOV-01** | Software capabilities are locked strictly to the six MVP capabilities (Articles/Markdown, 7-Category Hierarchy, Client-Side Search Bar, Low-Cognitive-Load BulSUan UI/UX, Interactive 2D Campus Map, and citation-grounded Ask-the-Handbook Q&A); general-purpose AI chatbots, authentication, user submissions, and BulSU SIS integrations are prohibited. The existing embedded contribution form is a documented governance exception pending a dedicated scope decision. |
 | **CON-GOV-02** | The software shall display an explicit unofficial disclaimer across the global footer and article views stating that Geary is student-maintained and unaffiliated with Bulacan State University administration. |
 
 ---
@@ -83,6 +84,9 @@ This Software Requirements Specification (SRS) defines the formal software-level
 | `/articles/[slug]` | Distraction-free reading view with metadata header, responsive TOC, Markdown prose, disclaimer, and related guides. |
 | `/404.html` | Branded recovery page embedding the search bar and links to all seven categories. |
 | `/search-index.json` | Static JSON search payload consumed by `<SearchBar />`. |
+| `/ask` | Ask-the-handbook Q&A page rendering the `<AskPanel />` React island. |
+| `/ask-index.json` | Static JSON ask corpus (chunked article passages) consumed by `<AskPanel />` for client-side retrieval. |
+| `/api/ask` | Stateless Pages Function (`POST` only) relaying question + retrieved chunks to Workers AI; stores nothing. |
 
 #### `UI-INT-02`: Responsive Viewport Breakpoints
 - **Mobile (`< 768px`):** Single-column layout, collapsed header navigation toggle, collapsible `<details>` TOC above article prose, and horizontally scrollable table containers.
@@ -129,9 +133,34 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | `subcategory` | `string` | Sub-topic grouping label. |
 | `headings` | `string[]` | Extracted plain-text `h2` and `h3` headings. |
 
+#### `SW-INT-05`: Static Ask Index Payload Contract (`GET /ask-index.json`)
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `slug` | `string` | URL segment for `/articles/[slug]`. |
+| `title` | `string` | Article display title. |
+| `excerpt` | `string` | Plain-text article preview (same source as `SW-INT-03` `preview`). |
+| `category` | `CategorySlug` | Canonical category slug. |
+| `categoryLabel` | `string` | Human-readable category title resolved from `SW-INT-01`. |
+| `subcategory` | `string` | Sub-topic grouping label. |
+| `headings` | `string[]` | Extracted plain-text `h2` and `h3` headings. |
+| `updatedDate` | `string` (`YYYY-MM-DD`) | Article freshness date from frontmatter. |
+| `url` | `string` | Canonical article path (`/articles/<slug>`). |
+| `chunks` | `AskIndexChunk[]` | Ordered body passages (`{ id: string; text: string }`), each `<= ~1,400` characters, covering the full Markdown body. |
+
+#### `SW-INT-06`: Ask Answer Endpoint Contract (`POST /api/ask`)
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| Request `query` | `string` (`2`–`500` chars) | Raw student question; trimmed and length-validated server-side. |
+| Request `sources` | `AskSource[]` (`1`–`8` items) | Client-retrieved passages: `{ n, slug, title, url, categoryLabel, subcategory, updatedDate, excerpt, text }`. The endpoint treats them as untrusted input, re-bounds sizes, and never persists them. |
+| Response `200` | `{ answer: string }` | Model answer text containing inline `[n]` citation markers, or the literal sentinel `NOT_COVERED` when excerpts do not answer the question. |
+| Response `4xx/5xx/503` | `{ error: string }` | Validation failure (`400`), unsupported method (`405`), missing Workers AI binding or upstream failure (`503`/`502`). |
+
 ### 3.3 Communications Interfaces (`COM-INT-01`)
 - All HTML, CSS, JavaScript, and JSON assets shall be delivered via standard **HTTPS** (`GET` requests) from static hosting.
 - Client-side search shall fetch `/search-index.json` asynchronously via same-origin `fetch('/search-index.json')` with zero authentication headers or cross-origin dependencies.
+- `<AskPanel />` shall fetch `/ask-index.json` once per browser session (in-memory cache, mirroring `SRS-FUNC-SRCH-02`) and submit questions via same-origin `POST /api/ask` with a JSON body; no cookies, credentials, or auth headers are sent.
 
 ---
 
@@ -298,16 +327,51 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 
 ---
 
+### 4.6 Ask-the-Handbook Q&A Subsystem (`/ask`, `/api/ask`)
+
+#### `SRS-FUNC-ASK-01`: Build-Time Ask Corpus Serialization
+- **Inputs:** Validated articles collection (`SW-INT-02`) and `SW-INT-01` category registry.
+- **Processing Logic:** For every published article, emit an `AskIndexItem` (`SW-INT-05`) containing `slug`, `title`, `excerpt`, `category`, `categoryLabel`, `subcategory`, `headings`, ISO `updatedDate`, `url`, and `chunks` produced by splitting the Markdown body into heading-aware passages of at most ~1,400 characters.
+- **Outputs:** Static `ask-index.json` artifact served with `application/json` content type.
+- **Error Handling:** Empty bodies still emit one chunk containing the excerpt; chunking never drops article text.
+
+#### `SRS-FUNC-ASK-02`: Client-Side Evidence Retrieval
+- **Inputs:** User question and cached `AskIndexItem[]`.
+- **Processing Logic:** Normalize and tokenize the query (literal substring matching, never `RegExp`), require every token to appear in an article's combined text, score articles with the same field weights as `SRS-FUNC-SRCH-03`, then score each chunk by distinct token hits and rank sources (max 6 sources, max 2 chunks per article).
+- **Outputs:** Ranked `AskSource[]` sent to `/api/ask`, or an empty result triggering the not-covered fallback without any network answer call.
+- **Error Handling:** Whitespace-only or punctuation-only queries return `[]`; special characters evaluate literally.
+
+#### `SRS-FUNC-ASK-03`: Grounded Answer Generation (`POST /api/ask`)
+- **Inputs:** `SW-INT-06` request payload.
+- **Processing Logic:** Validate and bound the payload, construct a prompt instructing the Workers AI model (`@cf/meta/llama-3.1-8b-instruct` or configured equivalent) to answer only from the supplied excerpts, cite inline as `[n]` matching source order, mention each source's `updatedDate` for time-sensitive details, and reply with the exact sentinel `NOT_COVERED` when excerpts do not answer.
+- **Outputs:** `{ answer: string }` JSON response.
+- **Error Handling:** Reject non-POST methods (`405`), oversized/invalid payloads (`400`), and missing `AI` binding or upstream failures (`503`/`502`) without leaking internals; the function stores nothing and sets no cookies.
+
+#### `SRS-FUNC-ASK-04`: Answer Rendering & Citation Resolution
+- **Inputs:** `{ answer }` response and the `AskSource[]` used for the request.
+- **Processing Logic:** Detect the `NOT_COVERED` sentinel; otherwise split the answer on `[n]` markers and render each valid marker as a link to that source's `url` (invalid/out-of-range markers render as literal text). Render a "Sources" list beneath the answer with each article title, category label, and formatted `updatedDate`.
+- **Outputs:** Accessible answer card (`aria-live="polite"`) with inline article citations and freshness metadata.
+- **Error Handling:** React JSX escaping applies to all model text (zero `dangerouslySetInnerHTML`); malformed markers degrade to plain text.
+
+#### `SRS-FUNC-ASK-05`: Not-Covered & Service-Failure Fallbacks
+- **Inputs:** Empty retrieval result, `NOT_COVERED` sentinel, non-OK `/api/ask` response, or `/ask-index.json` fetch failure.
+- **Processing Logic:** Render a calm fallback notice ("We don't have a guide covering that yet" / service-unavailable variant) with clickable links to all seven categories and `/articles`.
+- **Outputs:** Recovery UI identical in spirit to `SRS-FUNC-SRCH-05`; zero uncaught promise rejections.
+- **Error Handling:** Never display fabricated procedural content; retry is offered for transient failures.
+
+---
+
 ## 5. Non-Functional Requirements *(ISO 29148 Clause 9.6.3.3 & ISO/IEC 25010)*
 
 ### 5.1 Performance Efficiency
 
 | ID | Quality Requirement | Target / Metric |
 | :--- | :--- | :--- |
-| **SRS-NFR-PERF-01** | All routes shall pre-render as static HTML at build time with zero server compute per request. | `0 ms` origin compute time; 100% static output. |
-| **SRS-NFR-PERF-02** | Content pages shall ship zero client-side UI framework JS outside `<SearchBar />` and minimal menu toggles. | `0` unnecessary React roots on static prose. |
+| **SRS-NFR-PERF-01** | All content routes shall pre-render as static HTML at build time; the only per-request compute is the single stateless `/api/ask` Pages Function. | `0 ms` origin compute on all routes except `POST /api/ask`. |
+| **SRS-NFR-PERF-02** | Content pages shall ship zero client-side UI framework JS outside `<SearchBar />`, `<AskPanel />`, and minimal menu toggles. | `0` unnecessary React roots on static prose. |
 | **SRS-NFR-PERF-03** | The static `/search-index.json` file shall remain compact for cellular networks. | `< 100 KB` uncompressed JSON for MVP dataset. |
 | **SRS-NFR-PERF-04** | Synchronous client search filtering shall complete within one animation frame. | `< 16 ms` filtering time on up to `200` articles. |
+| **SRS-NFR-PERF-05** | The static `/ask-index.json` corpus shall stay bounded for cellular networks and lazy-load only on `/ask`. | `< 400 KB` uncompressed JSON for the MVP dataset; fetched once per session. |
 
 ### 5.2 Usability & Accessibility
 
@@ -324,6 +388,7 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | :--- | :--- | :--- |
 | **SRS-NFR-REL-01** | On `/search-index.json` fetch failure, `<SearchBar />` shall handle rejections safely and provide working category fallback links. | `0` uncaught runtime promise rejections. |
 | **SRS-NFR-REL-02** | All internal links and TOC anchors across generated static routes shall resolve without dead targets. | `0` broken internal routes across build output. |
+| **SRS-NFR-REL-03** | On `/ask-index.json` fetch failure or non-OK `/api/ask` responses, `<AskPanel />` shall handle rejections safely and render the fallback category links. | `0` uncaught runtime promise rejections on `/ask`. |
 
 ### 5.4 Maintainability & Portability
 
@@ -338,3 +403,4 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | :--- | :--- | :--- |
 | **SRS-NFR-SEC-01** | User search input echoed in UI states shall rely strictly on React JSX escaping with zero raw HTML injection (`dangerouslySetInnerHTML`). | Resistant to DOM-based XSS via search queries. |
 | **SRS-NFR-SEC-02** | Static deployment shall store or transmit zero user PII, cookies, credentials, or server secrets. | Zero runtime PII or credential attack surface. |
+| **SRS-NFR-SEC-03** | Ask-the-handbook queries shall be ephemeral: retrieval runs client-side, `/api/ask` stores nothing and sets no cookies, and only the single answer request transmits question text (plus public article excerpts) off-device. | No query logging, persistence, or secondary transmission. |

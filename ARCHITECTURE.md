@@ -24,7 +24,9 @@ This document defines the technical stack, build-time vs. runtime architecture, 
 | **Runtime, Package Manager & Test Runner** | **Bun** (`bun.lock`, `bun test`) | Manages dependencies, executes `astro` CLI scripts, and runs pure TypeScript unit tests. | Single ultra-fast runtime and built-in test runner with deterministic lockfile management. |
 | **Static Site Generator / Meta-Framework** | **Astro (`^7.4.12`)** (`output: 'static'`) | Compiles layouts, Content Collections, static routes, and JSON endpoints at build time. | Ships zero framework JavaScript by default for static content routes, maximizing mobile load speed and static CDN scalability. |
 | **Styling & Design System** | **Tailwind CSS (`@tailwindcss/vite`)** | Generates utility styles, design tokens, and scoped prose typography via Vite plugin. | Produces minimal purged CSS bundles bound to [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) tokens without runtime style overhead. |
-| **Interactive UI Islands** | **React** (`@astrojs/react`) | Hydrates `<SearchBar />` via `client:load` for stateful client-side search. | Isolates React runtime cost strictly to the search island instead of hydrating static article pages. |
+| **Interactive UI Islands** | **React** (`@astrojs/react`) | Hydrates `<SearchBar />`, `<ExploreSpotlight />`, `<CampusMap />`, and `<AskPanel />` via `client:load` for stateful client-side interactivity. | Isolates React runtime cost strictly to interactive islands instead of hydrating static article pages. |
+| **Ask Corpus & Retrieval** | **Static JSON Endpoint (`ask-index.json.ts`) + TypeScript Retriever** | Emits chunked article passages at build time; `<AskPanel />` retrieves top-k evidence client-side with the same literal-token scoring family as site search. | Keeps retrieval private, instant, and backend-free; no embeddings index or vector database required. |
+| **Answer Generation** | **Cloudflare Pages Function (`functions/api/ask.ts`) + Workers AI** | Single stateless `POST /api/ask` endpoint validates the payload and calls Workers AI (`AI` binding) with a citation-grounded prompt; stores nothing. | One runtime hop only when evidence exists; queries stay ephemeral per `SRS-NFR-SEC-03`. |
 | **Content & Schema Layer** | **Astro Content Collections + Markdown (`.md`) + TypeScript + Zod** | Parses Git-tracked guides and enforces frontmatter types at compile time. | Eliminates external CMS/database dependencies while catching schema errors during build. |
 | **Search Index & Scorer** | **Static JSON Endpoint (`search-index.json.ts`) + TypeScript Scorer** | Emits pre-built index at build time and evaluates queries synchronously in `SearchBar.tsx`. | Requires zero external search SaaS and executes client-side filtering synchronously with no backend hops. |
 | **Deployment Artifact** | **Vendor-Neutral Static `dist/`** | Self-contained HTML/CSS/JS/JSON assets deployable to Cloudflare Pages, Vercel, Netlify, or GitHub Pages. | Avoids server runtime adapters and hosting lock-in. |
@@ -82,15 +84,16 @@ flowchart TB
 
 ### 3.2 Astro Islands Hydration Boundary
 - **Zero-JS Static Components:** `BaseLayout.astro`, `ArticleLayout.astro`, `Header.astro`, `Footer.astro`, `Breadcrumbs.astro`, `CategoryCard.astro`, `ArticleCard.astro`, `TableOfContents.astro`, and `VerificationBanner.astro` compile strictly to static HTML and CSS.
-- **Selective React Hydration (`client:load` / `client:idle`):** `SearchBar.tsx` (`client:load`) registers global keyboard shortcuts (`/`, `Ctrl+K` / `Cmd+K`) immediately on load, `CampusMap.tsx` (`client:load` on `/map`) drives interactive SVG pan/zoom/search, and `ExploreSpotlight.tsx` (`client:load` on `/`) renders 6 Featured guides cycling through 3 daily randomized groups seeded by local calendar date.
+- **Selective React Hydration (`client:load` / `client:idle`):** `SearchBar.tsx` (`client:load`) registers global keyboard shortcuts (`/`, `Ctrl+K` / `Cmd+K`) immediately on load, `CampusMap.tsx` (`client:load` on `/map`) drives interactive SVG pan/zoom/search, `ExploreSpotlight.tsx` (`client:load` on `/`) renders 6 Featured guides cycling through 3 daily randomized groups seeded by local calendar date, and `AskPanel.tsx` (`client:load` on `/ask`) retrieves evidence chunks client-side and calls `/api/ask` only when sufficient evidence exists.
 - **Minimal Progressive Enhancement (`< 1 KB`):** Mobile navigation drawer state inside `Header.astro` uses a tiny inline vanilla script, and mobile Table of Contents disclosure uses native HTML `<details>`/`<summary>`.
 
 ### 3.3 Content-to-Build Propagation
-Adding or editing one `.md` file in `src/content/articles/` updates four build outputs simultaneously:
+Adding or editing one `.md` file in `src/content/articles/` updates five build outputs simultaneously:
 1. **Article View (`/articles/[slug]`):** Renders compiled Markdown prose, extracts `h2`/`h3` headings for TOC navigation, builds breadcrumbs, and resolves up to 3 sibling guides in the same category.
 2. **Category Directory (`/categories/[slug]`):** Updates guide counts and places the article card under its `subcategory` heading.
 3. **Home Directory (`/`):** Includes the article in the daily randomized 3×6 **Featured** pool.
 4. **Search Payload (`/search-index.json`):** Serializes the article's `slug`, `title`, `preview` (derived from Markdown body), `category`, `categoryLabel`, `subcategory`, and `headings` array.
+5. **Ask Corpus (`/ask-index.json`):** Serializes the article's metadata plus `updatedDate`, `url`, and `excerpt`, and splits the Markdown body into retrievable `chunks` for client-side evidence retrieval.
 
 ---
 
@@ -105,6 +108,7 @@ flowchart TD
         P_CAT["category/[slug].astro"]
         P_ART["articles/[slug].astro"]
         P_MAP["map.astro"]
+        P_ASK["ask.astro"]
         P_404["404.astro"]
     end
 
@@ -131,11 +135,13 @@ flowchart TD
         I_SRCH["SearchBar.tsx (variant: hero or header)"]
         I_EXPL["ExploreSpotlight.tsx (Daily Rotating Picks + Shuffle on /)"]
         I_MAP["CampusMap.tsx (2D Interactive SVG Map on /map)"]
+        I_ASK["AskPanel.tsx (Cited Q&A on /ask)"]
     end
 
     P_HOME --> L_BASE
     P_CAT --> L_BASE
     P_MAP --> L_BASE
+    P_ASK --> L_BASE
     P_404 --> L_BASE
     P_ART --> L_ART
     L_ART --> L_BASE
@@ -159,6 +165,7 @@ flowchart TD
 
     P_404 --> I_SRCH
     P_MAP --> I_MAP
+    P_ASK --> I_ASK
 ```
 
 ### 4.2 Module & Component Responsibilities
@@ -177,6 +184,11 @@ flowchart TD
 | **`src/components/SearchBar.tsx`** | **React Island (`client:load`)** | `variant: 'hero' \| 'header'`, `enableGlobalShortcut?: boolean` | Lazily fetches & caches `/search-index.json` in module memory; executes pure weighted literal substring scorer (`src/lib/search.ts`); manages keyboard navigation, outside-click dismissal, zero-match pills, and fetch-error fallback UI. |
 | **`src/lib/search.ts`** | Pure TypeScript Module | `items: SearchIndexItem[]`, `query: string` | Implements query normalization and weighted multi-term scoring (`title` > `headings`/`subcategory` > `preview`/`categoryLabel`), cleanly unit-testable in isolation from React DOM. |
 | **`src/lib/articles.ts`** | Pure TypeScript Module | `articles: ArticleEntry[]` | Implements deterministic subcategory grouping (`groupArticlesBySubcategory`) and related-guide selection helpers shared by page templates and unit tests. |
+| **`src/lib/ask.ts`** | Pure TypeScript Module | `items: AskIndexItem[]`, `query: string`, `sources: AskSource[]` | Implements ask-corpus chunking (`buildAskChunks`), client-side evidence retrieval (`retrieveAskSources` + evidence threshold), grounded prompt construction (`buildAskMessages`), and answer/citation parsing (`parseCitedAnswer`) — all unit-testable without React or the Workers runtime. |
+| **`src/pages/ask-index.json.ts`** | Build-Time JSON Endpoint | Articles collection | Serializes `SW-INT-05` `AskIndexItem[]` to `/ask-index.json` (`< 400 KB`). |
+| **`src/pages/ask.astro`** | Static Astro Page | — | Renders the `/ask` route shell (breadcrumbs, heading, explainer copy) hosting `<AskPanel client:load />`. |
+| **`src/components/AskPanel.tsx`** | **React Island (`client:load`)** | — | Lazily fetches/caches `/ask-index.json`, runs `retrieveAskSources`, `POST`s to `/api/ask` only when evidence suffices, renders cited answers with `[n]` article links, per-source *Last updated* dates, and not-covered/service-failure fallbacks. |
+| **`functions/api/ask.ts`** | Cloudflare Pages Function | `SW-INT-06` request | Validates and bounds the payload, builds the grounded prompt via `src/lib/ask.ts`, calls Workers AI (`env.AI.run`), returns `{ answer }` or `NOT_COVERED`; stores nothing, sets no cookies. Deployed automatically by `wrangler pages deploy` alongside `dist/`. |
 
 ---
 
@@ -184,7 +196,7 @@ flowchart TD
 
 ### 5.1 Framework Integrations (`astro.config.mjs`)
 - **`site` configuration:** Configured from `process.env.PUBLIC_SITE_URL`, falling back to Vercel production/deployment URLs (`VERCEL_PROJECT_PRODUCTION_URL` / `VERCEL_URL`) and default domain `https://geary.bulsu.tools`, so canonical URLs, Open Graph URLs, `robots.txt`, and sitemaps resolve consistently across environments.
-- **`@astrojs/react`:** Enables selective client hydration of `SearchBar.tsx` inside `.astro` files.
+- **`@astrojs/react`:** Enables selective client hydration of `SearchBar.tsx`, `ExploreSpotlight.tsx`, `CampusMap.tsx`, and `AskPanel.tsx` inside `.astro` files.
 - **`@astrojs/sitemap`:** Generates `dist/sitemap-index.xml` at build time, excluding `/404` and non-HTML utility routes.
 - **Tailwind CSS (`@tailwindcss/vite`):** Compiles utility classes and `src/styles/global.css` tokens through Astro's Vite plugin pipeline.
 - **`output: 'static'` & `build.inlineStylesheets: 'always'`:** Pure SSG output targeting `dist/` with inlined CSS to eliminate render-blocking stylesheet requests.
@@ -257,8 +269,61 @@ export interface SearchIndexItem {
 }
 ```
 
+#### `src/lib/ask.ts` (Ask Corpus, Retrieval & Prompt Contracts)
+
+```ts
+export interface AskIndexChunk {
+  id: string;
+  text: string; // Markdown passage, <= ~1,400 chars
+}
+
+export interface AskIndexItem {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: CategorySlug;
+  categoryLabel: string;
+  subcategory: string;
+  headings: string[];
+  updatedDate: string; // YYYY-MM-DD
+  url: string; // /articles/<slug>
+  chunks: AskIndexChunk[];
+}
+
+export interface AskSource {
+  n: number; // 1-based citation index matching [n] markers
+  slug: string;
+  title: string;
+  url: string;
+  categoryLabel: string;
+  subcategory: string;
+  updatedDate: string;
+  excerpt: string;
+  text: string; // retrieved chunk passage
+}
+
+export function buildAskChunks(body: string, maxChars?: number): AskIndexChunk[];
+export function retrieveAskSources(
+  items: readonly AskIndexItem[],
+  query: string,
+  options?: { maxSources?: number; maxPerArticle?: number },
+): AskSource[];
+export function hasAnswerableEvidence(sources: readonly AskSource[]): boolean;
+export function buildAskMessages(
+  query: string,
+  sources: readonly AskSource[],
+): Array<{ role: 'system' | 'user'; content: string }>;
+export type AnswerSegment =
+  | { type: 'text'; text: string }
+  | { type: 'citation'; n: number; url: string; title: string };
+export function parseCitedAnswer(
+  raw: string,
+  sources: readonly AskSource[],
+): { status: 'answered' | 'not-covered'; segments: AnswerSegment[] };
+```
+
 ### 5.3 External Runtime Integrations
-Geary has no external runtime dependency for its core information hub: there are no databases, hosted search SaaS, LLM APIs, authentication services, or third-party tracking scripts. The existing `/contribute` page embeds a Google Form as an optional third-party submission surface; it is a documented governance exception that requires a dedicated scope decision before further expansion.
+Geary's core information hub has no database, hosted search SaaS, authentication service, or third-party tracking scripts. The single runtime external call is `POST /api/ask`, a stateless Cloudflare Pages Function that relays the question and retrieved public article excerpts to **Cloudflare Workers AI** (`AI` binding, model `@cf/meta/llama-3.1-8b-instruct` or configured equivalent) and returns the answer text; it stores nothing, sets no cookies, and requires the `AI` binding configured on the `geary` Pages project. Retrieval itself is client-side literal-token matching over `/ask-index.json`, so no embeddings index, Vectorize database, or paid API plan is required. The existing `/contribute` page embeds a Google Form as an optional third-party submission surface; it is a documented governance exception that requires a dedicated scope decision before further expansion.
 
 ---
 
@@ -292,11 +357,16 @@ geary/
 │   ├── favicon.svg                  # Minimalist Geary geometric gear icon
 │   ├── googled56ea9e672e7afb1.html  # Google Search Console ownership verification
 │   └── og-image.png                 # Shared 1200x630 Open Graph social preview card
+├── functions/                        # Cloudflare Pages Functions (deployed with dist/ via wrangler)
+│   └── api/
+│       └── ask.ts                    # Stateless POST /api/ask -> Workers AI cited answers
 ├── tests/                           # Lean unit & Playwright E2E/Axe smoke tests
 │   ├── unit/
 │   │   ├── search.test.ts           # Bun test suite for query scoring & index contract
 │   │   ├── articles.test.ts         # Bun test suite for subcategory grouping helpers
-│   │   └── seo.test.ts              # Bun test suite for JSON-LD builders & XSS escape
+│   │   ├── ask.test.ts              # Bun test suite for ask chunking, retrieval & citations
+│   │   ├── seo.test.ts              # Bun test suite for JSON-LD builders & XSS escape
+│   │   └── map-search.test.ts       # Bun test suite for campus map search & viewport math
 │   └── e2e/
 │       └── smoke.spec.ts            # Playwright + Axe smoke, SEO, TOC, overflow & 404 tests
 └── src/
@@ -307,6 +377,7 @@ geary/
     ├── lib/
     │   ├── search.ts                # Pure query normalization & weighted scoring engine
     │   ├── articles.ts              # Subcategory grouping & sibling guide helpers
+    │   ├── ask.ts                   # Ask corpus chunking, retrieval, prompt & citation parsing
     │   └── seo.ts                   # Pure JSON-LD builders (WebSite, Article, BreadcrumbList)
     ├── content.config.ts            # Astro Content Collection + Zod schema (`articles`)
     ├── content/
@@ -322,16 +393,19 @@ geary/
     │   ├── ArticleCard.astro        # Scannable article summary card
     │   ├── TableOfContents.astro    # Conditional h2/h3 TOC (sticky desktop / <details> mobile)
     │   ├── VerificationBanner.astro # Official office verification notice
-    │   └── SearchBar.tsx            # Hydrated React island consuming /search-index.json
+    │   ├── SearchBar.tsx            # Hydrated React island consuming /search-index.json
+    │   └── AskPanel.tsx             # Hydrated React island for cited /ask Q&A
     └── pages/
         ├── index.astro              # Home hub (Hero SearchBar, Featured Guides)
         ├── map.astro                # Interactive 2D BulSU Malolos Campus Map island
+        ├── ask.astro                # Ask-the-handbook Q&A page hosting AskPanel island
         ├── contribute.astro         # Community submission page with embedded Google Form
         ├── terms.astro              # Terms of Service & unofficial disclaimer page
         ├── privacy.astro            # Privacy Policy (zero-tracking static architecture)
         ├── 404.astro                # Branded recovery page with SearchBar & categories (`noindex`)
         ├── robots.txt.ts            # Build-time generator referencing Astro.site sitemap
         ├── search-index.json.ts     # Build-time generator for /search-index.json
+        ├── ask-index.json.ts        # Build-time generator for /ask-index.json
         ├── categories/
         │   ├── index.astro          # Categories directory page (7 CategoryCards)
         │   └── [slug].astro         # Subcategory-grouped category directory pages

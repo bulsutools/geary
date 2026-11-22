@@ -68,12 +68,13 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 
 #### `TC-BLD-03`: Static Route & Search Index Artifact Verification
 - **ISO 25010 Characteristic:** Functional Suitability (*Completeness*) & Performance Efficiency (*Resource Utilization*)
-- **Linked Requirements:** `REQ-CAT-01`, `REQ-SRCH-01`, `CON-TECH-01`, `SRS-FUNC-RND-01`–`04`, `SRS-FUNC-SRCH-01`, `SRS-NFR-PERF-01`, `SRS-NFR-PERF-03`
+- **Linked Requirements:** `REQ-CAT-01`, `REQ-SRCH-01`, `REQ-ASK-01`, `CON-TECH-01`, `CON-DATA-03`, `SRS-FUNC-RND-01`–`04`, `SRS-FUNC-SRCH-01`, `SRS-FUNC-ASK-01`, `SW-INT-05`, `SRS-NFR-PERF-01`, `SRS-NFR-PERF-03`, `SRS-NFR-PERF-05`
 - **Preconditions / Inputs:** Successful execution of `bun run build`.
-- **Verification Procedure:** Inspect generated `dist/` output files and byte size of `dist/search-index.json`.
+- **Verification Procedure:** Inspect generated `dist/` output files and byte size of `dist/search-index.json` and `dist/ask-index.json`.
 - **Pass/Fail Acceptance Criteria:**
-  - `dist/index.html`, `dist/map/index.html`, `dist/contribute/index.html`, `dist/terms/index.html`, `dist/privacy/index.html`, `dist/404.html`, all `dist/categories/<slug>/index.html` routes, and all `dist/articles/<slug>/index.html` routes exist.
+  - `dist/index.html`, `dist/map/index.html`, `dist/ask/index.html`, `dist/contribute/index.html`, `dist/terms/index.html`, `dist/privacy/index.html`, `dist/404.html`, all `dist/categories/<slug>/index.html` routes, and all `dist/articles/<slug>/index.html` routes exist.
   - `dist/search-index.json` is valid JSON, size is `< 100 KB`, and item count matches the published article collection count.
+  - `dist/ask-index.json` is valid JSON, size is `< 400 KB`, and every entry carries `slug`, `title`, `excerpt`, `category`, `categoryLabel`, `subcategory`, `headings`, ISO `updatedDate`, `url`, and at least one non-empty `chunks` passage.
 
 #### `TC-BLD-04`: Internal Link & Anchor Integrity
 - **ISO 25010 Characteristic:** Reliability (*Availability*)
@@ -127,6 +128,16 @@ Maps the applicable **ISO/IEC 25010** product quality characteristics and sub-ch
 - **Preconditions / Inputs:** The pure campus-map search and viewport helpers with representative building and location data.
 - **Verification Procedure:** Execute `tests/unit/map-search.test.ts` to verify location-first matching, parent-building labels, literal query safety, and bounded pan/zoom/reset viewBox calculations.
 - **Pass/Fail Acceptance Criteria:** Office and building queries resolve to the expected parent building; viewport calculations remain within their supported bounds; empty or unmatched queries return safely without throwing.
+
+#### `TC-UNIT-07`: Ask Corpus Chunking, Retrieval, Prompt & Citation Parsing
+- **ISO 25010 Characteristic:** Functional Suitability (*Functional Correctness*) & Reliability (*Fault Tolerance*)
+- **Linked Requirements:** `REQ-ASK-01`–`04`, `SW-INT-05`, `SRS-FUNC-ASK-01`–`04`, `UC-07`, `EF-07A`–`D`, `ERR-11`
+- **Preconditions / Inputs:** `tests/unit/ask.test.ts` fixtures of `AskIndexItem[]` plus raw Markdown bodies.
+- **Verification Procedure:**
+  1. Verify `buildAskChunks` splits bodies into `<= ~1,400`-char passages without dropping text and handles empty bodies.
+  2. Verify `retrieveAskSources` ranks scholarship/document questions to the correct articles, caps at 6 sources / 2 per article, and returns `[]` for unrelated or whitespace queries.
+  3. Verify `hasAnswerableEvidence` gates weak matches; `buildAskMessages` embeds sources with `[n]` ordering and `updatedDate`; `parseCitedAnswer` detects `NOT_COVERED` and converts valid `[n]` markers into citation segments while leaving out-of-range markers literal.
+- **Pass/Fail Acceptance Criteria:** Retrieval is deterministic, citation indices always map to real sources, `NOT_COVERED` never yields answer segments, and malformed markers degrade safely.
 
 ---
 
@@ -237,6 +248,22 @@ Automated verification gates for `BL-22` (`RTM-22`), executed in `tests/e2e/smok
 
 ---
 
+### 3.6 Ask-the-Handbook Verification (`/ask`)
+
+#### `TC-E2E-09`: Ask Panel Retrieval, Cited Answer & Fallbacks
+- **ISO 25010 Characteristic:** Functional Suitability & Usability (*Operability*)
+- **Linked Requirements:** `REQ-ASK-02`–`05`, `AC-ASK-02`–`05`, `SRS-FUNC-ASK-02`–`05`, `SRS-NFR-REL-03`, `SRS-NFR-SEC-03`, `UJ-07`, `UC-07`, `EF-07A`–`D`, `ERR-10`–`12`
+- **Preconditions / Inputs:** Built site served via `astro preview`; `/api/ask` intercepted with `page.route()` since Pages Functions do not run under `astro preview`.
+- **Verification Procedure:**
+  1. Load `/ask`; submit "how do I apply for a scholarship"; assert `/ask-index.json` fetched once and `POST /api/ask` fired with `{ query, sources }` where every source `url` matches `/articles/`.
+  2. Fulfill `/api/ask` with `{ "answer": "Apply through the online admissions portal [1] after preparing documents [2]." }`; assert `[1]`/`[2]` render as links to real article URLs and the Sources list shows titles, categories, and *Last updated* dates.
+  3. Submit an unrelated question (e.g., "zzzz quantum physics"); assert no `POST /api/ask` request fires and the not-covered notice with 7 category links renders.
+  4. Intercept `/api/ask` returning `{ "answer": "NOT_COVERED" }`; assert the not-covered UI renders.
+  5. In a fresh context, fail `/ask-index.json` (HTTP 500) and `/api/ask` (HTTP 503); assert calm fallback notices, zero page errors, and retry/category links.
+- **Pass/Fail Acceptance Criteria:** Cited answers link only to indexed article URLs; unsupported questions never reach the answer endpoint; all failure modes render recovery UI with zero uncaught exceptions.
+
+---
+
 ## 4. Test Execution Pipeline & Commands
 
 To keep developer feedback fast during MVP implementation, tests execute in four lightweight stages:
@@ -250,8 +277,8 @@ To keep developer feedback fast during MVP implementation, tests execute in four
 | :--- | :--- | :--- |
 | `bun run check` | `astro check` | `TC-BLD-01` (TypeScript & Astro diagnostics) |
 | `bun run build` | `astro build` | `TC-BLD-02`, `TC-BLD-03` (Zod validation + `dist/` generation) |
-| `bun test` (`bun run test:unit`) | `bun test` | `TC-UNIT-01`–`05` (Search scorer, special chars, grouping, JSON contract) |
-| `bun run test:e2e` | `playwright test` | `TC-BLD-04`, `TC-E2E-01`–`05`, `TC-A11Y-01`–`02`, `TC-SEC-01` |
+| `bun test` (`bun run test:unit`) | `bun test` | `TC-UNIT-01`–`07` (Search scorer, special chars, grouping, JSON contract, map search, ask retrieval/citations) |
+| `bun run test:e2e` | `playwright test` | `TC-BLD-04`, `TC-E2E-01`–`05`, `TC-E2E-09`, `TC-A11Y-01`–`02`, `TC-SEC-01` |
 
 ### 4.1 GitHub Actions Continuous Integration (CI) Automation
 Following org standards established in `bulsutools/room-tba`, automated checks run on every pull request and push to `main`:
