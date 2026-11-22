@@ -292,6 +292,8 @@ geary/
 │   ├── favicon.svg                  # Minimalist Geary geometric gear icon
 │   ├── googled56ea9e672e7afb1.html  # Google Search Console ownership verification
 │   └── og-image.png                 # Shared 1200x630 Open Graph social preview card
+├── scripts/
+│   └── content-freshness.ts        # Report-only article source/staleness audit (#3); emits Markdown report
 ├── tests/                           # Lean unit & Playwright E2E/Axe smoke tests
 │   ├── unit/
 │   │   ├── search.test.ts           # Bun test suite for query scoring & index contract

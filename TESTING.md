@@ -252,6 +252,7 @@ To keep developer feedback fast during MVP implementation, tests execute in four
 | `bun run build` | `astro build` | `TC-BLD-02`, `TC-BLD-03` (Zod validation + `dist/` generation) |
 | `bun test` (`bun run test:unit`) | `bun test` | `TC-UNIT-01`–`05` (Search scorer, special chars, grouping, JSON contract) |
 | `bun run test:e2e` | `playwright test` | `TC-BLD-04`, `TC-E2E-01`–`05`, `TC-A11Y-01`–`02`, `TC-SEC-01` |
+| `bun run freshness` | `scripts/content-freshness.ts` | Report-only content audit: source URL status, `updatedDate` age, expiry-prone claim flags (#3). |
 
 ### 4.1 GitHub Actions Continuous Integration (CI) Automation
 Following org standards established in `bulsutools/room-tba`, automated checks run on every pull request and push to `main`:
@@ -262,5 +263,6 @@ Following org standards established in `bulsutools/room-tba`, automated checks r
 | `.github/workflows/dependency-review.yml` | `pull_request` | Evaluates new dependencies via `actions/dependency-review-action` (blocks critical CVEs). |
 | `.github/workflows/codeql.yml` | `pull_request`, `push: [main]`, weekly cron | Static application security testing (SAST) for `javascript-typescript`. |
 | `.github/workflows/deploy-pages.yml` | `push: [main]` | Builds and deploys static `dist/` to Cloudflare Pages project `geary`. |
+| `.github/workflows/content-freshness.yml` | weekly cron, `workflow_dispatch` | Runs `bun run freshness` and upserts a single rolling "Content freshness report" issue; report-only, no article edits. |
 
 *(Full bidirectional mapping between requirements, source artifacts, and `TC-*` test cases is maintained in [REQUIREMENTS.md](./REQUIREMENTS.md).)*
