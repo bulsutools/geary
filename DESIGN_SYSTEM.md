@@ -214,6 +214,16 @@ Normal text and meaningful control boundaries must retain at least `4.5:1` contr
 - **Map Surface & Building States:** Campus grounds on `canvas-paper` (`#F8F9FA`) / `#F1F3F5`, footpaths in `#DEE2E6`, parks in `#E8F3EA`, resting clickable buildings in `white` with `border-strong` (`#CED4DA`) strokes, hovered buildings in `brand-crimson-wash` (`#FDF2F4`) with `#8B1538` stroke, and selected buildings filled `#8B1538` with `#D4A017` highlight outline (`>= 2px`).
 - **Controls:** Accessible zoom in (`+`), zoom out (`-`), reset view buttons overlaid cleanly on the map canvas, drag/scroll pan inside the bounded SVG canvas, a standalone search bar (no extra label, filter, or quick-jump ribbons), and a minimal right-hand inspector showing only the selected building's name and contained locations.
 
+### 5.10 Document Request Wizard (`ClearanceWizard.tsx` on `/wizard`)
+- **Anatomy:** Two-state island inside the standard `max-w-[65ch]`-compatible content column.
+  - *Picker state:* Grid of request cards (`bg-white border border-[#DEE2E6] rounded-xl p-5`, same visual family as `ArticleCard.astro`) showing request title, summary line, and source guide name; category wizard entry cards reuse the `CategoryCard.astro` hover/border treatment.
+  - *Checklist state:* Header row with request title, `x of y` progress counter, and a text-button reset control; summary rows for office, fee, and processing time as compact `dl` pairs (`text-sm`, labels in `text-[#495057]`, values in `text-[#181C20]`); ordered checklist of `>= 44px` checkbox rows with optional `note` detail in `text-sm text-[#495057]`; persistent verify-with-office note styled like `VerificationBanner.astro` (`bg-[#F8F9FA] border border-[#DEE2E6] rounded-xl p-4`); "Read the full guide" link in `text-[#8B1538]`.
+- **Interactive States:**
+  - *Checked row:* Label shifts to `text-[#495057]` with `line-through` removed on hover only; checkbox uses native `accent-color: #8B1538` (or styled `peer-checked` crimson fill) — never color-only state.
+  - *Hover / Focus-Visible:* Card and row hover shifts border to `#8B1538`; all controls keep the global `2px solid #8B1538` focus ring.
+  - *Progress complete:* Counter turns `text-[#8B1538] font-semibold`; no confetti or celebration motion.
+- **Accessibility:** Native `<input type="checkbox">` elements inside `<label>` wrappers (full-row tap targets), `aria-live="polite"` progress counter, and picker implemented as a list of buttons/links — zero custom widget ARIA.
+
 ---
 
 ## 6. Interaction Principles & Accessibility Ergonomics

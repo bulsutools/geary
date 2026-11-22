@@ -2,13 +2,34 @@
 title: "How to Replace a Lost Student ID"
 category: "documents"
 subcategory: "ID & Credentials"
-updatedDate: 2026-11-21
+updatedDate: 2026-11-22
 sources:
   - label: "Bulacan State University Citizen's Charter 2026 (1st Edition) - Office of the University Registrar"
     url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
+wizard:
+  - id: "student-id-replacement"
+    title: "Student ID Replacement"
+    summary: "Duplicate university ID for currently enrolled students. Temporary gate passes cover the waiting period."
+    office: "Office of the University Registrar"
+    fee: "PHP 150"
+    processingTime: "About 2 working days"
+    requirements:
+      - label: "One original valid ID"
+        note: "National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or another accepted ID"
+      - label: "Original notarized Affidavit of Loss"
+        note: "Prepared by a notary public"
+      - label: "Official Receipt for PHP 150"
+        note: "From the Cashier's Office"
+      - label: "Report the loss to OSAS and the Registrar"
+        note: "So the lost ID is logged before you apply"
+      - label: "Claim stub and valid ID on release day"
+      - label: "Representative documents"
+        note: "Only if a representative files or claims for you: signed authorization letter or Special Power of Attorney plus photocopies of both IDs"
 ---
 
 BulSU enforces a strict **No ID, No Entry** policy at every campus gate. If you lose or damage your university ID, apply for a duplicate right away at the Office of the University Registrar. A duplicate ID costs **PHP 150** and takes about **2 working days** to print and release.
+
+Tracking what you have gathered? [Check off your requirements in the Document Request Wizard](/wizard#student-id-replacement).
 
 ## What to prepare
 

@@ -82,7 +82,7 @@ flowchart TB
 
 ### 3.2 Astro Islands Hydration Boundary
 - **Zero-JS Static Components:** `BaseLayout.astro`, `ArticleLayout.astro`, `Header.astro`, `Footer.astro`, `Breadcrumbs.astro`, `CategoryCard.astro`, `ArticleCard.astro`, `TableOfContents.astro`, and `VerificationBanner.astro` compile strictly to static HTML and CSS.
-- **Selective React Hydration (`client:load` / `client:idle`):** `SearchBar.tsx` (`client:load`) registers global keyboard shortcuts (`/`, `Ctrl+K` / `Cmd+K`) immediately on load, `CampusMap.tsx` (`client:load` on `/map`) drives interactive SVG pan/zoom/search, and `ExploreSpotlight.tsx` (`client:load` on `/`) renders 6 Featured guides cycling through 3 daily randomized groups seeded by local calendar date.
+- **Selective React Hydration (`client:load` / `client:idle`):** `SearchBar.tsx` (`client:load`) registers global keyboard shortcuts (`/`, `Ctrl+K` / `Cmd+K`) immediately on load, `CampusMap.tsx` (`client:load` on `/map`) drives interactive SVG pan/zoom/search, `ExploreSpotlight.tsx` (`client:load` on `/`) renders 6 Featured guides cycling through 3 daily randomized groups seeded by local calendar date, and `ClearanceWizard.tsx` (`client:load` on `/wizard`) renders the document-request picker and persistent requirements checklist driven by article `wizard` frontmatter.
 - **Minimal Progressive Enhancement (`< 1 KB`):** Mobile navigation drawer state inside `Header.astro` uses a tiny inline vanilla script, and mobile Table of Contents disclosure uses native HTML `<details>`/`<summary>`.
 
 ### 3.3 Content-to-Build Propagation
@@ -105,6 +105,7 @@ flowchart TD
         P_CAT["category/[slug].astro"]
         P_ART["articles/[slug].astro"]
         P_MAP["map.astro"]
+        P_WIZ["wizard.astro"]
         P_404["404.astro"]
     end
 
@@ -131,11 +132,13 @@ flowchart TD
         I_SRCH["SearchBar.tsx (variant: hero or header)"]
         I_EXPL["ExploreSpotlight.tsx (Daily Rotating Picks + Shuffle on /)"]
         I_MAP["CampusMap.tsx (2D Interactive SVG Map on /map)"]
+        I_WIZ["ClearanceWizard.tsx (Document Request Checklist on /wizard)"]
     end
 
     P_HOME --> L_BASE
     P_CAT --> L_BASE
     P_MAP --> L_BASE
+    P_WIZ --> L_BASE
     P_404 --> L_BASE
     P_ART --> L_ART
     L_ART --> L_BASE
@@ -159,6 +162,7 @@ flowchart TD
 
     P_404 --> I_SRCH
     P_MAP --> I_MAP
+    P_WIZ --> I_WIZ
 ```
 
 ### 4.2 Module & Component Responsibilities
@@ -177,6 +181,9 @@ flowchart TD
 | **`src/components/SearchBar.tsx`** | **React Island (`client:load`)** | `variant: 'hero' \| 'header'`, `enableGlobalShortcut?: boolean` | Lazily fetches & caches `/search-index.json` in module memory; executes pure weighted literal substring scorer (`src/lib/search.ts`); manages keyboard navigation, outside-click dismissal, zero-match pills, and fetch-error fallback UI. |
 | **`src/lib/search.ts`** | Pure TypeScript Module | `items: SearchIndexItem[]`, `query: string` | Implements query normalization and weighted multi-term scoring (`title` > `headings`/`subcategory` > `preview`/`categoryLabel`), cleanly unit-testable in isolation from React DOM. |
 | **`src/lib/articles.ts`** | Pure TypeScript Module | `articles: ArticleEntry[]` | Implements deterministic subcategory grouping (`groupArticlesBySubcategory`) and related-guide selection helpers shared by page templates and unit tests. |
+| **`src/lib/wizard.ts`** | Pure TypeScript Module | `articles: ArticleEntry[]`, `hash: string` | Flattens article `wizard` frontmatter into `WizardRequestView[]` (`getWizardRequests`), resolves category-scoped request lists, and parses/builds shareable `#<id>:<indices>` URL hash state (`parseWizardHash`, `buildWizardHash`) plus guarded `localStorage` read/write helpers. |
+| **`src/components/ClearanceWizard.tsx`** | **React Island (`client:load`)** | `requests: WizardRequestView[]` | Renders the `/wizard` request picker and per-request requirements checklist; persists checked indices to `localStorage`, mirrors state into the URL hash via `history.replaceState`, restores on mount, and falls back cleanly on malformed hash/storage (`ERR-10`). |
+| **`src/pages/wizard.astro`** | Astro Page (`0 KB` JS shell) | Articles collection | Aggregates `wizard` frontmatter via `getWizardRequests`, renders page chrome, disclaimer note, and mounts `<ClearanceWizard client:load />`; category pages render an entry card when their guides declare wizard requests. |
 
 ---
 
@@ -232,6 +239,8 @@ export const articleSchema = z.object({
   updatedDate: z.coerce.date(),
   source: z.string().min(1).optional(),
   sourceUrl: z.url().optional(),
+  sources: z.array(z.object({ label: z.string().min(1), url: z.url().optional() })).min(1).optional(),
+  wizard: z.array(wizardRequestSchema).optional(),
 });
 
 export const collections = {
@@ -241,6 +250,8 @@ export const collections = {
   }),
 };
 ```
+
+`wizardRequestSchema` enforces the `SW-INT-05` contract: `id` matching `^[a-z0-9]+(-[a-z0-9]+)*$`, non-empty `title`, optional `summary`/`office`/`fee`/`processingTime`/`guideAnchor` strings, and `requirements` of at least one `{ label, note? }` item. `src/lib/wizard.ts` flattens these entries into `WizardRequestView` objects that additionally carry the resolved `articleSlug`, `articleTitle`, and `articleCategory`, so the wizard checklist always links back to its single-source guide (`SRS-FUNC-WIZ-01`).
 
 #### `src/pages/search-index.json.ts`
 Build-time `GET` endpoint exporting static JSON conforming to `SearchIndexItem[]`:
@@ -307,6 +318,7 @@ geary/
     ├── lib/
     │   ├── search.ts                # Pure query normalization & weighted scoring engine
     │   ├── articles.ts              # Subcategory grouping & sibling guide helpers
+    │   ├── wizard.ts                # Wizard request aggregation & hash/storage helpers
     │   └── seo.ts                   # Pure JSON-LD builders (WebSite, Article, BreadcrumbList)
     ├── content.config.ts            # Astro Content Collection + Zod schema (`articles`)
     ├── content/
@@ -322,10 +334,12 @@ geary/
     │   ├── ArticleCard.astro        # Scannable article summary card
     │   ├── TableOfContents.astro    # Conditional h2/h3 TOC (sticky desktop / <details> mobile)
     │   ├── VerificationBanner.astro # Official office verification notice
+    │   ├── ClearanceWizard.tsx      # Hydrated React island: document-request checklists
     │   └── SearchBar.tsx            # Hydrated React island consuming /search-index.json
     └── pages/
         ├── index.astro              # Home hub (Hero SearchBar, Featured Guides)
         ├── map.astro                # Interactive 2D BulSU Malolos Campus Map island
+        ├── wizard.astro             # Document Request Wizard checklist page (/wizard)
         ├── contribute.astro         # Community submission page with embedded Google Form
         ├── terms.astro              # Terms of Service & unofficial disclaimer page
         ├── privacy.astro            # Privacy Policy (zero-tracking static architecture)
