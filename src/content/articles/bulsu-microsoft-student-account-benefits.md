@@ -10,8 +10,6 @@ sources:
     url: "https://bulsu.edu.ph/assets/bids-and-awards/notice-of-awards/noa-g-2026-20.pdf"
   - label: "BulSU ICTO Helpdesk User Guide (2026)"
     url: "https://icto-helpdesk.bulsu.edu.ph/user-guide/"
-  - label: "BulSU Contact Information"
-    url: "https://www.bulsu.edu.ph/about/contact-information"
   - label: "Microsoft Azure for Students"
     url: "https://azure.microsoft.com/en-in/free/students"
   - label: "Microsoft Learn - Student Discounts on Certification Exams (Jun 2025)"
@@ -80,18 +78,16 @@ These programs are offered directly by Microsoft and GitHub to verified universi
 
 ### Azure for Students
 
-Azure for Students is **not** available with a BulSU Microsoft student account. Microsoft's academic verification does not accept **@ms.bulsu.edu.ph** accounts, even when signing in directly with your BulSU credentials.
+Azure for Students is **not** available with a BulSU Microsoft student account. Academic verification displays *"Unable to confirm your University ID"* even when using your BulSU Microsoft student account.
 
 ### GitHub Student Developer Pack
 
-Apply on the [GitHub Student Developer Pack page](https://education.github.com/pack) using your **@ms.bulsu.edu.ph** email. If automatic domain verification does not go through, upload your Student ID or COR. Once approved, you get:
+Add and verify your **@ms.bulsu.edu.ph** email in your GitHub account settings first, then apply on the [GitHub Student Developer Pack page](https://education.github.com/pack). Once approved, you get:
 
 - **GitHub Pro:** Unlimited private repositories, 3,000 GitHub Actions minutes per month, and 180 GitHub Codespaces hours per month.
 - **GitHub Copilot Student:** Unlimited code completions, an AI credits allowance, and limited chat. This is a dedicated student tier with higher limits than Copilot Free, though distinct from paid Copilot Pro.
 - **Free 1-year domains:** One free domain from Namecheap (.me with SSL), Name.com, or .TECH.
 - **Developer tools and learning platforms:** JetBrains IDEs, MongoDB, Datadog, FrontendMasters, DataCamp, Educative, and Scrimba. Codédex Club is also listed, though its free window is 1 month.
-
-DigitalOcean retired its $200 GitHub Student Pack credit in August 2026 and is no longer included.
 
 ### Visual Studio and Microsoft Certifications
 
@@ -116,4 +112,4 @@ If you cannot sign in or you see *"Your organization needs more information to k
 4. Select **Microsoft Account** or **Authenticator** as the category, describe when the problem started, and attach screenshots if needed (PNG, JPG, or PDF, up to 10 MB per file).
 5. Review your entries, click **Submit request**, and save your ticket number from the confirmation email.
 
-For follow-ups or lost ticket numbers, email **icto@bulsu.edu.ph** or call the Management Information System (MIS) office at local 1065 through the [BulSU Contact Information page](https://www.bulsu.edu.ph/about/contact-information).
+For follow-ups or lost ticket numbers, email **icto@bulsu.edu.ph**.
