@@ -1,5 +1,5 @@
 import matter from 'gray-matter';
-import { Marked, type Tokens } from 'marked';
+import { Marked, type Token, type Tokens } from 'marked';
 import { getCategoryBySlug } from '../../data/categories.ts';
 import { getArticlePreview, type ArticleLike } from '../articles.ts';
 import { articleSchema, type ArticleFrontmatter } from '../content-schema.ts';
@@ -21,18 +21,17 @@ export interface ParsedArticle extends ArticleLike {
   preview: string;
 }
 
-function decodeHtmlEntities(input: string): string {
-  return input
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'")
-    .replace(/&#x27;/g, "'");
-}
-
-function stripHtmlTags(html: string): string {
-  return decodeHtmlEntities(html.replace(/<[^>]+>/g, '')).trim();
+function extractPlainText(tokens: readonly Token[] | undefined): string {
+  if (!tokens) return '';
+  let out = '';
+  for (const token of tokens) {
+    if ('tokens' in token && Array.isArray(token.tokens) && token.tokens.length > 0) {
+      out += extractPlainText(token.tokens);
+    } else if ('text' in token && typeof token.text === 'string') {
+      out += token.text;
+    }
+  }
+  return out;
 }
 
 /** Generate a GitHub-style heading anchor slug with deterministic deduplication. */
@@ -91,7 +90,7 @@ export function parseArticleMarkdown(filePath: string, rawContent: string): Pars
     renderer: {
       heading(this: { parser: { parseInline(tokens: Tokens.Generic[]): string } }, token: Tokens.Heading) {
         const innerHtml = this.parser.parseInline(token.tokens);
-        const plainText = stripHtmlTags(innerHtml);
+        const plainText = extractPlainText(token.tokens).trim();
         const headingSlug = slugifyHeading(plainText, seenSlugs);
         headings.push({
           depth: token.depth,

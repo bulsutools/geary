@@ -253,7 +253,7 @@ Following organization standards from `bulsutools/room-tba`, automated checks ru
 | Workflow file | Trigger events | Checks and responsibilities |
 | :--- | :--- | :--- |
 | `.github/workflows/ci.yml` | `pull_request`, `push: [main]` | Runs `verify` (`bun run check`, `bun test tests/unit`, `bun run build`) and `e2e` (`playwright test`). |
-| `.github/workflows/dependency-review.yml` | `pull_request` | Evaluates new dependencies via `actions/dependency-review-action` (blocks critical CVEs). |
+| `.github/workflows/dependency-review.yml` | `pull_request` | Audits `bun.lock` via `bun audit --audit-level=high` (blocks high/critical CVEs). |
 | `.github/workflows/codeql.yml` | `pull_request`, `push: [main]`, weekly cron | Static application security testing (SAST) for `javascript-typescript`. |
 | `.github/workflows/deploy-pages.yml` | `push: [main]`, `workflow_dispatch` | Builds with `DEPLOY_TARGET=cloudflare` (`@sveltejs/adapter-cloudflare`) and deploys SSR Worker + static assets via `wrangler deploy`. |
 
