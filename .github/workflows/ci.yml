@@ -21,7 +21,7 @@ env:
 
 jobs:
   verify:
-    name: Verify (typecheck, build, unit)
+    name: Verify (typecheck, unit, build)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,14 +35,14 @@ jobs:
       - name: Install dependencies
         run: mkdir -p node_modules && bun install --frozen-lockfile
 
-      - name: Astro & TypeScript check
+      - name: Svelte & TypeScript check
         run: bun run check
-
-      - name: Build static site
-        run: bun run build
 
       - name: Unit tests
         run: bun test tests/unit
+
+      - name: Production SSR build
+        run: bun run build
 
   e2e:
     name: E2E & Accessibility Smoke
@@ -63,7 +63,7 @@ jobs:
       - name: Install Playwright browsers & dependencies
         run: bunx playwright install --with-deps chrome chromium
 
-      - name: Build static site
+      - name: Production SSR build
         run: bun run build
 
       - name: Run Playwright E2E tests
