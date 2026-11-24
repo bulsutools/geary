@@ -255,6 +255,6 @@ Following organization standards from `bulsutools/room-tba`, automated checks ru
 | `.github/workflows/ci.yml` | `pull_request`, `push: [main]` | Runs `verify` (`bun run check`, `bun test tests/unit`, `bun run build`) and `e2e` (`playwright test`). |
 | `.github/workflows/dependency-review.yml` | `pull_request` | Evaluates new dependencies via `actions/dependency-review-action` (blocks critical CVEs). |
 | `.github/workflows/codeql.yml` | `pull_request`, `push: [main]`, weekly cron | Static application security testing (SAST) for `javascript-typescript`. |
-| `.github/workflows/deploy-pages.yml` | `push: [main]` | Legacy Cloudflare Pages deploy workflow (needs update from Astro `dist/` to SvelteKit SSR target). |
+| `.github/workflows/deploy-pages.yml` | `push: [main]`, `workflow_dispatch` | Builds with `DEPLOY_TARGET=cloudflare` (`@sveltejs/adapter-cloudflare`) and deploys SSR Worker + static assets via `wrangler deploy`. |
 
 Full bidirectional mapping between requirements, source artifacts, and `TC-*` test cases lives in [REQUIREMENTS.md](./REQUIREMENTS.md).
