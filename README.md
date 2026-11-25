@@ -1,6 +1,6 @@
 # Geary - The Better BulSU Student Handbook
 
-Geary is an unofficial, student-managed static article hub for Bulacan State University (BulSU) students built with Astro, Tailwind CSS, and React. Always verify time-sensitive fees, schedules, and forms directly with the concerned university office.
+Geary is an unofficial, student-managed information portal for Bulacan State University (BulSU) students built with SvelteKit (Svelte 5 runes), Tailwind CSS, and `@sveltejs/adapter-vercel` dynamic SSR. Always verify time-sensitive fees, schedules, and forms directly with the concerned university office.
 
 ## Quickstart
 
@@ -11,24 +11,24 @@ bun install
 bun run dev
 ```
 
-Set `PUBLIC_SITE_URL` in your build environment before deploying so canonical links, Open Graph URLs, `robots.txt`, and `sitemap-index.xml` resolve to your production domain (defaults to `https://geary.bulsu.tools`).
+Set `PUBLIC_SITE_URL` in your deployment environment so canonical links, Open Graph URLs, `robots.txt`, and `sitemap.xml` resolve to your production domain (defaults to `https://geary.bulsu.tools` via `.env.example` / CI).
 
 ## Commands
 
 | Command | Action |
 | :--- | :--- |
-| `bun run dev` | Start the local dev server at `localhost:4321` |
-| `bun run check` | Run TypeScript and Astro diagnostics (`astro check`) |
-| `bun run build` | Build the static site, `/search-index.json`, `robots.txt`, and sitemap to `dist/` |
-| `bun run preview` | Preview the built `dist/` bundle locally |
+| `bun run dev` | Start the local SvelteKit dev server at `localhost:5173` |
+| `bun run check` | Run TypeScript and Svelte diagnostics (`svelte-check`) |
+| `bun run build` | Build the SvelteKit SSR bundle for Vercel (`vite build`) |
+| `bun run preview` | Preview the production SvelteKit build locally |
 | `bun test` | Run Bun unit tests in `tests/unit/` (`bun run test:unit`) |
 | `bun run test:e2e` | Run Playwright E2E, SEO, and Axe accessibility tests in `tests/e2e/` |
 
 ## Adding or editing student articles
 
-1. Review writing guidelines, formatting standards, and source rules in [WRITING_FRAMEWORK.md](./WRITING_FRAMEWORK.md).
+1. Review writing guidelines, formatting standards, and source rules in [docs/WRITING_FRAMEWORK.md](./docs/WRITING_FRAMEWORK.md).
 2. Add or edit Markdown files inside `src/content/articles/`.
-3. Include valid frontmatter matching `src/content.config.ts`:
+3. Include valid frontmatter matching `src/lib/content-schema.ts`:
    - `title`: Article headline
    - `category`: One of `enrollment`, `academics`, `documents`, `scholarships`, `policies`, `organizations`, or `campus`
    - `subcategory`: Matching subgroup heading inside the category
@@ -37,18 +37,26 @@ Set `PUBLIC_SITE_URL` in your build environment before deploying so canonical li
 
 ## Project documentation
 
+- [CONTRIBUTING.md](./docs/CONTRIBUTING.md) - Contributor workflow, branching, testing gate, and article process
 - [AGENTS.md](./AGENTS.md) - Documentation-first workflow rules and dev server notes
-- [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) - Scope, target users, and constraints
-- [PRD.md](./PRD.md) - Feature requirements and acceptance criteria
-- [SRS.md](./SRS.md) - System interfaces and quality attributes
-- [USER_FLOWS.md](./USER_FLOWS.md) - User journeys and recovery flows
-- [ARCHITECTURE.md](./ARCHITECTURE.md) - Tech stack, schemas, and directory map
-- [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) - Tokens, typography, and contrast rules
-- [TESTING.md](./TESTING.md) - Verification layers and test cases
-- [REQUIREMENTS.md](./REQUIREMENTS.md) - Master Requirements Traceability Matrix
-- [ROADMAP.md](./ROADMAP.md) - Milestones and backlog
-- [WRITING_FRAMEWORK.md](./WRITING_FRAMEWORK.md) - Editorial, tone, and article writing framework
+- [PROJECT_CHARTER.md](./docs/PROJECT_CHARTER.md) - Scope, target users, and constraints
+- [PRD.md](./docs/PRD.md) - Feature requirements and acceptance criteria
+- [SRS.md](./docs/SRS.md) - System interfaces and quality attributes
+- [USER_FLOWS.md](./docs/USER_FLOWS.md) - User journeys and recovery flows
+- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) - Tech stack, schemas, and directory map
+- [DESIGN_SYSTEM.md](./docs/DESIGN_SYSTEM.md) - Tokens, typography, and contrast rules
+- [TESTING.md](./docs/TESTING.md) - Verification layers and test cases
+- [REQUIREMENTS.md](./docs/REQUIREMENTS.md) - Master Requirements Traceability Matrix
+- [ROADMAP.md](./docs/ROADMAP.md) - Milestones and backlog
+- [WRITING_FRAMEWORK.md](./docs/WRITING_FRAMEWORK.md) - Editorial, tone, and article writing framework
 
 ## Sources and attribution
 
-Articles on Geary prioritize recent official BulSU PDFs, Board of Regents (BOR) resolutions, verified university office and student council Facebook announcements, and official `bulsu.edu.ph` portals. Standing statutory rules not superseded by newer issuances fall back to the [Undergraduate Student Manual of Bulacan State University, BOR Resolution No. 85, Series of 2016](https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf).
+Articles on Geary are sourced from:
+
+1. Recent official BulSU PDFs and Board of Regents (BOR) resolutions (such as the Citizen's Charter 2026, updated admission guidelines, and official policy memos).
+2. Verified official Facebook announcements from BulSU offices (UAO, Registrar, OSAS, ICTO, e-Library), colleges, BulSU SG, and Local Student Councils.
+3. Official `bulsu.edu.ph` websites, portals, and helpdesk documentation, plus official third-party vendor education pages where applicable.
+4. Direct confirmation from authorized university personnel or live student account checks for undocumented portal details.
+
+The [2016 Undergraduate Student Manual (BOR Resolution No. 85, Series of 2016)](https://www.bulsu.edu.ph/assets/downloads/files/student_handbook.pdf) is used **only as a fallback** for standing statutory rules (such as grading scales, residency rules, and student rights) that have not been superseded. It is outdated for current procedures, fees, deadlines, and schedules.
