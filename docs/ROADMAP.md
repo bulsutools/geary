@@ -11,7 +11,7 @@
 | Date | `2026-11-24` |
 | Standard reference | ISO/IEC/IEEE 12207:2017 - *Systems and software engineering - Software life cycle processes* (Clause 6.3.1 *Project Planning*, Clause 6.3.2 *Project Assessment and Control*, Clause 6.3.4 *Risk Management*, and Clauses 6.4.5, 6.4.7, 6.4.9, and 6.4.11 *Implementation, Integration, Verification and Validation*) |
 | Related baselines | [AGENTS.md](../AGENTS.md), [PROJECT_CHARTER.md](./PROJECT_CHARTER.md), [PRD.md](./PRD.md), [SRS.md](./SRS.md), [USER_FLOWS.md](./USER_FLOWS.md), [ARCHITECTURE.md](./ARCHITECTURE.md), [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md), [TESTING.md](./TESTING.md), [REQUIREMENTS.md](./REQUIREMENTS.md) |
-| Status | MVP Complete (`M1`–`M6`); Milestone `M7` (SvelteKit SSR Migration) Complete and Verified |
+| Status | MVP Complete (`M1`–`M6`); Milestones `M7` (SvelteKit SSR Migration), `M8` (Ask-the-Handbook Q&A port), and the document-request wizard port (`BL-34`) implemented |
 
 ### 1.2 Shared backlog and milestone workflow *(ISO 12207 Clause 6.3.2)*
 
@@ -42,7 +42,7 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 - [x] Implemented the static `/map` route, campus-map dataset, literal building and location search, SVG pan/zoom/reset controls, accessible building selection, and building inspector (`REQ-MAP-01` to `REQ-MAP-04`, `SRS-FUNC-MAP-01`, `SRS-FUNC-MAP-02`).
 - [x] Added map unit and browser verification (`TC-UNIT-06`, `TC-E2E-07`) and recorded traceability in [REQUIREMENTS.md](./REQUIREMENTS.md) (`RTM-21`).
 
-## 3. Implementation milestones and life-cycle gates (`M1` to `M6`) *(ISO 12207 Clauses 6.3.1 and 6.4)*
+## 3. Implementation milestones and life-cycle gates (`M1` to `M8`) *(ISO 12207 Clauses 6.3.1 and 6.4)*
 
 | Milestone | ISO 12207 Life-Cycle Process | Scope Summary | Verifiable Exit Gate |
 | :--- | :--- | :--- | :--- |
@@ -53,8 +53,9 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 | **`M5`: Verification suite and release gate** | Clauses 6.4.9 *Verification* and 6.4.11 *Validation* | Implement `tests/unit/*.test.ts` and `tests/e2e/smoke.spec.ts` (Playwright + Axe); run the 4-stage pipeline (`bun run check`, `bun run build`, `bun test`, `bun run test:e2e`) and `bun audit`. | All `TC-BLD-*`, `TC-UNIT-*`, `TC-E2E-*`, `TC-A11Y-*`, and `TC-SEC-*` checks pass with zero violations. |
 | **`M6`: Dark mode (post-MVP)** | Clauses 6.4.5, 6.4.9, and 6.4.11 | Implement Obsidian Slate and Luminous Crimson theme tokens, accessible theme preference menu, persisted preference, and no-flash bootstrap behavior. | Complete: `TC-E2E-08` and `TC-A11Y-03` pass in light and dark themes across representative routes. |
 | **`M7`: SvelteKit SSR architecture migration** | Clauses 6.4.3, 6.4.5, 6.4.7, 6.4.9, and 6.4.11 | Migrate from Astro + React islands to SvelteKit (Svelte 5 runes) + `@sveltejs/adapter-vercel` dynamic SSR with Vite `?raw` glob + `gray-matter` + `marked` + `zod` content loader and CDN `Cache-Control` headers while preserving 100% functional and visual parity. | `bun run check` (`svelte-check`), `bun test`, `bun run build` (`vite build`), and `bun run test:e2e` (Playwright + Axe) pass with `0` failures. |
+| **`M8`: Ask-the-Handbook Q&A (SvelteKit port of #8)** | Clauses 6.4.5, 6.4.7, 6.4.9, and 6.4.11 | Citation-grounded `/ask` Q&A in Svelte 5: chunked corpus endpoint, client-side retrieval, stateless `/api/ask` server route on Workers AI, and not-covered fallbacks — supersedes the unmerged Astro/React PR #8. | `TC-BLD-03`, `TC-UNIT-09`, and `TC-E2E-09` pass; `AI` binding configured on the deployment target before production answers work (`KI-08`). |
 
-## 4. Prioritized implementation backlog (`BL-01` to `BL-29`) *(ISO 12207 Clauses 6.3.1 and 6.4.5)*
+## 4. Prioritized implementation backlog (`BL-01` to `BL-34`) *(ISO 12207 Clauses 6.3.1 and 6.4.5)*
 
 ### Milestone `M1`: Toolchain, integrations, and design foundation
 - [x] **`BL-01` (`P0`):** Install project dependencies via Bun (`@astrojs/react`, `react`, `react-dom`, `@types/react`, `@types/react-dom`, `tailwindcss`, `@tailwindcss/vite`, `@astrojs/check`, `typescript`, `@playwright/test`, `@axe-core/playwright`) and verify Chromium Playwright setup ([ARCHITECTURE.md](./ARCHITECTURE.md) §2, `KI-01`).
@@ -95,7 +96,14 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 - [x] **`BL-26` (`P0`):** Port interactive widgets to Svelte 5 runes (`SearchBar.svelte`, `ExploreSpotlight.svelte`, `AcademicCalendar.svelte`, `CampusMap.svelte` + `campus-map/*`) with SPA-safe `$effect` cleanup (`SRS-FUNC-SRCH-02` to `SRS-FUNC-SRCH-06`, `SRS-FUNC-MAP-01`, `SRS-FUNC-MAP-02`, `RTM-22`, `RTM-23`).
 - [x] **`BL-27` (`P0`):** Run full verification gate (`bun run check`, `bun test`, `bun run build`, `bun run test:e2e`, `bun audit`), confirm zero regressions and valid CDN `Cache-Control` headers, and mark `M7` and all `RTM-*` rows as `[x] Verified`.
 - [x] **`BL-28` (`P1`, Post-MVP):** Implement the read-only MCP server (`F-07`): `src/routes/corpus.json/+server.ts` corpus endpoint (`SW-INT-05`), `mcp/` Cloudflare Worker with Streamable HTTP JSON-RPC and `search_articles`/`get_article`/`list_categories`/`get_freshness` tools (`SW-INT-06`, `SRS-FUNC-MCP-01` to `SRS-FUNC-MCP-04`), and `TC-UNIT-08`/`TC-BLD-03` verification (`REQ-MCP-01` to `REQ-MCP-04`, `RTM-24`).
-- [x] **`BL-29` (`P0`/`P1`, Post-MVP):** Implement the interactive document-request wizard (`/wizard`, `F-08`): `wizard` article frontmatter schema (`SW-INT-07`), `src/lib/wizard.ts` aggregation + hash/storage helpers, `ClearanceWizard.svelte` Svelte 5 island, category entry cards, article "check off your requirements" links, `TC-UNIT-09`, and `TC-E2E-09` (`REQ-WIZ-01` to `REQ-WIZ-05`, `RTM-25`, `RTM-NFR-15`).
+- [x] **`BL-34` (`P0`/`P1`, Post-MVP):** Implement the interactive document-request wizard (`/wizard`, `F-09`): `wizard` article frontmatter schema (`SW-INT-09`), `src/lib/wizard.ts` aggregation + hash/storage helpers, `ClearanceWizard.svelte` Svelte 5 island, category entry cards, article "check off your requirements" links, `TC-UNIT-10`, and `TC-E2E-10` (`REQ-WIZ-01` to `REQ-WIZ-05`, `RTM-26`, `RTM-NFR-17`).
+
+### Milestone `M8`: Ask-the-Handbook Q&A (SvelteKit port of PR #8)
+- [x] **`BL-29` (`P0`):** Update specification docs first per the documentation-first rule — [PROJECT_CHARTER.md](./PROJECT_CHARTER.md), [PRD.md](./PRD.md) `F-08`/`REQ-ASK-*`, [SRS.md](./SRS.md) `CON-*`/`SW-INT-07`-`08`/`SRS-FUNC-ASK-*`, [USER_FLOWS.md](./USER_FLOWS.md) `MODE-05`/`UJ-07`/`UC-07`/`ERR-10`-`12`, [ARCHITECTURE.md](./ARCHITECTURE.md), [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) §5.11, [TESTING.md](./TESTING.md), and [REQUIREMENTS.md](./REQUIREMENTS.md) `RTM-25`/`RTM-NFR-15`-`16`.
+- [x] **`BL-30` (`P0`):** Implement `src/lib/ask.ts` (`buildAskChunks`, `retrieveAskSources`, `hasAnswerableEvidence`, `buildAskMessages`, `parseCitedAnswer`) and `src/routes/ask-index.json/+server.ts` emitting `/ask-index.json` (`SW-INT-07`, `CON-DATA-03`, `SRS-FUNC-ASK-01`, `SRS-FUNC-ASK-02`).
+- [x] **`BL-31` (`P0`):** Implement `src/routes/ask/+page.svelte` + `src/lib/components/AskPanel.svelte` (lazy corpus fetch, client-side retrieval, cited answer rendering, not-covered/service fallbacks) and add the `Ask` Header nav link (`REQ-ASK-02`, `REQ-ASK-04`, `REQ-ASK-05`, `SRS-FUNC-ASK-04`, `SRS-FUNC-ASK-05`, `DESIGN_SYSTEM.md` §5.11).
+- [x] **`BL-32` (`P0`):** Implement `src/routes/api/ask/+server.ts` SvelteKit server route proxying validated `{ query, sources }` payloads to Workers AI via `platform.env.AI` with the grounded citation prompt; stateless, no storage, no cookies (`SW-INT-08`, `SRS-FUNC-ASK-03`, `CON-TECH-01`, `CON-FIN-02`).
+- [ ] **`BL-33` (`P0`):** Add `tests/unit/ask.test.ts` (`TC-UNIT-09`) and the `/ask` flow in `tests/e2e/smoke.spec.ts` (`TC-E2E-09`, `/ask` added to `TC-E2E-04`/`TC-BLD-03` coverage); run `bun run check`, `bun test`, `bun run build`, `bun run test:e2e`.
 
 ## 5. Known issues and technical risks *(ISO/IEC/IEEE 12207 Clause 6.3.4 - Risk Management)*
 
@@ -107,4 +115,5 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 | **`KI-04`** | Resolved | Gear Gold (`#D4A017`) yields `2.2:1` contrast on light surfaces and fails WCAG 2.1 AA (`TC-A11Y-01`) if used for text. | Restricted `#D4A017` to borders and icons, paired `#FEF9E7` backgrounds with `#785300` text, and added `tabindex="0"` for horizontally scrollable Markdown tables (`BL-04`, `TC-A11Y-01`). |
 | **`KI-05`** | Resolved | On Windows environments, background servers started in separate commands can be unreachable across subsequent shell sessions. | Configured Playwright `webServer` to launch and tear down `astro preview` inside the same test command (`BL-19`). |
 | **`KI-06`** | Resolved | `@astrojs/check@0.9.12` rejects `typescript@7.0.2`, and bare `bun test` attempts to execute Playwright `.spec.ts` files. | Pinned `typescript@6.0.3`, added `/// <reference types="bun" />` to `tests/unit/*.test.ts`, and added `bunfig.toml` (`root = "tests/unit"`). |
+| **`KI-08`** | **Open** | `/api/ask` requires a Workers AI `AI` binding on the deployment target (Cloudflare `wrangler.toml`/dashboard binding or equivalent platform env), and local `vite dev`/`vite preview` do not provide the binding, so the endpoint only answers in deployed environments with Workers AI configured. | Document the binding requirement in the PR; `<AskPanel />` degrades to the service-unavailable fallback (with retrieved-source links) when `/api/ask` is unreachable. Reassess if Workers AI free allocation proves insufficient (`CON-FIN-01`/`CON-FIN-02`). |
 | **`KI-07`** | Mitigated | `@sveltejs/adapter-vercel` calls `fs.symlinkSync()` for per-route Vercel observability aliases, which fails with `EPERM` on local Windows machines without Developer Mode enabled. | Wrapped `@sveltejs/adapter-vercel` (`runtime: 'nodejs22.x'`) in `vite.config.ts` to skip only the `win32` non-CI/non-Vercel `EPERM` symlink step after `.svelte-kit/output` builds; Vercel and Linux CI emit `.vercel/output` cleanly (`BL-23`). |

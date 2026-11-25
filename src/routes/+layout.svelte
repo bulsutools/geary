@@ -31,6 +31,7 @@
     if (isError) return undefined;
     if (pathname === '/') return 'home';
     if (pathname === '/articles' || pathname.startsWith('/articles/')) return 'articles';
+    if (pathname === '/ask') return 'ask';
     if (pathname === '/calendar') return 'calendar';
     if (pathname === '/map') return 'map';
     if (pathname === '/contribute') return 'contribute';

@@ -40,9 +40,9 @@ This SRS defines the software-level constraints, external interface contracts, f
 
 | ID | Constraint statement |
 | :--- | :--- |
-| `CON-TECH-01` | The software shall build with SvelteKit (`@sveltejs/adapter-vercel`) in dynamic SSR mode, setting CDN `Cache-Control` headers (`s-maxage` + `stale-while-revalidate`) on HTML routes and endpoints (`/search-index.json`, `/sitemap.xml`, `/robots.txt`). The optional read-only MCP Worker (`mcp/`, `F-06`) is a separate deployable artifact outside the site build and does not relax this constraint for site routes. |
+| `CON-TECH-01` | The software shall build with SvelteKit (`@sveltejs/adapter-vercel`) in dynamic SSR mode, setting CDN `Cache-Control` headers (`s-maxage` + `stale-while-revalidate`) on HTML routes and endpoints (`/search-index.json`, `/sitemap.xml`, `/robots.txt`). Exactly one additional runtime endpoint is permitted: the stateless `/api/ask` SvelteKit server route that proxies question+retrieved-chunk payloads to Workers AI and stores nothing. The optional read-only MCP Worker (`mcp/`, `F-07`) is a separate deployable artifact outside the site build and does not relax this constraint for site routes. |
 | `CON-TECH-02` | Layout and component presentation shall be styled using Tailwind CSS v4 (`@tailwindcss/vite`) utility classes and design tokens. |
-| `CON-TECH-03` | All UI components and interactive widgets (`SearchBar`, `ExploreSpotlight`, `AcademicCalendar`, `CampusMap`) shall be implemented natively in Svelte 5 (runes) with zero React runtime dependencies. |
+| `CON-TECH-03` | All UI components and interactive widgets (`SearchBar`, `ExploreSpotlight`, `AcademicCalendar`, `CampusMap`, `AskPanel`) shall be implemented natively in Svelte 5 (runes) with zero React runtime dependencies. |
 | `CON-TECH-04` | TypeScript (`svelte-check`) and Zod shall enforce compile-time type checking and frontmatter schema validation across all content and data modules. |
 
 ### 2.2 Financial and operational constraints
@@ -50,7 +50,7 @@ This SRS defines the software-level constraints, external interface contracts, f
 | ID | Constraint statement |
 | :--- | :--- |
 | `CON-FIN-01` | Total recurring operational, hosting, storage, and third-party service cost shall remain strictly `$0.00/month` on Vercel's free tier. |
-| `CON-FIN-02` | The software shall not depend on managed databases, headless CMS subscriptions, or paid third-party APIs (including LLM or hosted search endpoints). Exception: the optional public read-only MCP Worker (`mcp/`) serves only the static `/corpus.json` build artifact and stores no state or credentials. |
+| `CON-FIN-02` | The software shall not depend on managed databases, headless CMS subscriptions, or paid third-party APIs (including LLM or hosted search endpoints). Exceptions: (1) the optional public read-only MCP Worker (`mcp/`) serves only the static `/corpus.json` artifact and stores no state or credentials; (2) the stateless `/api/ask` endpoint invokes Cloudflare Workers AI within the account's included allocation — no paid API plan, Vectorize database, or embeddings pipeline is required because retrieval is client-side literal-token matching. |
 
 ### 2.3 Data and content constraints
 
@@ -58,12 +58,13 @@ This SRS defines the software-level constraints, external interface contracts, f
 | :--- | :--- |
 | `CON-DATA-01` | All student article content shall reside as UTF-8 Markdown (`.md`) files under Git version control so multiple contributors can author and review changes through pull requests. |
 | `CON-DATA-02` | Searchable article metadata and section headings shall be serialized by a pure builder into `/search-index.json` (`+server.ts`) with CDN edge caching and validated by unit tests. |
+| `CON-DATA-03` | The ask-the-handbook corpus (article metadata plus body text chunked into retrievable passages) shall be compiled into a single JSON payload served by `src/routes/ask-index.json/+server.ts`; no embeddings index or vector database is stored server-side. |
 
 ### 2.4 Scope, legal, and governance constraints
 
 | ID | Constraint statement |
 | :--- | :--- |
-| `CON-GOV-01` | Software capabilities are locked strictly to the eight approved capabilities (Articles/Markdown, 7-Category Hierarchy, Client-Side Search Bar, Low-Cognitive-Load BulSUan UI/UX, Interactive 2D Campus Map, Interactive Academic Calendar, Read-only MCP server, and the Interactive Document Request Wizard); AI/RAG chatbots, authentication, user submissions, and BulSU SIS integrations are prohibited. The existing embedded contribution form is a documented governance exception pending a dedicated scope decision. |
+| `CON-GOV-01` | Software capabilities are locked strictly to the eight approved capabilities (Articles/Markdown, 7-Category Hierarchy, Client-Side Search Bar, Low-Cognitive-Load BulSUan UI/UX, Interactive 2D Campus Map, Academic Calendar, Read-only MCP server, and the Interactive Document Request Wizard); general-purpose AI chatbots, authentication, user submissions, and BulSU SIS integrations are prohibited. The citation-grounded `/ask` Q&A and the single stateless `/api/ask` endpoint are the approved AI exception. The existing embedded contribution form is a documented governance exception pending a dedicated scope decision. |
 | `CON-GOV-02` | The software shall display an explicit unofficial disclaimer across the global footer and article views stating that Geary is student-maintained and unaffiliated with Bulacan State University administration. |
 
 ## 3. External interface requirements *(ISO 29148 Clause 9.6.3.2)*
@@ -80,11 +81,14 @@ This SRS defines the software-level constraints, external interface contracts, f
 | `/articles/[slug]` | Distraction-free reading view with metadata header, responsive TOC, Markdown prose, disclaimer, and related articles. |
 | `/calendar` | Interactive BulSU Academic Calendar (AY 2026–2027) with real-time search and category filtering. |
 | `/map` | Interactive 2D SVG schematic of BulSU Malolos Main Campus with building inspector and location search. |
+| `/ask` | Ask-the-handbook Q&A page hosting `<AskPanel />` with cited answers and source freshness. |
 | `/wizard` | Interactive document-request checklist page (`#<request-id>` deep links select a request). |
 | `/contribute`, `/privacy`, `/terms` | Contributor guidelines and legal information pages. |
 | `HTTP 404` (`+error.svelte`) | Branded recovery page embedding the search bar and links to all seven categories. |
 | `/search-index.json` | Edge-cached JSON search payload (`+server.ts`) consumed by `<SearchBar />`. |
-| `/corpus.json` | Static JSON article corpus (`+server.ts`) consumed by the MCP Worker (`F-06`). |
+| `/corpus.json` | Static JSON article corpus (`+server.ts`) consumed by the MCP Worker (`F-07`). |
+| `/ask-index.json` | JSON ask corpus (`+server.ts`) fetched once by `<AskPanel />` for client-side evidence retrieval. |
+| `POST /api/ask` | Stateless JSON endpoint returning a Workers AI cited answer or an error; stores nothing, sets no cookies. |
 | `/sitemap.xml`, `/robots.txt` | Edge-cached XML sitemap and crawler directives (`+server.ts`). |
 
 #### `UI-INT-02`: Responsive viewport breakpoints
@@ -122,7 +126,7 @@ The system shall maintain a single canonical registry defining the 7 permitted c
 | `source` | `string` (`min >= 1`) | No | None |
 | `sourceUrl` | Valid URL `string` | No | None |
 | `sources` | `Array<{ label: string; url?: string }>` (`min >= 1`) | No | None |
-| `wizard` | `Array<WizardRequest>` (`SW-INT-07`) | No | None |
+| `wizard` | `Array<WizardRequest>` (`SW-INT-09`) | No | None |
 
 #### `SW-INT-03`: Static search index payload contract (`GET /search-index.json`)
 
@@ -161,7 +165,19 @@ The payload also embeds the `SW-INT-01` category metadata array so the Worker re
 - Errors: JSON-RPC codes `-32700`/`-32600`/`-32601`/`-32602`/`-32603`; unknown tool arguments or slugs surface as `isError: true` tool results, never worker crashes.
 - CORS: `Access-Control-Allow-Origin: *` on all responses so browser-based MCP clients can connect.
 
-#### `SW-INT-07`: Article `wizard` frontmatter contract (`WizardRequest`)
+#### `SW-INT-07`: Static ask corpus payload contract (`GET /ask-index.json`)
+
+- Shape: JSON array of `AskIndexItem` objects.
+- Fields per item: `slug`, `title`, `excerpt`, `category` (`SW-INT-01` slug), `categoryLabel`, `subcategory`, `headings` (`h2`/`h3` plain text), `updatedDate` (`YYYY-MM-DD`), `url` (`/articles/<slug>`), and `chunks` (`{ id, text }[]` passages of at most ~1,400 characters split on heading/paragraph boundaries).
+- Caching: edge-cached JSON (`s-maxage` + `stale-while-revalidate`), fetched once per browser session by `<AskPanel />`.
+
+#### `SW-INT-08`: Ask answer endpoint contract (`POST /api/ask`)
+
+- Request: JSON `{ query: string, sources: AskSource[] }` where each source carries `n` (1-based citation index), `slug`, `title`, `url` (must start `/articles/`), `categoryLabel`, `subcategory`, `updatedDate`, `excerpt`, and `text`.
+- Validation: non-POST rejected (`405`); query clamped to 500 chars and required `>= 2`; at most 8 sources with field length bounds; empty/invalid payloads rejected (`400`).
+- Response: `{ answer: string }` on success — grounded text with inline `[n]` citations or the exact sentinel `NOT_COVERED`; `{ error: string }` with `503` when the AI binding is unconfigured and `502` on upstream failure. `Cache-Control: no-store`; no cookies, no storage.
+
+#### `SW-INT-09`: Article `wizard` frontmatter contract (`WizardRequest`)
 
 Optional `wizard` array on article frontmatter (`SW-INT-02`) declaring document-request checklists single-sourced inside the guide:
 
@@ -180,6 +196,7 @@ Optional `wizard` array on article frontmatter (`SW-INT-02`) declaring document-
 
 - All HTML, CSS, JavaScript, XML, and JSON responses shall be delivered over standard HTTPS (`GET` requests) from Vercel SSR with CDN `Cache-Control` headers.
 - Client-side search shall fetch `/search-index.json` asynchronously via same-origin `fetch('/search-index.json')` with zero authentication headers or cross-origin dependencies.
+- `<AskPanel />` shall fetch `/ask-index.json` once per browser session (in-memory cache, mirroring `SRS-FUNC-SRCH-02`) and submit questions via same-origin `POST /api/ask` with a JSON body; no cookies, credentials, or auth headers are sent.
 
 ## 4. System functional requirements *(ISO 29148 Clause 9.6.3.1)*
 
@@ -356,7 +373,7 @@ Defines `CampusBuilding` (`id`, `name`, `shortLabel?`, `kind`, `floors?`, `svgPa
 - Processing logic: highlight the selected building footprint (`#8B1538` fill, `#D4A017` ring), smoothly zoom and pan the viewBox onto the building center when selected from search, and populate the side or bottom inspector panel with the building name and contained location names.
 - Outputs: synchronized 2D vector map, building detail panel, and accessible keyboard building index.
 
-### 4.6 Read-only MCP server subsystem (`F-06`)
+### 4.6 Read-only MCP server subsystem (`F-07`)
 
 #### `SRS-FUNC-MCP-01`: Corpus fetch and cache
 
@@ -382,11 +399,48 @@ Defines `CampusBuilding` (`id`, `name`, `shortLabel?`, `kind`, `floors?`, `svgPa
 - Processing logic: group corpus articles into the `SW-INT-01` category tree by `subcategory`; compute minimum `updatedDate` per category.
 - Outputs: category/subcategory tree with article listings; per-category oldest `updatedDate` and article counts.
 
-### 4.7 Document Request Wizard subsystem (`/wizard`)
+### 4.7 Ask-the-handbook Q&A subsystem (`/ask`, `/api/ask`) (`F-08`)
+
+#### `SRS-FUNC-ASK-01`: Ask corpus serialization (`GET /ask-index.json`)
+
+- Inputs: validated articles collection (`SW-INT-02`-equivalent parsed articles) and `SW-INT-01` category registry.
+- Processing logic: for every published article, emit an `AskIndexItem` (`SW-INT-07`) containing `slug`, `title`, `excerpt`, `category`, `categoryLabel`, `subcategory`, `headings`, ISO `updatedDate`, `url`, and `chunks` produced by splitting the Markdown body into heading-aware passages of at most ~1,400 characters.
+- Outputs: JSON payload served with `application/json` content type and CDN cache headers.
+- Error handling: empty bodies still emit one chunk containing the excerpt; chunking never drops article text.
+
+#### `SRS-FUNC-ASK-02`: Client-side evidence retrieval
+
+- Inputs: user question and cached `AskIndexItem[]`.
+- Processing logic: normalize and tokenize the query (literal substring matching, never `RegExp`), require every token to appear in an article's combined text, score articles with the same field weights as `SRS-FUNC-SRCH-03`, then score each chunk by distinct token hits and rank sources (max 6 sources, max 2 chunks per article).
+- Outputs: ranked `AskSource[]` sent to `/api/ask`, or an empty result triggering the not-covered fallback without any network answer call.
+- Error handling: whitespace-only or punctuation-only queries return `[]`; special characters evaluate literally.
+
+#### `SRS-FUNC-ASK-03`: Grounded answer generation (`POST /api/ask`)
+
+- Inputs: `SW-INT-08` request payload.
+- Processing logic: validate and bound the payload, construct a prompt instructing the Workers AI model (`@cf/meta/llama-3.1-8b-instruct` or configured equivalent) to answer only from the supplied excerpts, cite inline as `[n]` matching source order, mention each source's `updatedDate` for time-sensitive details, and reply with the exact sentinel `NOT_COVERED` when excerpts do not answer.
+- Outputs: `{ answer: string }` JSON response.
+- Error handling: reject non-POST methods (`405`), oversized/invalid payloads (`400`), and missing `AI` binding or upstream failures (`503`/`502`) without leaking internals; the endpoint stores nothing and sets no cookies.
+
+#### `SRS-FUNC-ASK-04`: Answer rendering and citation resolution
+
+- Inputs: `{ answer }` response and the `AskSource[]` used for the request.
+- Processing logic: detect the `NOT_COVERED` sentinel; otherwise split the answer on `[n]` markers and render each valid marker as a link to that source's `url` (invalid/out-of-range markers render as literal text). Render a "Sources" list beneath the answer with each article title, category label, and formatted `updatedDate`.
+- Outputs: accessible answer card (`aria-live="polite"`) with inline article citations and freshness metadata.
+- Error handling: Svelte template escaping applies to all model text (zero `{@html}` of model output); malformed markers degrade to plain text.
+
+#### `SRS-FUNC-ASK-05`: Not-covered and service-failure fallbacks
+
+- Inputs: empty retrieval result, `NOT_COVERED` sentinel, non-OK `/api/ask` response, or `/ask-index.json` fetch failure.
+- Processing logic: render a calm fallback notice ("We don't have a guide covering that yet" / service-unavailable variant) with clickable links to all seven categories and `/articles`.
+- Outputs: recovery UI identical in spirit to `SRS-FUNC-SRCH-05`; zero uncaught promise rejections.
+- Error handling: never display fabricated procedural content; retry is offered for transient failures.
+
+### 4.8 Document Request Wizard subsystem (`/wizard`)
 
 #### `SRS-FUNC-WIZ-01`: Wizard request aggregation
 
-- Inputs: validated articles collection containing optional `wizard` frontmatter (`SW-INT-07`).
+- Inputs: validated articles collection containing optional `wizard` frontmatter (`SW-INT-09`).
 - Processing logic: flatten every article's `wizard` entries into `WizardRequestView` objects (`id`, `title`, `summary`, `office`, `fee`, `processingTime`, `guideAnchor`, `requirements`, plus resolved `articleSlug`, `articleTitle`, `articleCategory`) via pure `getWizardRequests()` in `src/lib/wizard.ts` and assert request `id` uniqueness across the collection.
 - Outputs: serialized request list passed as props to `<ClearanceWizard />` on `/wizard`.
 - Error handling: duplicate `id` values or schema violations fail Zod/frontmatter validation with diagnostics (`ERR-09` family).
@@ -396,21 +450,21 @@ Defines `CampusBuilding` (`id`, `name`, `shortLabel?`, `kind`, `floors?`, `svgPa
 - Inputs: serialized `WizardRequestView[]` and optional URL hash `#<request-id>`.
 - Processing logic: render a picker of all request types; on selection render summary rows (office, fee, processing time where declared), an ordered requirements checklist with per-item `note` detail, a progress counter (`x of y`), a reset control, and a link to the full source guide (`/articles/<slug>` plus `guideAnchor` when present).
 - Outputs: interactive checklist UI inside the Svelte 5 island.
-- Error handling: unknown or malformed hash request IDs fall back to the picker view without errors (`ERR-10`).
+- Error handling: unknown or malformed hash request IDs fall back to the picker view without errors (`ERR-13`).
 
 #### `SRS-FUNC-WIZ-03`: Checklist state persistence (`localStorage`)
 
 - Inputs: checkbox toggle events per request `id` and requirement index.
 - Processing logic: persist checked indices per request under a single `localStorage` key (`geary:wizard:v1`) as JSON; restore on mount; tolerate corrupt or unavailable storage by starting from an empty checklist.
 - Outputs: durable per-browser checklist progress across visits.
-- Error handling: `localStorage` access wrapped in `try/catch`; corrupt JSON resets cleanly (`ERR-10`).
+- Error handling: `localStorage` access wrapped in `try/catch`; corrupt JSON resets cleanly (`ERR-13`).
 
 #### `SRS-FUNC-WIZ-04`: Shareable URL hash state
 
 - Inputs: selected request `id` and checked requirement indices.
 - Processing logic: encode state as `#<request-id>` or `#<request-id>:<comma-separated indices>`; write via `history.replaceState` (no navigation, no backend); on load, `parseWizardHash` validates format and known request IDs, applying shared checks over stored ones.
 - Outputs: copy-pasteable share links preserving request and checklist progress.
-- Error handling: malformed hashes (`#`, `#:`, out-of-range indices) parse to safe defaults (`ERR-10`).
+- Error handling: malformed hashes (`#`, `#:`, out-of-range indices) parse to safe defaults (`ERR-13`).
 
 #### `SRS-FUNC-WIZ-05`: Wizard entry points
 
@@ -429,6 +483,7 @@ Defines `CampusBuilding` (`id`, `name`, `shortLabel?`, `kind`, `floors?`, `svgPa
 | `SRS-NFR-PERF-02` | Client runtime shall stay lean using compiled Svelte 5 components with zero React or third-party state/UI runtime dependencies. | `0` React runtime bytes; minimal SvelteKit hydration footprint. |
 | `SRS-NFR-PERF-03` | The `/search-index.json` payload shall remain compact for cellular networks. | `< 100 KB` uncompressed JSON for MVP dataset. |
 | `SRS-NFR-PERF-04` | Synchronous client search filtering shall complete within one animation frame. | `< 16 ms` filtering time on up to `200` articles. |
+| `SRS-NFR-PERF-05` | The `/ask-index.json` corpus shall stay bounded for cellular networks and lazy-load only on `/ask`. | `< 400 KB` uncompressed JSON for the MVP dataset; fetched once per session. |
 
 ### 5.2 Usability and accessibility
 
@@ -445,6 +500,7 @@ Defines `CampusBuilding` (`id`, `name`, `shortLabel?`, `kind`, `floors?`, `svgPa
 | :--- | :--- | :--- |
 | `SRS-NFR-REL-01` | On `/search-index.json` fetch failure, `<SearchBar />` shall handle rejections safely and provide working category fallback links. | `0` uncaught runtime promise rejections. |
 | `SRS-NFR-REL-02` | All internal links and TOC anchors across SSR routes shall resolve without dead targets. | `0` broken internal routes across verified routes. |
+| `SRS-NFR-REL-03` | On `/ask-index.json` fetch failure or non-OK `/api/ask` responses, `<AskPanel />` shall handle rejections safely and render the fallback category links. | `0` uncaught runtime promise rejections on `/ask`. |
 
 ### 5.4 Maintainability and portability
 
@@ -459,4 +515,5 @@ Defines `CampusBuilding` (`id`, `name`, `shortLabel?`, `kind`, `floors?`, `svgPa
 | :--- | :--- | :--- |
 | `SRS-NFR-SEC-01` | User search input echoed in UI states shall rely strictly on Svelte template escaping with zero raw `{@html}` injection of untrusted user input. | Resistant to DOM-based XSS via search queries. |
 | `SRS-NFR-SEC-02` | SSR deployment shall store or transmit zero user PII, cookies, credentials, or server secrets. | Zero runtime PII or credential attack surface. |
-| `SRS-NFR-SEC-03` | Wizard checklist state shall remain client-side only: `localStorage` and URL hash, never transmitted to any origin. | Zero network requests carrying checklist state. |
+| `SRS-NFR-SEC-03` | Ask-the-handbook queries shall be ephemeral: retrieval runs client-side, `/api/ask` stores nothing and sets no cookies, and only the single answer request transmits question text (plus public article excerpts) off-device. | No query logging, persistence, or secondary transmission. |
+| `SRS-NFR-SEC-04` | Wizard checklist state shall remain client-side only: `localStorage` and URL hash, never transmitted to any origin. | Zero network requests carrying checklist state. |

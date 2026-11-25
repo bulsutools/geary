@@ -23,6 +23,8 @@ This document specifies Geary's technology stack, SSR and edge-caching pipeline,
 | Styling and design system | Tailwind CSS v4 (`@tailwindcss/vite`) | Generates utility classes, semantic tokens, and scoped prose rules through Vite. | Produces small purged CSS bundles tied directly to [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) tokens without runtime styling overhead. |
 | Content and schema layer | Vite `?raw` glob + `gray-matter` + `marked` + `zod` | Bundles `src/content/articles/**/*.md` into the SSR server bundle, validates YAML frontmatter with Zod, extracts `h2`/`h3` headings + plain-text previews, and compiles GFM HTML. | Single-pass Markdown ingestion with zero database dependencies and zero Svelte template syntax collisions in `.md` prose. |
 | Search index and scorer | SSR JSON endpoint (`src/routes/search-index.json/+server.ts`) + TypeScript scorer | Serves an edge-cached JSON index built via pure `buildSearchIndex()` and scores queries synchronously in `SearchBar.svelte`. | Requires no external search SaaS and runs client-side matching with zero backend latency. |
+| Ask corpus and retrieval | SSR JSON endpoint (`src/routes/ask-index.json/+server.ts`) + TypeScript retriever (`src/lib/ask.ts`) | Emits chunked article passages per request from the cached article collection; `<AskPanel />` retrieves top-k evidence client-side with the same literal-token scoring family as site search. | Keeps retrieval private, instant, and backend-free; no embeddings index or vector database required. |
+| Answer generation | SvelteKit server route (`src/routes/api/ask/+server.ts`) + Workers AI | Single stateless `POST /api/ask` endpoint validates the payload and calls Workers AI (`platform.env.AI`) with a citation-grounded prompt; stores nothing. | One runtime hop only when evidence exists; queries stay ephemeral per `SRS-NFR-SEC-03`. |
 
 ## 3. High-level system and SSR architecture
 
@@ -53,7 +55,7 @@ flowchart TB
 
     subgraph ClientRuntime["4. Browser Runtime (HTTPS)"]
         SSR_HTML["Hydrated Svelte 5 DOM + Persistent Layout Shell"]
-        INTERACTIVE["SearchBar, ExploreSpotlight, AcademicCalendar, CampusMap, ClearanceWizard"]
+        INTERACTIVE["SearchBar, ExploreSpotlight, AcademicCalendar, CampusMap, AskPanel, ClearanceWizard"]
     end
 
     MD --> GLOB
@@ -74,20 +76,21 @@ flowchart TB
 ### 3.2 SSR, hydration, and caching boundary
 
 - **Dynamic SSR with CDN edge caching:** All page routes (`+page.server.ts`) and data endpoints (`/search-index.json`, `/sitemap.xml`, `/robots.txt`) set `Cache-Control: public, max-age=0, s-maxage=3600, stale-while-revalidate=86400` via `setHeaders()` / `Response` headers so Vercel's CDN serves repeat hits from the edge while keeping SSR dynamic.
-- **Unified Svelte 5 components:** Layouts (`+layout.svelte`), navigation (`Header.svelte`, `Footer.svelte`, `ThemeToggle.svelte`), reading views (`ArticleLayout.svelte`, `TableOfContents.svelte`), and interactive widgets (`SearchBar.svelte`, `ExploreSpotlight.svelte`, `AcademicCalendar.svelte`, `CampusMap.svelte`, `ClearanceWizard.svelte`) are all authored in Svelte 5 runes (`$state`, `$derived`, `$effect`, `$props`).
+- **Unified Svelte 5 components:** Layouts (`+layout.svelte`), navigation (`Header.svelte`, `Footer.svelte`, `ThemeToggle.svelte`), reading views (`ArticleLayout.svelte`, `TableOfContents.svelte`), and interactive widgets (`SearchBar.svelte`, `ExploreSpotlight.svelte`, `AcademicCalendar.svelte`, `CampusMap.svelte`, `AskPanel.svelte`, `ClearanceWizard.svelte`) are all authored in Svelte 5 runes (`$state`, `$derived`, `$effect`, `$props`).
 - **No-flash theme bootstrap:** `src/app.html` runs a minimal synchronous inline script before first paint to apply the `dark` class from `localStorage` (`geary-theme`) or `prefers-color-scheme`, synchronized with `ThemeToggle.svelte`.
 - **SPA-safe lifecycle cleanup:** Because SvelteKit keeps `+layout.svelte` mounted across client-side route transitions, global keyboard listeners (`/` and `Ctrl/Cmd+K` via `src/lib/search-shortcut.ts`), timers, and `<canvas>` animations clean up deterministically inside `$effect` teardowns.
 
 ### 3.3 Content-to-route propagation
 
-Adding or editing a single `.md` file in `src/content/articles/` automatically propagates through `src/lib/server/content.ts` to five surfaces:
+Adding or editing a single `.md` file in `src/content/articles/` automatically propagates through `src/lib/server/content.ts` to six surfaces:
 
 1. **Article view (`/articles/[slug]`):** Validates frontmatter with Zod, compiles Markdown prose via `marked` with unique heading `id`s, extracts `h2`/`h3` headings for TOC navigation, builds breadcrumbs, and resolves up to 3 sibling articles in the same category.
 2. **Category directory (`/categories/[slug]`):** Updates article counts and groups article cards under alphabetical `subcategory` headings.
 3. **Articles index (`/articles`):** Updates all 7 category counts and top-3 preview links.
 4. **Home hero (`/`):** Includes the article in the daily randomized 3x3 single-row hero spotlight pool (`ExploreSpotlight.svelte`).
 5. **Search & sitemap endpoints (`/search-index.json`, `/sitemap.xml`):** Serializes the article's `slug`, `title`, body `preview`, `category`, `categoryLabel`, `subcategory`, and `headings` array via pure `buildSearchIndex()`, and lists the canonical URL in `/sitemap.xml`.
-6. **Document request wizard (`/wizard`):** Optional `wizard` frontmatter (`SW-INT-07`) is flattened by pure `getWizardRequests()` into request checklists rendered by `<ClearanceWizard />`; category pages surface a wizard entry card when their guides declare wizard requests.
+6. **Ask corpus (`/ask-index.json`):** Serializes the article's metadata plus `updatedDate`, `url`, and `excerpt`, and splits the Markdown body into retrievable `chunks` for client-side evidence retrieval.
+7. **Document request wizard (`/wizard`):** Optional `wizard` frontmatter (`SW-INT-09`) is flattened by pure `getWizardRequests()` into request checklists rendered by `<ClearanceWizard />`; category pages surface a wizard entry card when their guides declare wizard requests.
 
 ## 4. Component architecture and responsibilities
 
@@ -104,6 +107,8 @@ flowchart TD
         R_ART["articles/[slug]/+page.svelte"]
         R_CAL["calendar/+page.svelte"]
         R_MAP["map/+page.svelte"]
+        R_ASK["ask/+page.svelte"]
+        R_API["api/ask/+server.ts"]
         R_WIZ["wizard/+page.svelte"]
     end
 
@@ -120,12 +125,13 @@ flowchart TD
         C_EXPL["ExploreSpotlight.svelte"]
         C_CAL["AcademicCalendar.svelte"]
         C_MAP["CampusMap.svelte + campus-map/*"]
+        C_ASK["AskPanel.svelte"]
         C_WIZ["ClearanceWizard.svelte"]
     end
 
     subgraph ServerAndDomain["Server Loader & Pure Domain Modules"]
         S_CNT["lib/server/content.ts (Vite ?raw glob + gray-matter + marked + zod)"]
-        D_CORE["lib/articles.ts, search.ts, calendar.ts, map-search.ts, wizard.ts, seo.ts"]
+        D_CORE["lib/articles.ts, search.ts, ask.ts, calendar.ts, map-search.ts, wizard.ts, seo.ts"]
         D_DATA["data/categories.ts, campus-map.ts, academic-calendar.ts"]
     end
 
@@ -146,8 +152,10 @@ flowchart TD
     C_ARTL --> C_ACARD
     R_CAL --> C_CAL
     R_MAP --> C_MAP
+    R_ASK --> C_ASK
     R_WIZ --> C_WIZ
     R_ERR --> C_SRCH
+    C_ASK --> R_API
 
     S_CNT --> D_CORE
     C_MAP --> D_DATA
@@ -162,7 +170,7 @@ flowchart TD
 | `src/routes/+layout.svelte` | Root SvelteKit layout | `children` snippet + route metadata from `page.data` | Renders skip-to-content link, `<Header />`, `<main>`, and `<Footer />`, plus global CSS and font preloads. |
 | `src/lib/components/SeoHead.svelte` | Svelte 5 component | `title`, `description`, `canonicalUrl`, `ogType`, `ogImageUrl`, `ogImageAlt`, `articleMeta?`, `noindex?`, `jsonLd?` | Renders `<svelte:head>` title, description, canonical link, Open Graph (`og:*`, `article:*`), Twitter cards, robots meta, and safe serialized JSON-LD scripts. |
 | `src/lib/components/ArticleLayout.svelte` | Svelte 5 component | `article`, `html`, `categoryMeta`, `headings`, `relatedArticles` | Composes `<Breadcrumbs />`, article metadata header, responsive grid pairing `{@html html}` prose with `<TableOfContents />`, optional Source card, unofficial verification notice, and up to 3 sibling `<ArticleCard />` items. |
-| `src/lib/components/Header.svelte` | Svelte 5 component | `activeCategory?`, `activeNav?`, `headerSearchShortcut?` | Renders brand gear logo (`/`), primary navigation links (`Home`, `Articles`, `Academic Calendar`, `Campus Map`, `Contribute`), compact `<SearchBar variant="header" />`, `<ThemeToggle />`, and accessible mobile menu drawer. |
+| `src/lib/components/Header.svelte` | Svelte 5 component | `activeCategory?`, `activeNav?`, `headerSearchShortcut?` | Renders brand gear logo (`/`), primary navigation links (`Home`, `Articles`, `Ask`, `Academic Calendar`, `Campus Map`, `Contribute`), compact `<SearchBar variant="header" />`, `<ThemeToggle />`, and accessible mobile menu drawer. |
 | `src/lib/components/ThemeToggle.svelte` | Svelte 5 component | None | Renders accessible color theme menu (`Light`, `Dark`, `System default`) synced with `localStorage` (`geary-theme`) and `src/app.html` bootstrap. |
 | `src/lib/components/Footer.svelte` | Svelte 5 component | None | Renders global footer copyright and legal links (`/terms`, `/privacy`). |
 | `src/lib/components/Breadcrumbs.svelte` | Svelte 5 component | `items: Array<{ label: string; href?: string }>` | Renders semantic breadcrumb trail linking parent routes and marking the current page (`aria-current="page"`). |
@@ -173,7 +181,7 @@ flowchart TD
 | `src/lib/components/ExploreSpotlight.svelte` | Svelte 5 component | `items`, `initialDateKey`, `groupSize = 3`, `groupCount = 3` | Displays 3 articles in a single row at the bottom of the Home hero, cycling automatically through 3 daily randomized groups (9 articles/day) with no manual controls and pausing on hover/focus/reduced-motion. |
 | `src/lib/components/AcademicCalendar.svelte` | Svelte 5 component | Data from `src/data/academic-calendar.ts` | Renders the searchable, category-filterable AY 2026–2027 BulSU Academic Calendar grouped by month on `/calendar`, with sticky filter bar, month jump nav, `/` & `Ctrl/Cmd+K` shortcut, and floating back-to-top button. |
 | `src/lib/components/CampusMap.svelte` | Svelte 5 component | Data from `src/data/campus-map.ts` | Renders the full-bleed interactive 2D BulSU Malolos SVG schematic, floating search (`campus-map/CampusMapSearch.svelte`), desktop card / mobile bottom-sheet inspector (`campus-map/BuildingInspector.svelte`), and pan/zoom viewport state (`campus-map/viewport.svelte.ts`). |
-| `src/lib/components/ClearanceWizard.svelte` | Svelte 5 component | `requests: WizardRequestView[]` | Renders the `/wizard` request picker and per-request requirements checklist; persists checked indices to `localStorage` (`geary:wizard:v1`), mirrors state into the URL hash via `history.replaceState`, restores on mount, and falls back cleanly on malformed hash/storage (`ERR-10`). |
+| `src/lib/components/ClearanceWizard.svelte` | Svelte 5 component | `requests: WizardRequestView[]` | Renders the `/wizard` request picker and per-request requirements checklist; persists checked indices to `localStorage` (`geary:wizard:v1`), mirrors state into the URL hash via `history.replaceState`, restores on mount, and falls back cleanly on malformed hash/storage (`ERR-13`). |
 | `src/routes/wizard/+page.server.ts` + `+page.svelte` | SvelteKit route | Articles collection | Aggregates `wizard` frontmatter via `getWizardRequests`, renders page chrome, disclaimer note, and mounts `<ClearanceWizard />`; category pages render an entry card when their guides declare wizard requests. |
 | `src/lib/wizard.ts` | Pure TypeScript module | `articles`, `hash`, `storage` | Flattens article `wizard` frontmatter into `WizardRequestView[]` (`getWizardRequests`, `getWizardRequestsForCategory`) and parses/builds shareable `#<id>:<indices>` URL hash state (`parseWizardHash`, `buildWizardHash`) plus guarded `localStorage` read/write helpers. |
 | `src/lib/server/content.ts` | Server content module | Bundled `src/content/articles/**/*.md` via Vite `?raw` glob | Parses YAML frontmatter (`gray-matter`), validates via `articleSchema` (`zod`), compiles GFM Markdown + unique heading IDs (`marked`), extracts `headings` and plain-text `preview`, and exposes `getAllArticles()`, `getArticleBySlug()`, and `buildSearchIndex()`. |
@@ -181,6 +189,11 @@ flowchart TD
 | `src/lib/articles.ts` | Pure TypeScript module | Articles list | Subcategory grouping, daily deterministic shuffle/partitioning (`getDailyItemGroups`), sibling selection, preview extraction, and UTC date formatting. |
 | `src/lib/calendar.ts` | Pure TypeScript module | Calendar events, filters, query | Multi-category filtering, multi-token search, and chronological month grouping for `/calendar`. |
 | `src/lib/map-search.ts` | Pure TypeScript module | Campus map buildings/locations, query | Location/building search, floor partitioning/grouping, and clamped SVG viewBox pan/zoom math. |
+| `src/lib/ask.ts` | Pure TypeScript module | `items: AskIndexItem[]`, `query: string`, `sources: AskSource[]` | Implements ask-corpus chunking (`buildAskChunks`), client-side evidence retrieval (`retrieveAskSources` + evidence threshold), grounded prompt construction (`buildAskMessages`), and answer/citation parsing (`parseCitedAnswer`) — all unit-testable without Svelte or the Workers runtime. |
+| `src/routes/ask-index.json/+server.ts` | SSR JSON endpoint | Cached parsed articles | Serializes `SW-INT-07` `AskIndexItem[]` to `/ask-index.json` with CDN cache headers. |
+| `src/routes/ask/+page.svelte` | SSR page | `siteOrigin` from layout data | Renders the `/ask` route shell (breadcrumbs, heading, explainer copy, `SeoHead`) hosting `<AskPanel />`. |
+| `src/lib/components/AskPanel.svelte` | Svelte 5 component | — | Lazily fetches/caches `/ask-index.json` in module memory, runs `retrieveAskSources`, `POST`s to `/api/ask` only when evidence suffices, renders cited answers with `[n]` article links, per-source *Last updated* dates, and not-covered/service-failure fallbacks. |
+| `src/routes/api/ask/+server.ts` | SvelteKit server route | `SW-INT-08` request, `platform.env.AI` | Validates and bounds the payload, builds the grounded prompt via `src/lib/ask.ts`, calls Workers AI (`AI.run`), returns `{ answer }` or `NOT_COVERED`; stores nothing, sets no cookies. |
 | `src/lib/seo.ts` | Pure TypeScript module | Route metadata & origin | Canonical origin resolution and XSS-safe JSON-LD builders (`WebSite`, `BreadcrumbList`, `Article`). |
 
 ## 5. Configuration and module contracts
@@ -245,7 +258,7 @@ export const articleSchema = z.object({
 });
 ```
 
-`wizardRequestSchema` enforces the `SW-INT-07` contract: `id` matching `^[a-z0-9]+(-[a-z0-9]+)*$`, non-empty `title`, optional `summary`/`office`/`fee`/`processingTime`/`guideAnchor` strings, and `requirements` of at least one `{ label, note? }` item. `src/lib/wizard.ts` flattens these entries into `WizardRequestView` objects that additionally carry the resolved `articleSlug`, `articleTitle`, and `articleCategory`, so the wizard checklist always links back to its single-source guide (`SRS-FUNC-WIZ-01`).
+`wizardRequestSchema` enforces the `SW-INT-09` contract: `id` matching `^[a-z0-9]+(-[a-z0-9]+)*$`, non-empty `title`, optional `summary`/`office`/`fee`/`processingTime`/`guideAnchor` strings, and `requirements` of at least one `{ label, note? }` item. `src/lib/wizard.ts` flattens these entries into `WizardRequestView` objects that additionally carry the resolved `articleSlug`, `articleTitle`, and `articleCategory`, so the wizard checklist always links back to its single-source guide (`SRS-FUNC-WIZ-01`).
 
 #### `src/routes/search-index.json/+server.ts`
 
@@ -263,6 +276,67 @@ export interface SearchIndexItem {
 }
 ```
 
+#### `src/lib/ask.ts` (Ask corpus, retrieval & prompt contracts)
+
+```ts
+export interface AskIndexChunk {
+  id: string;
+  text: string; // Markdown passage, <= ~1,400 chars
+}
+
+export interface AskIndexItem {
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: CategorySlug;
+  categoryLabel: string;
+  subcategory: string;
+  headings: string[];
+  updatedDate: string; // YYYY-MM-DD
+  url: string; // /articles/<slug>
+  chunks: AskIndexChunk[];
+}
+
+export interface AskSource {
+  n: number; // 1-based citation index matching [n] markers
+  slug: string;
+  title: string;
+  url: string;
+  categoryLabel: string;
+  subcategory: string;
+  updatedDate: string;
+  excerpt: string;
+  text: string; // retrieved chunk passage
+}
+
+export function buildAskChunks(body: string, maxChars?: number): AskIndexChunk[];
+export function retrieveAskSources(
+  items: readonly AskIndexItem[],
+  query: string,
+  options?: { maxSources?: number; maxPerArticle?: number },
+): AskSource[];
+export function hasAnswerableEvidence(sources: readonly AskSource[]): boolean;
+export function buildAskMessages(
+  query: string,
+  sources: readonly AskSource[],
+): Array<{ role: 'system' | 'user'; content: string }>;
+export type AnswerSegment =
+  | { type: 'text'; text: string }
+  | { type: 'citation'; n: number; url: string; title: string };
+export function parseCitedAnswer(
+  raw: string,
+  sources: readonly AskSource[],
+): { status: 'answered' | 'not-covered'; segments: AnswerSegment[] };
+```
+
+#### `src/routes/ask-index.json/+server.ts`
+
+Edge-cached SSR `GET` endpoint returning JSON conforming to `AskIndexItem[]` (`SW-INT-07`). Each item carries `slug`, `title`, `excerpt`, `category`, `categoryLabel`, `subcategory`, `headings`, ISO `updatedDate`, `url`, and `chunks` produced by `buildAskChunks()` in `src/lib/ask.ts`.
+
+#### `src/routes/api/ask/+server.ts`
+
+Stateless SSR `POST` endpoint (`SW-INT-08`) that validates `{ query, sources }`, builds the grounded citation prompt via `buildAskMessages()` in `src/lib/ask.ts`, invokes Cloudflare Workers AI through `platform.env.AI` (`@cf/meta/llama-3.1-8b-instruct` or configured equivalent), and returns `{ answer }` or `{ error }`. Stores nothing, sets no cookies, and responds `503` when the `AI` binding is absent and `502` on upstream failure.
+
 #### `src/routes/corpus.json/+server.ts`
 
 Edge-cached SSR `GET` endpoint exporting the full article corpus (`SW-INT-05`) consumed by the MCP Worker. Each record carries `slug`, `title`, `category`, `categoryLabel`, `subcategory`, ISO `updatedDate`, `preview`, resolved `sources`, and `content` — the raw `.md` file bytes (frontmatter plus body) captured via Vite `import.meta.glob('...', { query: '?raw' })` so `get_article` returns source-identical Markdown. The payload embeds the `CATEGORIES` registry for label resolution.
@@ -273,7 +347,7 @@ Optional Cloudflare Worker (`mcp/worker.ts`, configured by `mcp/wrangler.toml`) 
 
 ### 5.3 External runtime integrations
 
-Geary's core information portal has no external runtime dependencies: no databases, hosted search SaaS, LLM APIs, authentication services, or third-party tracking scripts. The optional `mcp/` Cloudflare Worker is a separate read-only deployable that serves only the `/corpus.json` endpoint; it is not part of the site route tree and holds no credentials. The `/contribute` page embeds a Google Form as an optional community submission surface; it is a documented governance exception that requires a team scope decision before expansion.
+Geary's core information portal has no database, hosted search SaaS, authentication service, or third-party tracking scripts. The single runtime external call is `POST /api/ask`, a stateless SvelteKit server route that relays the question and retrieved public article excerpts to Cloudflare Workers AI (`platform.env.AI` binding on Cloudflare deployments; model `@cf/meta/llama-3.1-8b-instruct` or configured equivalent) and returns the answer text; it stores nothing, sets no cookies, and returns `503` when the `AI` binding is unconfigured. Retrieval itself is client-side literal-token matching over `/ask-index.json`, so no embeddings index, Vectorize database, or paid API plan is required. The optional `mcp/` Cloudflare Worker is a separate read-only deployable that serves only the `/corpus.json` endpoint; it is not part of the site route tree and holds no credentials. The `/contribute` page embeds a Google Form as an optional community submission surface; it is a documented governance exception that requires a team scope decision before expansion.
 
 ## 6. Project directory structure
 
@@ -317,11 +391,12 @@ geary/
 ├── tests/                           # Unit & Playwright E2E/Axe verification suites
 │   ├── unit/
 │   │   ├── articles.test.ts         # Subcategory grouping, previews, daily spotlight & UTC dates
+│   │   ├── ask.test.ts              # Ask chunking, retrieval, prompt & citation parsing
 │   │   ├── calendar.test.ts         # AY 2026-2027 calendar dataset, filtering & month grouping
 │   │   ├── content.test.ts          # Zod frontmatter validation & Markdown compilation + headings
 │   │   ├── map-search.test.ts       # Campus map search, directory integrity & viewBox math
 │   │   ├── mcp.test.ts              # MCP corpus tools & JSON-RPC dispatch (F-07)
-│   │   ├── wizard.test.ts           # Wizard request aggregation & hash/storage helpers (F-08)
+│   │   ├── wizard.test.ts           # Wizard request aggregation & hash/storage helpers (F-09)
 │   │   ├── search.test.ts           # Query scoring & pure buildSearchIndex() contract (< 100 KB)
 │   │   └── seo.test.ts              # JSON-LD builders & XSS-safe serialization
 │   └── e2e/
@@ -342,6 +417,7 @@ geary/
     │   └── categories.ts            # Canonical 7-category registry & lookup helpers
     ├── lib/
     │   ├── articles.ts              # Subcategory grouping, daily spotlight & sibling article helpers
+    │   ├── ask.ts                   # Ask corpus chunking, retrieval, prompt & citation parsing
     │   ├── calendar.ts              # Calendar category/search filtering & month grouping
     │   ├── content-schema.ts        # Zod article frontmatter & source schemas
     │   ├── map-search.ts            # Office/building lookup & viewBox math helpers for /map
@@ -355,6 +431,7 @@ geary/
     │   │   └── markdown.ts          # Pure Markdown parser + heading slug extractor (unit-testable)
     │   └── components/
     │       ├── AcademicCalendar.svelte
+    │       ├── AskPanel.svelte       # Cited Q&A panel for /ask (lazy /ask-index.json + /api/ask)
     │       ├── ArticleCard.svelte
     │       ├── ArticleLayout.svelte
     │       ├── Breadcrumbs.svelte
@@ -393,6 +470,8 @@ geary/
         ├── map/
         │   ├── +page.server.ts
         │   └── +page.svelte         # Full-viewport interactive 2D BulSU Malolos Campus Map
+        ├── ask/
+        │   ├── +page.svelte         # Ask-the-handbook Q&A page hosting AskPanel.svelte
         ├── privacy/
         │   ├── +page.server.ts
         │   └── +page.svelte         # Privacy Policy page
@@ -406,8 +485,13 @@ geary/
         │   └── +server.ts           # Edge-cached robots.txt referencing sitemap.xml
         ├── search-index.json/
         │   └── +server.ts           # Edge-cached JSON search payload from buildSearchIndex()
+        ├── ask-index.json/
+        │   └── +server.ts           # Edge-cached ask corpus payload (SW-INT-07) for /ask
         ├── corpus.json/
         │   └── +server.ts           # Edge-cached article corpus payload for the MCP Worker (F-07)
+        ├── api/
+        │   └── ask/
+        │       └── +server.ts       # Stateless POST /api/ask -> Workers AI cited answers
         └── sitemap.xml/
             └── +server.ts           # Edge-cached XML sitemap listing all canonical routes
 ```
