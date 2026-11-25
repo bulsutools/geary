@@ -17,6 +17,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/calendar',
       '/contribute',
       '/map',
+      '/ask',
       '/terms',
       '/privacy',
       ...CATEGORY_SLUGS.map((slug) => `/categories/${slug}`),
@@ -45,6 +46,25 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
     expect(Buffer.byteLength(indexBody, 'utf-8')).toBeLessThan(100 * 1024);
     const parsedIndex = JSON.parse(indexBody) as unknown[];
     expect(parsedIndex.length).toBe(mdFiles.length);
+
+    const askIndexRes = await request.get('/ask-index.json');
+    expect(askIndexRes.status()).toBe(200);
+    expect(askIndexRes.headers()['cache-control'] ?? '').toContain('s-maxage=');
+    const askIndexBody = await askIndexRes.text();
+    expect(Buffer.byteLength(askIndexBody, 'utf-8')).toBeLessThan(400 * 1024);
+    const askItems = JSON.parse(askIndexBody) as Array<{
+      slug: string;
+      url: string;
+      updatedDate: string;
+      chunks: Array<{ id: string; text: string }>;
+    }>;
+    expect(askItems.length).toBe(mdFiles.length);
+    for (const item of askItems) {
+      expect(item.url).toBe(`/articles/${item.slug}`);
+      expect(item.updatedDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      expect(item.chunks.length).toBeGreaterThanOrEqual(1);
+      expect(item.chunks.every((c) => c.text.trim().length > 0)).toBe(true);
+    }
   });
 
   test('TC-BLD-04: validates internal links and TOC heading anchors across key routes', async ({
@@ -71,6 +91,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/contribute',
       '/calendar',
       '/map',
+      '/ask',
       '/terms',
       '/privacy',
     ];
@@ -267,6 +288,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/contribute',
       '/calendar',
       '/map',
+      '/ask',
       '/terms',
       '/privacy',
       '/this-route-does-not-exist',
@@ -328,6 +350,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/contribute',
       '/calendar',
       '/map',
+      '/ask',
       '/terms',
       '/privacy',
       '/this-route-does-not-exist',
@@ -337,7 +360,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       await page.goto(route);
 
       await expect(page.locator('header')).toHaveCount(1);
-      await expect(page.locator('header nav[aria-label="Primary navigation"] a')).toHaveCount(5);
+      await expect(page.locator('header nav[aria-label="Primary navigation"] a')).toHaveCount(6);
       await expect(page.locator('main')).toHaveCount(1);
       await expect(page.locator('footer')).toHaveCount(route === '/map' ? 0 : 1);
       await expect(page.locator('h1')).toHaveCount(1);
@@ -672,5 +695,100 @@ Test body.
         .analyze();
       expect(results.violations, `Dark mode Axe violations on ${route}`).toEqual([]);
     }
+  });
+
+  test('TC-E2E-09: ask flow retrieves evidence locally and cites sources', async ({
+    page,
+  }) => {
+    let askIndexFetches = 0;
+    let apiAskCalls = 0;
+    let lastApiPayload: { query?: string; sources?: Array<{ url?: string }> } = {};
+
+    await page.route('**/ask-index.json', async (route) => {
+      askIndexFetches += 1;
+      await route.continue();
+    });
+    await page.route('**/api/ask', async (route) => {
+      apiAskCalls += 1;
+      lastApiPayload = route.request().postDataJSON() as typeof lastApiPayload;
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({
+          answer:
+            'Apply through the online admissions portal [1] after preparing documents [2].',
+        }),
+      });
+    });
+
+    await page.goto('/ask');
+    await expect(page.locator('h1')).toHaveCount(1);
+
+    await page.getByRole('textbox').fill('how do I apply for a scholarship');
+    await page.getByRole('button', { name: 'Ask', exact: true }).click();
+
+    const answerLink = page.locator(
+      'main a[href^="/articles/"][aria-label^="Source "]',
+    );
+    await expect(answerLink.first()).toBeVisible();
+    expect(askIndexFetches).toBe(1);
+    expect(apiAskCalls).toBe(1);
+    expect(lastApiPayload.query).toBe('how do I apply for a scholarship');
+    expect(lastApiPayload.sources?.length).toBeGreaterThan(0);
+    for (const source of lastApiPayload.sources ?? []) {
+      expect(source.url).toMatch(/^\/articles\//);
+    }
+
+    await expect(page.locator('main')).toContainText('Sources');
+    await expect(page.locator('main')).toContainText('Last updated');
+    const citedHref = await answerLink.first().getAttribute('href');
+    expect(citedHref).toMatch(/^\/articles\//);
+
+    // Unrelated question: no evidence -> /api/ask is never called.
+    await page.getByRole('textbox').fill('zzzz quantum physics');
+    await page.getByRole('button', { name: 'Ask', exact: true }).click();
+    await expect(page.locator('main')).toContainText("don't have a guide covering that yet");
+    expect(apiAskCalls).toBe(1);
+    for (const slug of CATEGORY_SLUGS) {
+      await expect(page.locator(`main a[href="/categories/${slug}"]`)).toBeVisible();
+    }
+
+    // NOT_COVERED from the endpoint falls back to category links too.
+    await page.unroute('**/api/ask');
+    await page.route('**/api/ask', async (route) => {
+      await route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ answer: 'NOT_COVERED' }),
+      });
+    });
+    await page.getByRole('textbox').fill('how do I apply for a scholarship');
+    await page.getByRole('button', { name: 'Ask', exact: true }).click();
+    await expect(page.locator('main')).toContainText("don't have a guide covering that yet");
+  });
+
+  test('TC-E2E-09b: ask page degrades calmly when index or endpoint fails', async ({
+    page,
+  }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (error) => pageErrors.push(String(error)));
+
+    await page.route('**/ask-index.json', (route) =>
+      route.fulfill({ status: 500, body: 'boom' }),
+    );
+    await page.route('**/api/ask', (route) =>
+      route.fulfill({ status: 503, body: 'unavailable' }),
+    );
+
+    await page.goto('/ask');
+    await page.getByRole('textbox').fill('how do I apply for a scholarship');
+    await page.getByRole('button', { name: 'Ask', exact: true }).click();
+    await expect(page.locator('main')).toContainText('handbook index couldn');
+    await expect(page.locator('main a[href="/articles"]').first()).toBeVisible();
+
+    await page.unroute('**/ask-index.json');
+    await page.getByRole('button', { name: 'Retry' }).click();
+    await expect(page.locator('main')).toContainText('answer service is unavailable');
+    expect(pageErrors).toEqual([]);
   });
 });

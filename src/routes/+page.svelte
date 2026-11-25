@@ -214,6 +214,13 @@
         Content is still a work in progress. Expect missing or outdated information.
         <br class="hidden md:inline" />
         <a
+          href="/ask"
+          class="font-medium text-brand-crimson hover:text-brand-crimson-hover hover:underline underline-offset-2 transition-colors"
+        >
+          Ask the handbook
+        </a>
+        {' '}a question,{" "}
+        <a
           href="/contribute"
           class="font-medium text-brand-crimson hover:text-brand-crimson-hover hover:underline underline-offset-2 transition-colors"
         >

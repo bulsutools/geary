@@ -16,7 +16,7 @@
 
 ### 1.2 Purpose
 
-This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to seven confirmed capabilities:
+This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to eight confirmed capabilities:
 
 1. Articles and Markdown content (`F-01`)
 2. Categories and purposeful organization (`F-02`)
@@ -25,6 +25,7 @@ This PRD defines the MVP feature set, expected product behavior, release priorit
 5. Interactive 2D campus map (`F-05`)
 6. Interactive Academic Calendar (`F-06`)
 7. Read-only MCP server for AI assistants (`F-07`)
+8. Ask-the-Handbook Q&A (`F-08`)
 
 ## 2. Prioritization framework
 
@@ -34,7 +35,7 @@ Every requirement in this PRD carries a release priority:
 | :--- | :--- | :--- |
 | `P0` (Must-Have / Core MVP) | Required for Geary to work as a centralized, searchable student information portal. | Mandatory for MVP launch; release is blocked if any `P0` acceptance criterion fails. |
 | `P1` (Should-Have / MVP UX Polish) | Usability, orientation, and skimming features included in the MVP baseline. | Included in the MVP target release to keep cognitive load low and discovery fast. |
-| `Won't Have` (Out of Scope) | Capabilities excluded under [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) (AI chatbot, user accounts, databases, official SIS integration). | Excluded from the MVP. |
+| `Won't Have` (Out of Scope) | Capabilities excluded under [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) (general-purpose AI chatbot, user accounts, databases, official SIS integration). | Excluded from the MVP. |
 
 ## 3. Features, product behavior, and acceptance criteria
 
@@ -220,3 +221,30 @@ Visiting an outdated bookmark or broken URL loads the branded `404` page with a 
 - `AC-MCP-02` (`REQ-MCP-02`): *Given* a query such as `"TOR request"` with or without a `category` filter, *When* `search_articles` runs, *Then* matching articles rank by title/body relevance and out-of-enum categories are rejected.
 - `AC-MCP-03` (`REQ-MCP-03`): *Given* a published slug, *When* `get_article` runs, *Then* the returned Markdown equals the source file verbatim; *Given* an unknown slug, *Then* a clean error is returned.
 - `AC-MCP-04` (`REQ-MCP-04`): *Given* the corpus, *When* `list_categories` or `get_freshness` runs, *Then* the full 7-category tree with subcategory groupings and per-category oldest `updatedDate` values is returned.
+
+### 3.8 Feature 8: Ask-the-Handbook Q&A (`/ask`) (`F-08`)
+
+#### Requirements specification
+
+| Req ID | Priority | Requirement statement |
+| :--- | :--- | :--- |
+| `REQ-ASK-01` | `P0` | The system shall compile a static ask corpus (`/ask-index.json`) containing every published article's slug, title, excerpt, category metadata, subcategory, section headings, `updatedDate`, article URL, and body text chunked into retrievable passages. |
+| `REQ-ASK-02` | `P0` | The `/ask` page shall provide an interactive question input that retrieves the top-k most relevant corpus chunks client-side before any network answer call, ranking by weighted literal token matching consistent with site search. |
+| `REQ-ASK-03` | `P0` | When sufficient retrieved evidence exists, the system shall send only the question and retrieved chunks to a single stateless `/api/ask` endpoint backed by Cloudflare Workers AI, and render the answer with inline `[n]` citations linking to the cited article URLs plus a sources list showing each article's title, category, and last-updated date. |
+| `REQ-ASK-04` | `P0` | The system shall answer strictly from retrieved chunks: questions below the evidence threshold, or answers the model marks as not covered, shall return the guides index (category links and article directory) instead of invented content. |
+| `REQ-ASK-05` | `P1` | Answers shall surface `updatedDate` freshness for time-sensitive topics (fees, schedules, deadlines), and the feature shall keep queries ephemeral: retrieval runs in the browser and only the answer request leaves the client, with nothing stored server-side. |
+
+#### Product behavior
+
+- Question-first answers: a student types a natural-language question (e.g., "how do I apply for a scholarship") on `/ask`. The browser downloads the static ask corpus once, retrieves the best-matching passages locally, and only then calls the answer endpoint.
+- Grounded, cited responses: the model sees only the retrieved passages plus their metadata. Every factual claim carries an inline `[n]` citation that links to the matching `/articles/[slug]` page; a "Sources" list beneath the answer repeats each article title with its *Last updated* date so students can judge freshness before trusting fees or deadlines.
+- Honest fallbacks: when retrieval finds too little evidence, or the model reports the corpus does not cover the question, the page shows a calm not-covered notice with links to all seven categories and the article directory — never a fabricated answer.
+- Privacy posture: search-style retrieval stays client-side; the only data transmitted is the single answer request containing the question and public article text. Geary stores nothing.
+
+#### Acceptance criteria
+
+- `AC-ASK-01` (`REQ-ASK-01`): *Given* a completed build, *When* fetching `/ask-index.json`, *Then* every published article appears with slug, title, excerpt, category, subcategory, headings, ISO `updatedDate`, URL, and at least one non-empty text chunk.
+- `AC-ASK-02` (`REQ-ASK-02`): *Given* the `/ask` page, *When* a student submits "how do I apply for a scholarship", *Then* the client retrieves chunks locally (the answer endpoint is not called when evidence is insufficient) and ranked sources correspond to real indexed articles.
+- `AC-ASK-03` (`REQ-ASK-03`): *Given* a covered question, *When* the answer returns, *Then* the response renders as text with inline `[n]` markers converted to links pointing at `/articles/<slug>` URLs, followed by a sources list showing title, category, and formatted last-updated date for each cited article.
+- `AC-ASK-04` (`REQ-ASK-04`): *Given* a question with no corpus coverage (e.g., unrelated trivia) *or* a model `NOT_COVERED` response, *When* rendered, *Then* the page shows the not-covered state with links to all seven categories and `/articles`, and contains no invented procedural claims.
+- `AC-ASK-05` (`REQ-ASK-05`): *Given* a time-sensitive question about fees, schedules, or deadlines, *When* the answer and sources render, *Then* each listed source displays its `updatedDate` and the answer prompt contract requires freshness cues; *Given* network inspection, *Then* no request other than `POST /api/ask` transmits the question text.
