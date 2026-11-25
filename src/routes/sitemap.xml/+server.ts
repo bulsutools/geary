@@ -1,6 +1,6 @@
 import type { RequestHandler } from './$types';
 import { CATEGORIES } from '../../data/categories';
-import { resolveRequestOrigin } from '#lib/seo';
+import { requestOrigin } from '#lib/seo-runtime';
 import { CACHE_CONTROL_HEADER } from '#lib/server/cache';
 import { getAllArticles } from '#lib/server/content';
 
@@ -14,7 +14,7 @@ function escapeXml(value: string): string {
 }
 
 export const GET: RequestHandler = ({ url }) => {
-  const origin = resolveRequestOrigin(url);
+  const origin = requestOrigin(url);
   const articles = getAllArticles();
 
   const staticPaths = ['/', '/articles', '/calendar', '/map', '/contribute', '/terms', '/privacy'];
