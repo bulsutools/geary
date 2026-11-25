@@ -11,7 +11,7 @@
 | Date | `2026-11-24` |
 | Standard reference | ISO/IEC/IEEE 12207:2017 - *Systems and software engineering - Software life cycle processes* (Clause 6.3.1 *Project Planning*, Clause 6.3.2 *Project Assessment and Control*, Clause 6.3.4 *Risk Management*, and Clauses 6.4.5, 6.4.7, 6.4.9, and 6.4.11 *Implementation, Integration, Verification and Validation*) |
 | Related baselines | [AGENTS.md](../AGENTS.md), [PROJECT_CHARTER.md](./PROJECT_CHARTER.md), [PRD.md](./PRD.md), [SRS.md](./SRS.md), [USER_FLOWS.md](./USER_FLOWS.md), [ARCHITECTURE.md](./ARCHITECTURE.md), [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md), [TESTING.md](./TESTING.md), [REQUIREMENTS.md](./REQUIREMENTS.md) |
-| Status | MVP Complete (`M1`–`M6`); Milestone `M7` (SvelteKit SSR Migration) and `M8` (Ask-the-Handbook Q&A port) implemented; `M8` pending full verification |
+| Status | MVP Complete (`M1`–`M6`); Milestones `M7` (SvelteKit SSR Migration), `M8` (Ask-the-Handbook Q&A port), and the document-request wizard port (`BL-34`) implemented |
 
 ### 1.2 Shared backlog and milestone workflow *(ISO 12207 Clause 6.3.2)*
 
@@ -55,7 +55,7 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 | **`M7`: SvelteKit SSR architecture migration** | Clauses 6.4.3, 6.4.5, 6.4.7, 6.4.9, and 6.4.11 | Migrate from Astro + React islands to SvelteKit (Svelte 5 runes) + `@sveltejs/adapter-vercel` dynamic SSR with Vite `?raw` glob + `gray-matter` + `marked` + `zod` content loader and CDN `Cache-Control` headers while preserving 100% functional and visual parity. | `bun run check` (`svelte-check`), `bun test`, `bun run build` (`vite build`), and `bun run test:e2e` (Playwright + Axe) pass with `0` failures. |
 | **`M8`: Ask-the-Handbook Q&A (SvelteKit port of #8)** | Clauses 6.4.5, 6.4.7, 6.4.9, and 6.4.11 | Citation-grounded `/ask` Q&A in Svelte 5: chunked corpus endpoint, client-side retrieval, stateless `/api/ask` server route on Workers AI, and not-covered fallbacks — supersedes the unmerged Astro/React PR #8. | `TC-BLD-03`, `TC-UNIT-09`, and `TC-E2E-09` pass; `AI` binding configured on the deployment target before production answers work (`KI-08`). |
 
-## 4. Prioritized implementation backlog (`BL-01` to `BL-33`) *(ISO 12207 Clauses 6.3.1 and 6.4.5)*
+## 4. Prioritized implementation backlog (`BL-01` to `BL-34`) *(ISO 12207 Clauses 6.3.1 and 6.4.5)*
 
 ### Milestone `M1`: Toolchain, integrations, and design foundation
 - [x] **`BL-01` (`P0`):** Install project dependencies via Bun (`@astrojs/react`, `react`, `react-dom`, `@types/react`, `@types/react-dom`, `tailwindcss`, `@tailwindcss/vite`, `@astrojs/check`, `typescript`, `@playwright/test`, `@axe-core/playwright`) and verify Chromium Playwright setup ([ARCHITECTURE.md](./ARCHITECTURE.md) §2, `KI-01`).
@@ -96,6 +96,7 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 - [x] **`BL-26` (`P0`):** Port interactive widgets to Svelte 5 runes (`SearchBar.svelte`, `ExploreSpotlight.svelte`, `AcademicCalendar.svelte`, `CampusMap.svelte` + `campus-map/*`) with SPA-safe `$effect` cleanup (`SRS-FUNC-SRCH-02` to `SRS-FUNC-SRCH-06`, `SRS-FUNC-MAP-01`, `SRS-FUNC-MAP-02`, `RTM-22`, `RTM-23`).
 - [x] **`BL-27` (`P0`):** Run full verification gate (`bun run check`, `bun test`, `bun run build`, `bun run test:e2e`, `bun audit`), confirm zero regressions and valid CDN `Cache-Control` headers, and mark `M7` and all `RTM-*` rows as `[x] Verified`.
 - [x] **`BL-28` (`P1`, Post-MVP):** Implement the read-only MCP server (`F-07`): `src/routes/corpus.json/+server.ts` corpus endpoint (`SW-INT-05`), `mcp/` Cloudflare Worker with Streamable HTTP JSON-RPC and `search_articles`/`get_article`/`list_categories`/`get_freshness` tools (`SW-INT-06`, `SRS-FUNC-MCP-01` to `SRS-FUNC-MCP-04`), and `TC-UNIT-08`/`TC-BLD-03` verification (`REQ-MCP-01` to `REQ-MCP-04`, `RTM-24`).
+- [x] **`BL-34` (`P0`/`P1`, Post-MVP):** Implement the interactive document-request wizard (`/wizard`, `F-09`): `wizard` article frontmatter schema (`SW-INT-09`), `src/lib/wizard.ts` aggregation + hash/storage helpers, `ClearanceWizard.svelte` Svelte 5 island, category entry cards, article "check off your requirements" links, `TC-UNIT-10`, and `TC-E2E-10` (`REQ-WIZ-01` to `REQ-WIZ-05`, `RTM-26`, `RTM-NFR-17`).
 
 ### Milestone `M8`: Ask-the-Handbook Q&A (SvelteKit port of PR #8)
 - [x] **`BL-29` (`P0`):** Update specification docs first per the documentation-first rule — [PROJECT_CHARTER.md](./PROJECT_CHARTER.md), [PRD.md](./PRD.md) `F-08`/`REQ-ASK-*`, [SRS.md](./SRS.md) `CON-*`/`SW-INT-07`-`08`/`SRS-FUNC-ASK-*`, [USER_FLOWS.md](./USER_FLOWS.md) `MODE-05`/`UJ-07`/`UC-07`/`ERR-10`-`12`, [ARCHITECTURE.md](./ARCHITECTURE.md), [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) §5.11, [TESTING.md](./TESTING.md), and [REQUIREMENTS.md](./REQUIREMENTS.md) `RTM-25`/`RTM-NFR-15`-`16`.

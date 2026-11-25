@@ -28,7 +28,7 @@ Geary runs on SvelteKit (Svelte 5 runes) with Tailwind CSS and `@sveltejs/adapte
 
 | ISO/IEC 25010 characteristic | Sub-characteristics | Application to Geary | Verification layer and test IDs |
 | :--- | :--- | :--- | :--- |
-| Functional Suitability | Functional Completeness, Functional Correctness | Validated Markdown ingestion, 7-category grouping, weighted search ranking, conditional TOC, academic calendar, campus map, SEO metadata, and HTTP `404` recovery. | Layer 1 (`TC-BLD-02`, `TC-BLD-03`), Layer 2 (`TC-UNIT-01`, `TC-UNIT-04` to `TC-UNIT-07`), Layer 3 (`TC-E2E-01`, `TC-E2E-03`, `TC-E2E-05` to `TC-E2E-07`) |
+| Functional Suitability | Functional Completeness, Functional Correctness | Validated Markdown ingestion, 7-category grouping, weighted search ranking, conditional TOC, academic calendar, campus map, document-request wizard, SEO metadata, and HTTP `404` recovery. | Layer 1 (`TC-BLD-02`, `TC-BLD-03`), Layer 2 (`TC-UNIT-01`, `TC-UNIT-04` to `TC-UNIT-07`, `TC-UNIT-09`, `TC-UNIT-10`), Layer 3 (`TC-E2E-01`, `TC-E2E-03`, `TC-E2E-05` to `TC-E2E-07`, `TC-E2E-09`, `TC-E2E-10`) |
 | Performance Efficiency | Time Behaviour, Resource Utilization | Edge-cached SSR responses (`s-maxage` + `stale-while-revalidate`), lean Svelte 5 client runtime, `< 100 KB` `/search-index.json` payload, and `< 16 ms` synchronous client filtering. | Layer 1 (`TC-BLD-03`), Layer 2 (`TC-UNIT-01`, `TC-UNIT-05`) |
 | Usability / Interaction Capability | Appropriateness Recognizability, Operability, Accessibility | Low-cognitive-load layout, `~65ch` prose, keyboard-only search (`/` and `Ctrl+K`), WCAG 2.1 AA contrast in light and dark themes, and zero `375px` horizontal scroll. | Layer 3 (`TC-E2E-01`, `TC-E2E-03`, `TC-E2E-04`, `TC-E2E-08`), Layer 4 (`TC-A11Y-01` to `TC-A11Y-03`) |
 | Reliability | Fault Tolerance, Availability | Non-crashing UI when search returns 0 matches or `/search-index.json` fails over mobile data; zero broken internal links. | Layer 1 (`TC-BLD-04`), Layer 3 (`TC-E2E-02`, `TC-E2E-05`) |
@@ -143,6 +143,13 @@ Geary runs on SvelteKit (Svelte 5 runes) with Tailwind CSS and `@sveltejs/adapte
   3. Verify `hasAnswerableEvidence` gates weak matches; `buildAskMessages` embeds sources with `[n]` ordering and `updatedDate`; `parseCitedAnswer` detects `NOT_COVERED` and converts valid `[n]` markers into citation segments while leaving out-of-range markers literal.
 - Pass criteria: Retrieval is deterministic, citation indices always map to real sources, `NOT_COVERED` never yields answer segments, and malformed markers degrade safely.
 
+#### `TC-UNIT-10`: Wizard request aggregation and hash/storage helpers
+- ISO 25010 characteristic: Functional Suitability (*Functional Correctness*) and Reliability (*Fault Tolerance*)
+- Linked requirements: `REQ-WIZ-01` to `REQ-WIZ-04`, `AC-WIZ-01` to `AC-WIZ-04`, `SRS-FUNC-WIZ-01`, `SRS-FUNC-WIZ-03` to `SRS-FUNC-WIZ-04`, `SW-INT-09`, `ERR-13`, `UC-08`
+- Inputs: Mock article entries carrying `wizard` frontmatter plus hash strings and serialized `localStorage` payloads.
+- Procedure: Execute `tests/unit/wizard.test.ts` asserting: `getWizardRequests` flattens entries with resolved `articleSlug`/`articleTitle`/`articleCategory` and deterministic ordering; `parseWizardHash`/`buildWizardHash` round-trip `#<id>` and `#<id>:<indices>` states; malformed hashes (`#`, `#:`, unknown ids, out-of-range indices) return safe defaults; corrupt or missing `localStorage` JSON yields an empty checklist without throwing.
+- Pass criteria: All aggregation, hash round-trip, and storage-fallback assertions pass with `0` thrown exceptions.
+
 ### 3.3 Layer 3: Browser E2E smoke and responsive layout suite (`Playwright`)
 
 #### `TC-E2E-01`: `<SearchBar />` Svelte 5 hydration and keyboard flow
@@ -202,12 +209,24 @@ Geary runs on SvelteKit (Svelte 5 runes) with Tailwind CSS and `@sveltejs/adapte
 - Procedure: Visit `/map`, search `"Registrar"` in the map search input, verify a match appears showing `Flores Hall`, select it, verify `Flores Hall` becomes active on the SVG map and displays `Office of the University Registrar` in the inspector, click `Roxas Hall` directly on the map, and exercise zoom and reset controls.
 - Pass criteria: Location search maps matches to parent buildings, clicking a building or choosing a search result updates the inspector without runtime errors, and `/map` passes `TC-E2E-04` and `TC-A11Y-01` with `0` violations.
 
+#### `TC-E2E-10`: Document Request Wizard (`/wizard`)
+- ISO 25010 characteristic: Functional Suitability and Usability (*Operability*)
+- Linked requirements: `REQ-WIZ-01` to `REQ-WIZ-05`, `AC-WIZ-01` to `AC-WIZ-05`, `SRS-FUNC-WIZ-01` to `SRS-FUNC-WIZ-05`, `UJ-08`, `UC-08`, `AF-08A` to `AF-08C`, `EF-08A` to `EF-08B`, `ERR-13`
+- Preconditions / inputs: Built site served via `vite preview`; articles declaring `wizard` frontmatter.
+- Procedure:
+  1. Visit `/wizard`; confirm the request picker lists declared request types and `/categories/documents` shows a wizard entry card.
+  2. Select a request (e.g., via `/wizard#tor`); verify summary rows (office/fee/processing time), ordered checkboxes, `x of y` progress, verify-with-office note, and guide link.
+  3. Toggle two checkboxes; reload the page and confirm checks restore from `localStorage`; confirm `location.hash` mirrors `#tor:<indices>`.
+  4. Open `/wizard#bogus-id` in a fresh context; confirm picker fallback with zero page errors.
+  5. Confirm an article body contains a "check off your requirements" link resolving to `/wizard#<id>`.
+- Pass criteria: Picker → checklist flow works end-to-end, state persists across reload, hash sharing round-trips, malformed hash recovers silently, and `0` page errors occur.
+
 ### 3.4 Layer 4: Accessibility and security suite
 
 #### `TC-A11Y-01`: Automated WCAG 2.1 Level AA scan (`@axe-core/playwright`)
 - ISO 25010 characteristic: Usability (*Accessibility*)
 - Linked requirements: `REQ-UI-01`, `SRS-NFR-USAB-01`, `SRS-NFR-USAB-03`
-- Inputs: Pages `/`, `/categories/<slug>`, `/articles/<slug>`, `/calendar`, `/map`, and HTTP `404`.
+- Inputs: Pages `/`, `/categories/<slug>`, `/articles/<slug>`, `/calendar`, `/map`, `/wizard`, and HTTP `404`.
 - Procedure: Run `new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa']).analyze()` on each representative page template, including the open `<SearchBar />` dropdown state.
 - Pass criteria: `violations.length === 0`, confirming WCAG 2.1 Level AA contrast across all [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md) tokens.
 
@@ -272,9 +291,9 @@ Tests run in four stages:
 | Script command | Tool | Target verification | Where it runs |
 | :--- | :--- | :--- | :--- |
 | `bun run check` | `svelte-check` | `TC-BLD-01` (TypeScript and Svelte diagnostics) | CI (`.github/workflows/ci.yml`) and local PR prep |
-| `bun test` (`bun run test:unit`) | `bun test` | `TC-BLD-02`, `TC-UNIT-01` to `TC-UNIT-09` (frontmatter Zod schema, Markdown parsing, search scorer, pure `buildSearchIndex()` contract, grouping, map search, academic calendar, MCP tools, ask retrieval/citations) | CI (`.github/workflows/ci.yml`) and local PR prep |
+| `bun test` (`bun run test:unit`) | `bun test` | `TC-BLD-02`, `TC-UNIT-01` to `TC-UNIT-10` (frontmatter Zod schema, Markdown parsing, search scorer, pure `buildSearchIndex()` contract, grouping, map search, academic calendar, MCP tools, ask retrieval/citations, wizard helpers) | CI (`.github/workflows/ci.yml`) and local PR prep |
 | `bun run build` | `vite build` | `TC-BLD-03` (SvelteKit + `@sveltejs/adapter-vercel` SSR build) | CI (`.github/workflows/ci.yml`) and local PR prep |
-| `bun run test:e2e` | `playwright test` | `TC-BLD-03`, `TC-BLD-04`, `TC-E2E-01` to `TC-E2E-09`, `TC-A11Y-01` to `TC-A11Y-03`, `TC-SEC-01` | Local before opening or merging UI, route, or theme PRs |
+| `bun run test:e2e` | `playwright test` | `TC-BLD-03`, `TC-BLD-04`, `TC-E2E-01` to `TC-E2E-10`, `TC-A11Y-01` to `TC-A11Y-03`, `TC-SEC-01` | Local before opening or merging UI, route, or theme PRs |
 | `bun run freshness` | `scripts/content-freshness.ts` | Report-only content audit: source URL status, `updatedDate` age, expiry-prone claim flags (#3) | Local and weekly via `content-freshness.yml` |
 | `bun audit` | `bun audit` | `TC-SEC-02` (dependency vulnerability check) | Local before merging dependency changes or releases |
 

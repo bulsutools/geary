@@ -55,7 +55,7 @@ flowchart TB
 
     subgraph ClientRuntime["4. Browser Runtime (HTTPS)"]
         SSR_HTML["Hydrated Svelte 5 DOM + Persistent Layout Shell"]
-        INTERACTIVE["SearchBar, ExploreSpotlight, AcademicCalendar, CampusMap, AskPanel"]
+        INTERACTIVE["SearchBar, ExploreSpotlight, AcademicCalendar, CampusMap, AskPanel, ClearanceWizard"]
     end
 
     MD --> GLOB
@@ -76,7 +76,7 @@ flowchart TB
 ### 3.2 SSR, hydration, and caching boundary
 
 - **Dynamic SSR with CDN edge caching:** All page routes (`+page.server.ts`) and data endpoints (`/search-index.json`, `/sitemap.xml`, `/robots.txt`) set `Cache-Control: public, max-age=0, s-maxage=3600, stale-while-revalidate=86400` via `setHeaders()` / `Response` headers so Vercel's CDN serves repeat hits from the edge while keeping SSR dynamic.
-- **Unified Svelte 5 components:** Layouts (`+layout.svelte`), navigation (`Header.svelte`, `Footer.svelte`, `ThemeToggle.svelte`), reading views (`ArticleLayout.svelte`, `TableOfContents.svelte`), and interactive widgets (`SearchBar.svelte`, `ExploreSpotlight.svelte`, `AcademicCalendar.svelte`, `CampusMap.svelte`, `AskPanel.svelte`) are all authored in Svelte 5 runes (`$state`, `$derived`, `$effect`, `$props`).
+- **Unified Svelte 5 components:** Layouts (`+layout.svelte`), navigation (`Header.svelte`, `Footer.svelte`, `ThemeToggle.svelte`), reading views (`ArticleLayout.svelte`, `TableOfContents.svelte`), and interactive widgets (`SearchBar.svelte`, `ExploreSpotlight.svelte`, `AcademicCalendar.svelte`, `CampusMap.svelte`, `AskPanel.svelte`, `ClearanceWizard.svelte`) are all authored in Svelte 5 runes (`$state`, `$derived`, `$effect`, `$props`).
 - **No-flash theme bootstrap:** `src/app.html` runs a minimal synchronous inline script before first paint to apply the `dark` class from `localStorage` (`geary-theme`) or `prefers-color-scheme`, synchronized with `ThemeToggle.svelte`.
 - **SPA-safe lifecycle cleanup:** Because SvelteKit keeps `+layout.svelte` mounted across client-side route transitions, global keyboard listeners (`/` and `Ctrl/Cmd+K` via `src/lib/search-shortcut.ts`), timers, and `<canvas>` animations clean up deterministically inside `$effect` teardowns.
 
@@ -90,6 +90,7 @@ Adding or editing a single `.md` file in `src/content/articles/` automatically p
 4. **Home hero (`/`):** Includes the article in the daily randomized 3x3 single-row hero spotlight pool (`ExploreSpotlight.svelte`).
 5. **Search & sitemap endpoints (`/search-index.json`, `/sitemap.xml`):** Serializes the article's `slug`, `title`, body `preview`, `category`, `categoryLabel`, `subcategory`, and `headings` array via pure `buildSearchIndex()`, and lists the canonical URL in `/sitemap.xml`.
 6. **Ask corpus (`/ask-index.json`):** Serializes the article's metadata plus `updatedDate`, `url`, and `excerpt`, and splits the Markdown body into retrievable `chunks` for client-side evidence retrieval.
+7. **Document request wizard (`/wizard`):** Optional `wizard` frontmatter (`SW-INT-09`) is flattened by pure `getWizardRequests()` into request checklists rendered by `<ClearanceWizard />`; category pages surface a wizard entry card when their guides declare wizard requests.
 
 ## 4. Component architecture and responsibilities
 
@@ -108,6 +109,7 @@ flowchart TD
         R_MAP["map/+page.svelte"]
         R_ASK["ask/+page.svelte"]
         R_API["api/ask/+server.ts"]
+        R_WIZ["wizard/+page.svelte"]
     end
 
     subgraph Components["Svelte 5 Components (src/lib/components/)"]
@@ -124,11 +126,12 @@ flowchart TD
         C_CAL["AcademicCalendar.svelte"]
         C_MAP["CampusMap.svelte + campus-map/*"]
         C_ASK["AskPanel.svelte"]
+        C_WIZ["ClearanceWizard.svelte"]
     end
 
     subgraph ServerAndDomain["Server Loader & Pure Domain Modules"]
         S_CNT["lib/server/content.ts (Vite ?raw glob + gray-matter + marked + zod)"]
-        D_CORE["lib/articles.ts, search.ts, ask.ts, calendar.ts, map-search.ts, seo.ts"]
+        D_CORE["lib/articles.ts, search.ts, ask.ts, calendar.ts, map-search.ts, wizard.ts, seo.ts"]
         D_DATA["data/categories.ts, campus-map.ts, academic-calendar.ts"]
     end
 
@@ -150,6 +153,7 @@ flowchart TD
     R_CAL --> C_CAL
     R_MAP --> C_MAP
     R_ASK --> C_ASK
+    R_WIZ --> C_WIZ
     R_ERR --> C_SRCH
     C_ASK --> R_API
 
@@ -177,6 +181,9 @@ flowchart TD
 | `src/lib/components/ExploreSpotlight.svelte` | Svelte 5 component | `items`, `initialDateKey`, `groupSize = 3`, `groupCount = 3` | Displays 3 articles in a single row at the bottom of the Home hero, cycling automatically through 3 daily randomized groups (9 articles/day) with no manual controls and pausing on hover/focus/reduced-motion. |
 | `src/lib/components/AcademicCalendar.svelte` | Svelte 5 component | Data from `src/data/academic-calendar.ts` | Renders the searchable, category-filterable AY 2026–2027 BulSU Academic Calendar grouped by month on `/calendar`, with sticky filter bar, month jump nav, `/` & `Ctrl/Cmd+K` shortcut, and floating back-to-top button. |
 | `src/lib/components/CampusMap.svelte` | Svelte 5 component | Data from `src/data/campus-map.ts` | Renders the full-bleed interactive 2D BulSU Malolos SVG schematic, floating search (`campus-map/CampusMapSearch.svelte`), desktop card / mobile bottom-sheet inspector (`campus-map/BuildingInspector.svelte`), and pan/zoom viewport state (`campus-map/viewport.svelte.ts`). |
+| `src/lib/components/ClearanceWizard.svelte` | Svelte 5 component | `requests: WizardRequestView[]` | Renders the `/wizard` request picker and per-request requirements checklist; persists checked indices to `localStorage` (`geary:wizard:v1`), mirrors state into the URL hash via `history.replaceState`, restores on mount, and falls back cleanly on malformed hash/storage (`ERR-13`). |
+| `src/routes/wizard/+page.server.ts` + `+page.svelte` | SvelteKit route | Articles collection | Aggregates `wizard` frontmatter via `getWizardRequests`, renders page chrome, disclaimer note, and mounts `<ClearanceWizard />`; category pages render an entry card when their guides declare wizard requests. |
+| `src/lib/wizard.ts` | Pure TypeScript module | `articles`, `hash`, `storage` | Flattens article `wizard` frontmatter into `WizardRequestView[]` (`getWizardRequests`, `getWizardRequestsForCategory`) and parses/builds shareable `#<id>:<indices>` URL hash state (`parseWizardHash`, `buildWizardHash`) plus guarded `localStorage` read/write helpers. |
 | `src/lib/server/content.ts` | Server content module | Bundled `src/content/articles/**/*.md` via Vite `?raw` glob | Parses YAML frontmatter (`gray-matter`), validates via `articleSchema` (`zod`), compiles GFM Markdown + unique heading IDs (`marked`), extracts `headings` and plain-text `preview`, and exposes `getAllArticles()`, `getArticleBySlug()`, and `buildSearchIndex()`. |
 | `src/lib/search.ts` | Pure TypeScript module | `items: SearchIndexItem[]`, `query: string` | Normalizes queries and scores multi-term literal substring matches (`title` > `headings`/`subcategory` > `preview`/`categoryLabel`). |
 | `src/lib/articles.ts` | Pure TypeScript module | Articles list | Subcategory grouping, daily deterministic shuffle/partitioning (`getDailyItemGroups`), sibling selection, preview extraction, and UTC date formatting. |
@@ -247,8 +254,11 @@ export const articleSchema = z.object({
   source: z.string().min(1).optional(),
   sourceUrl: httpUrlSchema.optional(),
   sources: z.array(articleSourceSchema).min(1).optional(),
+  wizard: z.array(wizardRequestSchema).optional(),
 });
 ```
+
+`wizardRequestSchema` enforces the `SW-INT-09` contract: `id` matching `^[a-z0-9]+(-[a-z0-9]+)*$`, non-empty `title`, optional `summary`/`office`/`fee`/`processingTime`/`guideAnchor` strings, and `requirements` of at least one `{ label, note? }` item. `src/lib/wizard.ts` flattens these entries into `WizardRequestView` objects that additionally carry the resolved `articleSlug`, `articleTitle`, and `articleCategory`, so the wizard checklist always links back to its single-source guide (`SRS-FUNC-WIZ-01`).
 
 #### `src/routes/search-index.json/+server.ts`
 
@@ -386,6 +396,7 @@ geary/
 │   │   ├── content.test.ts          # Zod frontmatter validation & Markdown compilation + headings
 │   │   ├── map-search.test.ts       # Campus map search, directory integrity & viewBox math
 │   │   ├── mcp.test.ts              # MCP corpus tools & JSON-RPC dispatch (F-07)
+│   │   ├── wizard.test.ts           # Wizard request aggregation & hash/storage helpers (F-09)
 │   │   ├── search.test.ts           # Query scoring & pure buildSearchIndex() contract (< 100 KB)
 │   │   └── seo.test.ts              # JSON-LD builders & XSS-safe serialization
 │   └── e2e/
@@ -413,6 +424,7 @@ geary/
     │   ├── search-shortcut.ts       # Shared `/` and `Ctrl/Cmd+K` global shortcut binder
     │   ├── search.ts                # Pure query normalization & weighted scoring engine
     │   ├── seo.ts                   # Pure JSON-LD builders & canonical origin resolution
+    │   ├── wizard.ts                # Wizard request aggregation & hash/storage helpers
     │   ├── server/
     │   │   ├── cache.ts             # Shared CDN Cache-Control header constants
     │   │   ├── content.ts           # Vite ?raw glob + gray-matter + zod + marked loader + buildSearchIndex()
@@ -425,6 +437,7 @@ geary/
     │       ├── Breadcrumbs.svelte
     │       ├── CampusMap.svelte
     │       ├── CategoryCard.svelte
+    │       ├── ClearanceWizard.svelte
     │       ├── ExploreSpotlight.svelte
     │       ├── Footer.svelte
     │       ├── Header.svelte
@@ -465,6 +478,9 @@ geary/
         ├── terms/
         │   ├── +page.server.ts
         │   └── +page.svelte         # Terms of Service & unofficial disclaimer page
+        ├── wizard/
+        │   ├── +page.server.ts      # Wizard request aggregation via getWizardRequests()
+        │   └── +page.svelte         # Document Request Wizard checklist page (/wizard)
         ├── robots.txt/
         │   └── +server.ts           # Edge-cached robots.txt referencing sitemap.xml
         ├── search-index.json/

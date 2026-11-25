@@ -230,6 +230,17 @@ Normal text and meaningful control boundaries must maintain at least `4.5:1` con
 - Fallback states: Not-covered and service-unavailable variants reuse the search zero-match pattern — calm notice text plus 7 category pills and an `/articles` link. Loading shows a skeleton-free status line (`role="status"`).
 - Interactive states: Submit button disables while a request is in flight; chips and inputs preserve `:focus-visible` outlines; zero horizontal overflow at `375px`.
 
+### 5.12 Document Request Wizard (`ClearanceWizard.svelte` on `/wizard`)
+
+- Anatomy: Two-state island inside the standard `max-w-3xl` content column.
+  - *Picker state:* Grid of request cards (`bg-surface-card border border-border-subtle rounded-xl p-5`, same visual family as `ArticleCard.svelte`) showing request title, summary line, and a `x of y requirements` progress hint; category wizard entry cards reuse the `CategoryCard.svelte` hover/border treatment.
+  - *Checklist state:* Header row with request title, `x of y` progress counter (`aria-live="polite"`), and a text-button reset control; summary rows for office, fee, and processing time as compact `dl` pairs (`text-sm`, labels in `text-ink-secondary`, values in `text-ink-primary`) on a `bg-surface-subtle` panel; ordered checklist of `>= 44px` checkbox rows with optional `note` detail in `text-sm text-ink-secondary`; persistent verify-with-office note styled like `VerificationBanner.svelte` (`bg-surface-subtle border border-border-subtle rounded-xl p-4`); "Read the full guide" link in `text-brand-crimson`.
+- Interactive states:
+  - *Checked row:* Label shifts to `text-ink-secondary`; checkbox uses native `accent-brand-crimson` (`accent-color: #8B1538`) — never color-only state.
+  - *Hover / focus-visible:* Card and row hover shifts border to `brand-crimson`; all controls keep the global `2px solid #8B1538` focus ring.
+  - *Progress complete:* Counter turns `text-brand-crimson font-semibold`; no confetti or celebration motion.
+- Accessibility: Native `<input type="checkbox">` elements inside `<label>` wrappers (full-row tap targets), `aria-live="polite"` progress counter, and picker implemented as a list of buttons/links — zero custom widget ARIA.
+
 ## 6. Interaction principles and accessibility ergonomics
 
 1. Keyboard and focus discipline: Every interactive element uses `:focus-visible { outline: 2px solid #8B1538; outline-offset: 2px; }` (never `outline: none` without a visible replacement). Full keyboard parity applies across search (`/`, `Ctrl+K`, `ArrowUp`, `ArrowDown`, `Enter`, `Escape`), header navigation, mobile drawer (`aria-expanded`), theme menu, and native `<details>` TOC.
