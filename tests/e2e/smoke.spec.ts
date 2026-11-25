@@ -19,6 +19,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/map',
       '/terms',
       '/privacy',
+      '/wizard',
       ...CATEGORY_SLUGS.map((slug) => `/categories/${slug}`),
     ];
 
@@ -71,6 +72,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/contribute',
       '/calendar',
       '/map',
+      '/wizard',
       '/terms',
       '/privacy',
     ];
@@ -267,6 +269,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/contribute',
       '/calendar',
       '/map',
+      '/wizard',
       '/terms',
       '/privacy',
       '/this-route-does-not-exist',
@@ -328,6 +331,7 @@ test.describe('Geary SvelteKit SSR, E2E, Accessibility & Security Smoke Suite', 
       '/contribute',
       '/calendar',
       '/map',
+      '/wizard',
       '/terms',
       '/privacy',
       '/this-route-does-not-exist',
@@ -672,5 +676,93 @@ Test body.
         .analyze();
       expect(results.violations, `Dark mode Axe violations on ${route}`).toEqual([]);
     }
+  });
+
+  test('TC-E2E-09: document request wizard picker, checklist persistence, hash sharing, and entry points', async ({
+    page,
+    browser,
+  }) => {
+    const pageErrors: string[] = [];
+    page.on('pageerror', (err) => pageErrors.push(err.message));
+
+    // Picker lists declared request types after island hydration
+    await page.goto('/wizard');
+    await expect(
+      page.getByRole('heading', { name: 'Document Request Wizard' }),
+    ).toBeVisible();
+    const torCard = page.getByRole('button', { name: /Transcript of Records \(TOR\)/ });
+    await expect(torCard).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /Student ID Replacement/ }),
+    ).toBeVisible();
+
+    // Deep link selects the request and renders summary rows + checklist
+    await page.goto('/wizard#tor');
+    await expect(
+      page.getByRole('heading', { name: 'Transcript of Records (TOR)' }),
+    ).toBeVisible();
+    await expect(page.getByText('Office of the University Registrar').first()).toBeVisible();
+    await expect(page.getByText('PHP 50 per page')).toBeVisible();
+    await expect(page.getByText('6 working days', { exact: false }).first()).toBeVisible();
+    const checkboxes = page.locator('input[type="checkbox"]');
+    await expect(checkboxes).toHaveCount(6);
+    await expect(page.getByText('0 of 6 checked')).toBeVisible();
+    await expect(
+      page.locator('a[href="/articles/how-to-request-transcript-and-certificates"]'),
+    ).toBeVisible();
+
+    // Toggle two items: progress, localStorage, and hash all update
+    await checkboxes.nth(0).check();
+    await checkboxes.nth(1).check();
+    await expect(page.getByText('2 of 6 checked')).toBeVisible();
+    await expect(page).toHaveURL(/#tor:0,1$/);
+    await expect
+      .poll(() => page.evaluate(() => window.localStorage.getItem('geary:wizard:v1')))
+      .toContain('"tor"');
+
+    // State restores after reload
+    await page.reload();
+    await expect(page.locator('input[type="checkbox"]').nth(0)).toBeChecked();
+    await expect(page.locator('input[type="checkbox"]').nth(1)).toBeChecked();
+    await expect(page.locator('input[type="checkbox"]').nth(2)).not.toBeChecked();
+
+    // Shared hash applies checks in a fresh context (isolated localStorage)
+    const sharedContext = await browser.newContext({ baseURL: 'http://localhost:4322' });
+    const sharedPage = await sharedContext.newPage();
+    const sharedErrors: string[] = [];
+    sharedPage.on('pageerror', (err) => sharedErrors.push(err.message));
+    await sharedPage.goto('/wizard#tor:1,4');
+    await expect(
+      sharedPage.getByRole('heading', { name: 'Transcript of Records (TOR)' }),
+    ).toBeVisible();
+    await expect(sharedPage.locator('input[type="checkbox"]').nth(1)).toBeChecked();
+    await expect(sharedPage.locator('input[type="checkbox"]').nth(4)).toBeChecked();
+    await expect(sharedPage.locator('input[type="checkbox"]').nth(0)).not.toBeChecked();
+    expect(sharedErrors).toEqual([]);
+    await sharedContext.close();
+
+    // Malformed/unknown hash falls back to picker with zero errors
+    await page.goto('/wizard#bogus-request-id');
+    await expect(torCard).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Transcript of Records (TOR)' })).toHaveCount(
+      0,
+    );
+
+    // Entry points: category wizard card and article body links
+    await page.goto('/categories/documents');
+    await expect(page.locator('a[href="/wizard#tor"]').first()).toBeVisible();
+    await expect(page.locator('a[href="/wizard#student-id-replacement"]').first()).toBeVisible();
+
+    await page.goto('/articles/how-to-replace-a-lost-student-id');
+    await expect(
+      page.locator('.geary-prose a[href="/wizard#student-id-replacement"]'),
+    ).toBeVisible();
+
+    await page.goto('/articles/how-to-request-transcript-and-certificates');
+    await expect(
+      page.locator('.geary-prose a[href="/wizard#good-moral-character"]').first(),
+    ).toBeVisible();
+
+    expect(pageErrors).toEqual([]);
   });
 });

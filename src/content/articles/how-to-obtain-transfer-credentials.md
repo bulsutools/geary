@@ -8,9 +8,29 @@ sources:
     url: "https://bulsu.edu.ph/assets/transparency/bulsu-citizens-charter-2026-1st-edition.pdf"
   - label: "BulSU Freshman Undergraduate Admissions Policy (Updated Guidelines 2027-2028)"
     url: "https://drive.google.com/file/d/16mFYH2WBi2gbmhCntvnljXbUiRUiwJZr/view"
+wizard:
+  - id: "transfer-credentials"
+    title: "Transfer Credentials (Honorable Dismissal)"
+    summary: "Credential for leaving BulSU to enroll in another college or university."
+    office: "Office of the University Registrar"
+    fee: "PHP 25"
+    processingTime: "About 4 working days after complete requirements"
+    requirements:
+      - label: "One original valid ID"
+        note: "National ID, Passport, Driver's License, UMID, SSS, PhilHealth, TIN, Pag-IBIG, PRC, Company ID, or school ID"
+      - label: "Official Receipt for PHP 25"
+        note: "From the Cashier's Office"
+      - label: "Accomplished Clearance Form"
+        note: "Only if you have not graduated; signed by College Dean's Office, Library, Accounting, OSAS, and Registrar"
+      - label: "Original admission credentials"
+        note: "Only if not yet submitted: Form 137 or SF-10 for freshmen, or prior college TOR for transferees, remarked \"Copy for: Bulacan State University\""
+      - label: "Representative documents"
+        note: "Only if a representative files or claims for you: signed authorization letter or Special Power of Attorney plus photocopies of both IDs"
 ---
 
 When you leave Bulacan State University to enroll in another college or university, your next school will ask for your Transfer Credentials, also called an Honorable Dismissal, from the Office of the University Registrar. Processing costs **PHP 25** and takes about **4 working days** after you submit complete requirements.
+
+[Check off your requirements in the Document Request Wizard](/wizard#transfer-credentials) as you gather them.
 
 If you are a newly admitted freshman who has already enrolled in a BulSU program, you can only receive an honorable dismissal once the semester officially starts.
 

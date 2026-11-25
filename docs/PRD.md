@@ -16,7 +16,7 @@
 
 ### 1.2 Purpose
 
-This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to seven confirmed capabilities:
+This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to eight confirmed capabilities:
 
 1. Articles and Markdown content (`F-01`)
 2. Categories and purposeful organization (`F-02`)
@@ -25,6 +25,7 @@ This PRD defines the MVP feature set, expected product behavior, release priorit
 5. Interactive 2D campus map (`F-05`)
 6. Interactive Academic Calendar (`F-06`)
 7. Read-only MCP server for AI assistants (`F-07`)
+8. Interactive Document Request Wizard (`F-08`) *(approved post-MVP enhancement)*
 
 ## 2. Prioritization framework
 
@@ -220,3 +221,29 @@ Visiting an outdated bookmark or broken URL loads the branded `404` page with a 
 - `AC-MCP-02` (`REQ-MCP-02`): *Given* a query such as `"TOR request"` with or without a `category` filter, *When* `search_articles` runs, *Then* matching articles rank by title/body relevance and out-of-enum categories are rejected.
 - `AC-MCP-03` (`REQ-MCP-03`): *Given* a published slug, *When* `get_article` runs, *Then* the returned Markdown equals the source file verbatim; *Given* an unknown slug, *Then* a clean error is returned.
 - `AC-MCP-04` (`REQ-MCP-04`): *Given* the corpus, *When* `list_categories` or `get_freshness` runs, *Then* the full 7-category tree with subcategory groupings and per-category oldest `updatedDate` values is returned.
+
+### 3.8 Feature 8: Interactive Document Request Wizard (`/wizard`) (`F-08`)
+
+#### Requirements specification
+
+| Req ID | Priority | Requirement statement |
+| :--- | :--- | :--- |
+| `REQ-WIZ-01` | `P0` | The system shall publish a `/wizard` page presenting a picker of document-request types (TOR, Certificate of Grades, CAV, CTC, duplicate diploma, Good Moral Character, student ID replacement, transfer credentials, and other requests declared by articles). |
+| `REQ-WIZ-02` | `P0` | Each wizard request shall display a step-by-step requirements checklist plus published fee, issuing office, and processing time where the source guide records them, and shall link back to the full source guide. |
+| `REQ-WIZ-03` | `P0` | Wizard request content shall be single-sourced: requirements data shall live in validated article frontmatter and compile at request time, never in a parallel hand-maintained copy. |
+| `REQ-WIZ-04` | `P1` | Checked checklist state shall persist in the visitor's `localStorage` and shall be shareable through the page URL hash (`#<request-id>` plus checked item indices) without any backend. |
+| `REQ-WIZ-05` | `P1` | Category pages containing wizard-backed guides shall surface a wizard entry card, and article bodies shall link readers to the matching wizard checklist ("check off your requirements"). |
+
+#### Product behavior
+
+- **Single-Source Content:** Maintainers declare each request's requirements inside the relevant article's frontmatter (`wizard` field). The content loader validates the schema, the wizard page serializes every declared request, and the article remains the canonical prose guide. Content drift between guide and wizard is impossible by construction.
+- **Checklist Workflow:** A student picks a request type, sees office/fee/processing-time summary rows, and checks off each requirement as they gather documents. Progress ("3 of 7") stays visible, a reset control clears the list, and the hash updates so the current request and checked items can be shared in a group chat.
+- **Verification Discipline:** Fees and processing times carry the same unofficial-tool caveats as article prose, with a persistent "verify with the office" note and a link to the full guide for context.
+
+#### Acceptance criteria
+
+- `AC-WIZ-01` (`REQ-WIZ-01`): *Given* articles declaring `wizard` frontmatter, *When* the site serves `/wizard`, *Then* the picker lists every declared request type.
+- `AC-WIZ-02` (`REQ-WIZ-02`): *Given* a selected request, *When* the checklist renders, *Then* it shows every declared requirement, the published fee/office/processing time where present, and a working link to the source article.
+- `AC-WIZ-03` (`REQ-WIZ-03`): *Given* a malformed `wizard` frontmatter block (missing label, bad id, empty requirements), *When* the site builds or loads, *Then* validation fails with a clear diagnostic identifying the offending file and field.
+- `AC-WIZ-04` (`REQ-WIZ-04`): *Given* checked items on one request, *When* the student reloads or revisits `/wizard`, *Then* prior checks restore from `localStorage`; *When* the URL contains a valid hash, *Then* the matching request opens with its shared checked items applied.
+- `AC-WIZ-05` (`REQ-WIZ-05`): *Given* the `documents` category page and a wizard-backed article, *When* rendered, *Then* the category page shows a wizard entry card and the article body contains a "check off your requirements" link resolving to the matching wizard checklist.

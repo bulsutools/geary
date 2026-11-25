@@ -57,8 +57,9 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | **RTM-22** | `OBJ-02`, `OBJ-04` | Dark mode design contract (`P1`, post-MVP) | `DESIGN_SYSTEM.md` §2.2; `ThemeToggle.svelte`, `src/app.html` bootstrap, tokenized surfaces and `CampusMap.svelte` | `BL-22`, `BL-25`, `BL-26` | `TC-E2E-08`, `TC-A11Y-03` | `[x] Verified` |
 | **RTM-23** | `OBJ-01`, `OBJ-03` | Interactive Academic Calendar (`P1`, post-MVP) | `src/data/academic-calendar.ts`, `src/lib/calendar.ts`, `AcademicCalendar.svelte`, `src/routes/calendar/+page.svelte`, `DESIGN_SYSTEM.md` §5.10 | `BL-26` | `TC-UNIT-07`, `TC-E2E-04`, `TC-A11Y-01` | `[x] Verified` |
 | **RTM-24** | `OBJ-03`, `OBJ-05` | `REQ-MCP-01` to `REQ-MCP-04` / `AC-MCP-01` to `AC-MCP-04` (`P1`, post-MVP) | `SW-INT-05`, `SW-INT-06`, `SRS-FUNC-MCP-01` to `SRS-FUNC-MCP-04`; `src/routes/corpus.json/+server.ts`, `mcp/worker.ts`, `mcp/corpus.ts` | `BL-28` | `TC-BLD-03`, `TC-UNIT-08` | `[x] Verified` |
+| **RTM-25** | `OBJ-02`, `OBJ-03` | `REQ-WIZ-01` to `REQ-WIZ-05` / `AC-WIZ-01` to `AC-WIZ-05` (`P0`/`P1`, post-MVP) | `SW-INT-02`, `SW-INT-07`, `UI-INT-01`, `SRS-FUNC-WIZ-01` to `SRS-FUNC-WIZ-05`, `SRS-NFR-SEC-03`; `src/lib/content-schema.ts` (`wizard` schema), `src/lib/wizard.ts`, `ClearanceWizard.svelte`, `src/routes/wizard/+page.server.ts` + `+page.svelte`, `src/routes/categories/[slug]/+page.server.ts` + `+page.svelte`, `src/content/articles/*.md`, `DESIGN_SYSTEM.md` §5.11; `UJ-07`, `UC-07`, `AF-07A` to `AF-07C`, `EF-07A` to `EF-07B`, `ERR-09`, `ERR-10`, `MODE-05` | `BL-29` | `TC-UNIT-09`, `TC-E2E-09`, `TC-BLD-03` | `[x] Verified` |
 
-## 3. Non-functional quality requirements traceability matrix (`RTM-NFR-01` to `RTM-NFR-14`) *(ISO 29148 Clause 9.6.3.3 and ISO 25010)*
+## 3. Non-functional quality requirements traceability matrix (`RTM-NFR-01` to `RTM-NFR-15`) *(ISO 29148 Clause 9.6.3.3 and ISO 25010)*
 
 | RTM NFR ID | Charter Obj | SRS NFR ID | ISO 25010 Quality Characteristic | Target Implementation / Artifact | Backlog ID | Test Case IDs | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -76,6 +77,7 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | **RTM-NFR-12** | `OBJ-05` | `SRS-NFR-MAINT-02` | Portability (*Adaptability*) | Adapter isolated strictly to `vite.config.ts` with zero vendor APIs in app logic | `BL-23`, `BL-27` | `TC-BLD-03` | `[x] Verified` |
 | **RTM-NFR-13** | `OBJ-03` | `SRS-NFR-SEC-01` | Security (*Integrity*) | Standard Svelte text interpolation inside `SearchBar.svelte` | `BL-26` | `TC-SEC-01`, `TC-UNIT-02` | `[x] Verified` |
 | **RTM-NFR-14** | `OBJ-05` | `SRS-NFR-SEC-02` | Security (*Confidentiality and Integrity*) | Zero secrets or PII, dependency audit hygiene (`bun.lock`) | `BL-23`, `BL-27` | `TC-SEC-02` | `[x] Verified` |
+| **RTM-NFR-15** | `OBJ-03` | `SRS-NFR-SEC-03` | Security (*Confidentiality*) | `ClearanceWizard.svelte` + `src/lib/wizard.ts` (`localStorage`/hash only, zero transmission) | `BL-29` | `TC-UNIT-09`, `TC-E2E-09` | `[x] Verified` |
 
 ## 4. System constraints and off-nominal error traceability matrix *(ISO 29148 Clauses 9.3.5 and 9.6.2)*
 
@@ -91,10 +93,10 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | **`CON-FIN-02`** | `OBJ-05`, §7.1 | Zero managed databases, CMS subscriptions, or paid third-party APIs. | `BL-23`, `BL-24` | `TC-BLD-03` | `[x] Verified` |
 | **`CON-DATA-01`** | `OBJ-01` | UTF-8 Markdown articles managed under `src/content/articles/` in Git. | `BL-09`, `BL-24` | `TC-BLD-02` | `[x] Verified` |
 | **`CON-DATA-02`** | `OBJ-03`, `OBJ-05` | Pure `buildSearchIndex()` served via edge-cached `src/routes/search-index.json/+server.ts`. | `BL-24` | `TC-BLD-03`, `TC-UNIT-05` | `[x] Verified` |
-| **`CON-GOV-01`** | §6.2, §7.3 | Strict MVP feature lock (no AI/RAG chatbot, user accounts, comments, or SIS integrations). | `BL-01` to `BL-27` | Scope Audit (§5) | `[x] Verified` |
+| **`CON-GOV-01`** | §6.2, §7.3 | Strict scope lock covering the eight approved capabilities (no AI/RAG chatbot, user accounts, comments, or SIS integrations). | `BL-01` to `BL-29` | Scope Audit (§5) | `[x] Verified` |
 | **`CON-GOV-02`** | §7.4 | Unofficial BulSU student information portal disclaimers in `ArticleLayout.svelte` and `Footer.svelte`. | `BL-25` | `TC-BLD-03`, `TC-A11Y-02` | `[x] Verified` |
 
-### 4.2 Off-nominal and error scenarios (`ERR-01` to `ERR-09`)
+### 4.2 Off-nominal and error scenarios (`ERR-01` to `ERR-10`)
 
 | Error ID | Linked PRD / SRS IDs | Handling Component / Module | Backlog ID | Verification Gate | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -107,6 +109,7 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | **`ERR-07`** | `SRS-FUNC-UI-04`, `SRS-NFR-USAB-04` | `src/styles/global.css`, `ArticleLayout.svelte` | `BL-04`, `BL-25` | `TC-E2E-04` | `[x] Verified` |
 | **`ERR-08`** | `REQ-UI-05`, `SRS-FUNC-RND-06` | `src/routes/+error.svelte` | `BL-25` | `TC-E2E-05`, `TC-A11Y-01` | `[x] Verified` |
 | **`ERR-09`** | `REQ-ART-01`, `SRS-FUNC-CNT-01`, `SRS-FUNC-CNT-02` | `src/lib/content-schema.ts`, `src/lib/server/content.ts` | `BL-24` | `TC-BLD-02` | `[x] Verified` |
+| **`ERR-10`** | `REQ-WIZ-04`, `SRS-FUNC-WIZ-02` to `SRS-FUNC-WIZ-04` | `src/lib/wizard.ts`, `src/lib/components/ClearanceWizard.svelte` | `BL-29` | `TC-UNIT-09`, `TC-E2E-09` | `[x] Verified` |
 
 ## 5. Release and PR traceability audit checklist
 

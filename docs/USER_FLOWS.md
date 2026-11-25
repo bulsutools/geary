@@ -15,7 +15,7 @@
 
 ### 1.2 Purpose and actors
 
-This specification covers Geary's operational modes (`MODE-01` to `MODE-04`), master navigation flow, end-to-end user journeys (`UJ-01` to `UJ-06`), use cases (`UC-01` to `UC-06`), alternative flows (`AF-*`), exception flows (`EF-*`), and off-nominal error scenarios (`ERR-01` to `ERR-09`), including campus map lookup.
+This specification covers Geary's operational modes (`MODE-01` to `MODE-05`), master navigation flow, end-to-end user journeys (`UJ-01` to `UJ-07`), use cases (`UC-01` to `UC-07`), alternative flows (`AF-*`), exception flows (`EF-*`), and off-nominal error scenarios (`ERR-01` to `ERR-10`), including campus map lookup and the document request wizard.
 
 Actors are defined in [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) Section 5:
 
@@ -24,7 +24,7 @@ Actors are defined in [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) Section 5:
 - `ACT-03`: Continuing Undergraduate
 - `ACT-04`: Student Maintainer / Contributor (part of the multi-contributor student team reviewing and shipping updates through pull requests)
 
-### 1.3 Operational modes (`MODE-01` to `MODE-04`) (ISO/IEC/IEEE 29148 Clause 9.3.4)
+### 1.3 Operational modes (`MODE-01` to `MODE-05`) (ISO/IEC/IEEE 29148 Clause 9.3.4)
 
 | Mode ID | Operational mode | Activation condition | Expected behavior |
 | :--- | :--- | :--- | :--- |
@@ -32,6 +32,7 @@ Actors are defined in [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) Section 5:
 | `MODE-02` | Interactive client search and map lookup | Student focuses the Search Bar, presses `/` or `Ctrl+K` (`Cmd+K`), or interacts with `/map`. | Client-side search fetches and caches `/search-index.json`, ranks multi-term queries, and supports keyboard navigation; `/map` runs local building search and SVG focus. |
 | `MODE-03` | Degraded / off-nominal recovery | Search returns zero matches, the search index fails to load on weak mobile data, or a student hits a broken URL. | The interface shows recovery options: category quick-jump links, retry guidance, or the branded `404` page. |
 | `MODE-04` | Build-time content authoring and PR validation | A contributor adds or edits a Markdown article and runs the build locally or opens a pull request. | Zod schema validation checks frontmatter, SvelteKit builds cleanly, unit tests validate the search index payload, and CI checks run before merge. |
+| `MODE-05` | Interactive request checklist | Student opens `/wizard` or follows a `#<request-id>` deep link from an article or category card. | Svelte island renders request picker and requirements checklist; checkbox state persists in `localStorage` and URL hash without backend calls. |
 
 ## 2. Master navigation and state transition diagram (ISO/IEC/IEEE 29148 Clause 9.3.4)
 
@@ -54,6 +55,8 @@ flowchart TD
 
     CAT_PAGE -->|"Scan Subcategory Groups"| ART_PAGE
     CAT_PAGE -->|"0 Articles in Category"| CAT_EMPTY["Empty State + Home Link"]
+    CAT_PAGE -->|"Wizard Entry Card"| WIZARD["Document Request Wizard (/wizard)"]
+    ART_PAGE -->|"Check off your requirements link"| WIZARD
 
     HERO_SRCH -->|"Fetch Static Search Index"| MATCH{"Matches Found?"}
     MATCH -->|"Yes (up to 8 ranked)"| ART_PAGE
@@ -76,7 +79,7 @@ flowchart TD
     P404 -->|"Back to Home"| HOME
 ```
 
-## 3. Operational scenarios and end-to-end user journeys (`UJ-01` to `UJ-06`) (ISO/IEC/IEEE 29148 Clause 9.3.5)
+## 3. Operational scenarios and end-to-end user journeys (`UJ-01` to `UJ-07`) (ISO/IEC/IEEE 29148 Clause 9.3.5)
 
 ### `UJ-01`: Urgent search-first lookup (checking `INC` or `TOR`)
 
@@ -170,7 +173,19 @@ sequenceDiagram
   4. The inspector displays the building name and the offices or facilities inside it.
 - Expected outcome: The student identifies the right building without external map tiles or backend API calls.
 
-## 4. Use cases, alternative flows, and exception scenarios (`UC-01` to `UC-06`) (ISO/IEC/IEEE 29148 Clauses 6.2.1.3 and 9.5.3)
+### `UJ-07`: Check off document-request requirements (`/wizard`)
+
+- Actor: `ACT-03` (Continuing Undergraduate gathering requirements during enrollment or graduation season)
+- Trigger: Student needs to know exactly what to bring for a TOR, Good Moral Character, ID replacement, or transfer credential request.
+- Operational mode: `MODE-05`
+- Steps:
+  1. Student opens `/wizard` directly, taps a wizard card on the `documents` category page, or follows a "check off your requirements" link inside a guide (`/wizard#<request-id>`).
+  2. The wizard opens the matching request checklist showing office, published fee, processing time, and ordered requirements.
+  3. Student checks off items as they gather documents; progress counter updates and the URL hash mirrors the checked state for sharing.
+  4. Student taps the guide link to read full procedure context, or resets the checklist when starting over.
+- Expected outcome: Student leaves knowing precisely what they have versus what they still need, with progress surviving reloads and shareable via link.
+
+## 4. Use cases, alternative flows, and exception scenarios (`UC-01` to `UC-07`) (ISO/IEC/IEEE 29148 Clauses 6.2.1.3 and 9.5.3)
 
 ### `UC-01`: Search for an article
 
@@ -295,6 +310,31 @@ Main success scenario:
 3. Search results pair each matching location with its parent building (for example, `Office of the University Registrar - Flores Hall`).
 4. Selecting a result or building highlights that building on the map, pans and focuses to it, and updates the inspector with its floors, offices, contact hints, and linked Geary articles.
 
+### `UC-07`: Track document-request requirements in the wizard
+
+| Field | Details |
+| :--- | :--- |
+| Actors | `ACT-01`, `ACT-02`, `ACT-03` |
+| Operational modes | `MODE-05` (nominal), `MODE-03` (malformed hash/storage fallback) |
+| Preconditions | At least one article declares `wizard` frontmatter; client browser supports JavaScript and `localStorage`. |
+| Postconditions | Checklist progress persists locally and can be shared via URL hash; full context remains one click away in the source guide. |
+
+Main success scenario:
+1. Student opens `/wizard` (directly, via a category wizard card, or via an article's "check off your requirements" link).
+2. Picker lists every declared request type with its source guide.
+3. Student selects a request; summary rows show office, fee, and processing time where published.
+4. Student toggles requirement checkboxes; progress (`x of y`) and URL hash update; state saves to `localStorage`.
+5. Student follows the guide link to `/articles/<slug>` for full procedure detail.
+
+Alternative flows:
+- `AF-07A` (shared link): Student opens `/wizard#<request-id>:<indices>` shared by a classmate; wizard selects that request with the shared checks applied on top of local state.
+- `AF-07B` (reset checklist): Student taps reset to clear all checked items for the active request only.
+- `AF-07C` (switch request): Student returns to the picker and selects a different request; each request keeps independent checklist state.
+
+Exception / off-nominal scenarios:
+- `EF-07A` (unknown request in hash): Hash references a request `id` no article declares → wizard falls back to the picker view without errors (`ERR-10`).
+- `EF-07B` (corrupt or blocked storage): `localStorage` unavailable or holds invalid JSON → wizard starts from an empty checklist and keeps working (`ERR-10`).
+
 ## 5. Off-nominal, exception, and error scenario matrix (ISO/IEC/IEEE 29148 Clause 9.3.5)
 
 | Error ID | Scenario | Operational mode | Trigger condition | Expected system behavior | User recovery path |
@@ -308,3 +348,4 @@ Main success scenario:
 | `ERR-07` | Wide table / long URL on mobile | `MODE-01` | Multi-column table or long URL on `375px` screen | Scroll table horizontally inside its container; wrap long URLs | Swipe horizontally inside table only |
 | `ERR-08` | Nonexistent / broken route | `MODE-03` | Mistyped or outdated bookmark URL | Serve branded `/404.html` with Search Bar and 7 category links | Search or navigate to Home / Category |
 | `ERR-09` | Invalid Markdown frontmatter | `MODE-04` | Missing/invalid metadata or unrecognized category slug | Abort local build and PR CI check immediately with validation diagnostic | Fix frontmatter and re-run build |
+| `ERR-10` | Corrupt wizard hash or storage | `MODE-05` | Malformed `#` hash, unknown request id, or invalid `localStorage` JSON | Fall back to picker/empty checklist with zero errors | Re-select request or re-check items |
