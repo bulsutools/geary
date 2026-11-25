@@ -5,6 +5,12 @@
   "assets": {
     "binding": "ASSETS"
   },
+  "routes": [
+    {
+      "pattern": "geary.bulsu.tools",
+      "custom_domain": true
+    }
+  ],
   "vars": {
     "PUBLIC_SITE_URL": "https://geary.bulsu.tools"
   }
