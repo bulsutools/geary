@@ -3,11 +3,15 @@ import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { CAMPUS_BUILDINGS } from '../../src/data/campus-map';
 import {
+  clampViewBox,
   computePanViewBox,
   computePinchViewBox,
   computeZoomViewBox,
   DEFAULT_MAP_VIEWBOX,
   focusBuildingViewBox,
+  getCollegeShortLabel,
+  getLocationType,
+  groupLocationsByFloor,
   partitionBuildingLocations,
   searchCampusLocations,
 } from '../../src/lib/map-search';
@@ -23,8 +27,8 @@ describe('TC-UNIT-06: Campus map search, directory integrity, and viewBox math',
 
     const ccjeMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'CCJE');
     expect(ccjeMatches.length).toBeGreaterThan(0);
-    expect(ccjeMatches[0]?.buildingId).toBe('chocolate-building');
-    expect(ccjeMatches[0]?.buildingName).toBe('Chocolate Building');
+    expect(ccjeMatches[0]?.buildingId).toBe('ccje-building');
+    expect(ccjeMatches[0]?.buildingName).toBe('CCJE Building');
 
     const kaEkekMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'Ka Ekek');
     expect(kaEkekMatches.length).toBeGreaterThan(0);
@@ -103,11 +107,8 @@ describe('TC-UNIT-06: Campus map search, directory integrity, and viewBox math',
     const pimentel = CAMPUS_BUILDINGS.find((b) => b.id === 'pimentel-hall');
     expect(pimentel).toBeDefined();
     const { colleges, others } = partitionBuildingLocations(pimentel!.locations);
-    expect(colleges.map((c) => c.name)).toEqual([
-      'College of Information & Communications Technology (CICT)',
-      'College of Nursing (CON)',
-    ]);
-    expect(others.length).toBe(pimentel!.locations.length - 2);
+    expect(colleges).toEqual([]);
+    expect(others.length).toBe(pimentel!.locations.length);
     expect(others[0]?.floor).toBe('1st Floor');
     expect(others[0]?.name).toBe('A1');
 
@@ -129,5 +130,120 @@ describe('TC-UNIT-06: Campus map search, directory integrity, and viewBox math',
       'Back Room',
       'Zeta Room',
     ]);
+  });
+
+  test('groupLocationsByFloor groups numeric/ground floors and named subtitles as accordions, keeping floorless items last', () => {
+    const grouped = groupLocationsByFloor([
+      { id: '1', name: 'Zeta Room', category: 'academic' },
+      { id: '2', name: 'Lactation Room', floor: 'Back', category: 'student-services' },
+      { id: '3', name: 'Second B', floor: '2nd Floor', category: 'academic' },
+      { id: '4', name: 'Ground Office', floor: 'Ground Floor', category: 'administration' },
+      { id: '5', name: 'First A', floor: '1st Floor', category: 'academic' },
+      { id: '6', name: 'Second A', floor: '2nd Floor', category: 'academic' },
+    ]);
+
+    expect(grouped.floorGroups.map((g) => g.floor)).toEqual([
+      'Ground Floor',
+      '1st Floor',
+      '2nd Floor',
+      'Back',
+      'No Location',
+    ]);
+    expect(grouped.floorGroups[2]?.locations.map((l) => l.name)).toEqual([
+      'Second A',
+      'Second B',
+    ]);
+    expect(grouped.floorGroups[4]?.locations.map((l) => l.name)).toEqual(['Zeta Room']);
+  });
+
+  test('getLocationType infers expected location type labels', () => {
+    expect(
+      getLocationType({
+        id: 'pimentel-a1',
+        name: 'A1',
+        floor: '1st Floor',
+        category: 'academic',
+      })
+    ).toBe('Classroom');
+    expect(
+      getLocationType({
+        id: 'pimentel-sdl-1',
+        name: 'SDL 1',
+        floor: '3rd Floor',
+        category: 'academic',
+      })
+    ).toBe('Classroom');
+    expect(
+      getLocationType({
+        id: 'cict-deans-office',
+        name: "CICT Dean's Office",
+        floor: '3rd Floor',
+        category: 'administration',
+      })
+    ).toBe('Office');
+    expect(
+      getLocationType({
+        id: 'tindahan-ni-ka-ekek',
+        name: 'Tindahan ni Ka Ekek',
+        category: 'food-housing',
+      })
+    ).toBe('Food Stall');
+    expect(
+      getLocationType({
+        id: 'cict',
+        name: 'College of Information & Communications Technology (CICT)',
+        category: 'academic',
+      })
+    ).toBe('College');
+  });
+
+  test('guards clampViewBox and computeZoomViewBox against zero, negative, and NaN inputs', () => {
+    const safeZoomZero = computeZoomViewBox(DEFAULT_MAP_VIEWBOX, 0);
+    const safeZoomNeg = computeZoomViewBox(DEFAULT_MAP_VIEWBOX, -2);
+    const safeZoomNaN = computeZoomViewBox(DEFAULT_MAP_VIEWBOX, Number.NaN);
+
+    for (const rect of [safeZoomZero, safeZoomNeg, safeZoomNaN]) {
+      expect(Number.isFinite(rect.x)).toBe(true);
+      expect(Number.isFinite(rect.y)).toBe(true);
+      expect(Number.isFinite(rect.width)).toBe(true);
+      expect(Number.isFinite(rect.height)).toBe(true);
+      expect(rect.width).toBeGreaterThan(0);
+      expect(rect.height).toBeGreaterThan(0);
+    }
+
+    const clampedNaN = clampViewBox({
+      x: Number.NaN,
+      y: Number.NaN,
+      width: Number.NaN,
+      height: Number.NaN,
+    });
+    expect(clampedNaN).toEqual(DEFAULT_MAP_VIEWBOX);
+  });
+
+  test('focusBuildingViewBox shifts focus for overlay offsets and computePanViewBox uses uniform meet scaling', () => {
+    const target = { center: { x: 520, y: 420 } };
+    const centered = focusBuildingViewBox(target, 480);
+    const desktopShifted = focusBuildingViewBox(target, 480, { offsetXRatio: 0.14 });
+    const mobileShifted = focusBuildingViewBox(target, 480, { offsetYRatio: -0.16 });
+
+    expect(desktopShifted.x).toBeLessThan(centered.x);
+    expect(mobileShifted.y).toBeGreaterThan(centered.y);
+
+    // On a widescreen rect (1440x700), viewBox height constrains scale, so horizontal and vertical pan use the same units/px.
+    const zoomed = { x: 200, y: 200, width: 500, height: 425 };
+    const panned = computePanViewBox(zoomed, -100, -100, { width: 1440, height: 700 });
+    expect(panned.x - zoomed.x).toBeCloseTo(panned.y - zoomed.y, 6);
+  });
+
+  test('colleges live on CampusBuilding.colleges and remain searchable via searchCampusLocations', () => {
+    const cictMatches = searchCampusLocations(CAMPUS_BUILDINGS, 'CICT');
+    expect(cictMatches.some((m) => m.id === 'cict' && m.buildingId === 'pimentel-hall')).toBe(true);
+
+    const pimentel = CAMPUS_BUILDINGS.find((b) => b.id === 'pimentel-hall');
+    expect(pimentel?.colleges?.map((c) => c.id)).toEqual(['cict', 'con']);
+    expect(pimentel?.colleges?.map(getCollegeShortLabel)).toEqual(['CICT', 'CON']);
+    expect(getCollegeShortLabel({ id: 'lhs', name: 'Laboratory High School' })).toBe('LHS');
+    expect(getCollegeShortLabel({ id: 'cpted', name: 'College of Professional Teacher Education (CPTEd)' })).toBe('CPTEd');
+    expect(pimentel?.locations.some((l) => l.id === 'cict' || l.id === 'con')).toBe(false);
   });
 });

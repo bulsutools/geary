@@ -1,5 +1,5 @@
 import {
-  SHOW_CAMPUS_2,
+  CAMPUS_MAP_VIEWBOX,
   type CampusBuilding,
   type CampusLocation,
   type LocationCategory,
@@ -25,19 +25,12 @@ export interface ViewBoxRect {
   height: number;
 }
 
-export const DEFAULT_MAP_VIEWBOX: ViewBoxRect = SHOW_CAMPUS_2
-  ? {
-      x: -120,
-      y: -520,
-      width: 1240,
-      height: 1380,
-    }
-  : {
-      x: 0,
-      y: 0,
-      width: 1000,
-      height: 850,
-    };
+function parseViewBox(raw: string): ViewBoxRect {
+  const [x = 0, y = 0, width = 1000, height = 850] = raw.trim().split(/\s+/).map(Number);
+  return { x, y, width, height };
+}
+
+export const DEFAULT_MAP_VIEWBOX: ViewBoxRect = parseViewBox(CAMPUS_MAP_VIEWBOX);
 
 const MIN_VIEWBOX_WIDTH = 280;
 const MAX_VIEWBOX_WIDTH = DEFAULT_MAP_VIEWBOX.width;
@@ -65,6 +58,38 @@ export function searchCampusLocations(
     const bNameLower = building.name.toLowerCase();
     const bLabelLower = building.shortLabel.toLowerCase();
     const bSummaryLower = building.summary.toLowerCase();
+
+    for (const college of building.colleges ?? []) {
+      if (hasCategory && categoryFilter !== 'academic') {
+        continue;
+      }
+
+      if (!query) {
+        matches.push({
+          kind: 'location',
+          id: college.id,
+          name: college.name,
+          buildingId: building.id,
+          buildingName: building.name,
+          category: 'academic',
+          score: 50,
+        });
+        continue;
+      }
+
+      const score = scoreLocationMatch(college, building.name, query);
+      if (score > 0) {
+        matches.push({
+          kind: 'location',
+          id: college.id,
+          name: college.name,
+          buildingId: building.id,
+          buildingName: building.name,
+          category: 'academic',
+          score,
+        });
+      }
+    }
 
     for (const loc of building.locations) {
       if (hasCategory && loc.category !== categoryFilter) {
@@ -142,7 +167,7 @@ export function searchCampusLocations(
 }
 
 function scoreLocationMatch(
-  loc: CampusBuilding['locations'][number],
+  loc: { name: string; keywords?: readonly string[]; floor?: string; notes?: string },
   buildingName: string,
   query: string
 ): number {
@@ -174,7 +199,10 @@ function scoreLocationMatch(
 
 /** Clamps SVG viewBox dimensions and pan coordinates within the campus canvas. */
 export function clampViewBox(vb: ViewBoxRect): ViewBoxRect {
-  const width = Math.min(MAX_VIEWBOX_WIDTH, Math.max(MIN_VIEWBOX_WIDTH, vb.width));
+  const safeWidth = Number.isFinite(vb.width) && vb.width > 0 ? vb.width : DEFAULT_MAP_VIEWBOX.width;
+  const safeX = Number.isFinite(vb.x) ? vb.x : DEFAULT_MAP_VIEWBOX.x;
+  const safeY = Number.isFinite(vb.y) ? vb.y : DEFAULT_MAP_VIEWBOX.y;
+  const width = Math.min(MAX_VIEWBOX_WIDTH, Math.max(MIN_VIEWBOX_WIDTH, safeWidth));
   const height = Math.round(width * VIEWBOX_ASPECT * 100) / 100;
   const minX = DEFAULT_MAP_VIEWBOX.x;
   const minY = DEFAULT_MAP_VIEWBOX.y;
@@ -182,8 +210,8 @@ export function clampViewBox(vb: ViewBoxRect): ViewBoxRect {
   const maxY = DEFAULT_MAP_VIEWBOX.y + Math.max(0, DEFAULT_MAP_VIEWBOX.height - height);
 
   return {
-    x: Math.round(Math.min(maxX, Math.max(minX, vb.x)) * 100) / 100,
-    y: Math.round(Math.min(maxY, Math.max(minY, vb.y)) * 100) / 100,
+    x: Math.round(Math.min(maxX, Math.max(minX, safeX)) * 100) / 100,
+    y: Math.round(Math.min(maxY, Math.max(minY, safeY)) * 100) / 100,
     width: Math.round(width * 100) / 100,
     height,
   };
@@ -198,16 +226,27 @@ export function computeZoomViewBox(
   zoomMultiplier: number,
   focalPoint?: { x: number; y: number }
 ): ViewBoxRect {
-  const fx = focalPoint?.x ?? current.x + current.width / 2;
-  const fy = focalPoint?.y ?? current.y + current.height / 2;
-  const nextWidth = current.width / zoomMultiplier;
+  const safeCurrent = clampViewBox(current);
+  if (!Number.isFinite(zoomMultiplier) || zoomMultiplier <= 0) {
+    return safeCurrent;
+  }
+
+  const fx =
+    focalPoint && Number.isFinite(focalPoint.x)
+      ? focalPoint.x
+      : safeCurrent.x + safeCurrent.width / 2;
+  const fy =
+    focalPoint && Number.isFinite(focalPoint.y)
+      ? focalPoint.y
+      : safeCurrent.y + safeCurrent.height / 2;
+  const nextWidth = safeCurrent.width / zoomMultiplier;
   const clampedWidth = Math.min(
     MAX_VIEWBOX_WIDTH,
     Math.max(MIN_VIEWBOX_WIDTH, nextWidth)
   );
   const nextHeight = clampedWidth * VIEWBOX_ASPECT;
-  const relX = (fx - current.x) / current.width;
-  const relY = (fy - current.y) / current.height;
+  const relX = (fx - safeCurrent.x) / safeCurrent.width;
+  const relY = (fy - safeCurrent.y) / safeCurrent.height;
 
   return clampViewBox({
     x: fx - relX * clampedWidth,
@@ -217,26 +256,41 @@ export function computeZoomViewBox(
   });
 }
 
-/** Centers the SVG viewBox on a building coordinate at a readable zoom level. */
+export interface FocusViewBoxOffset {
+  /** Shift target building horizontally relative to viewBox width (+ places building further right). */
+  offsetXRatio?: number;
+  /** Shift target building vertically relative to viewBox height (- places building higher). */
+  offsetYRatio?: number;
+}
+
+/** Centers the SVG viewBox on a building coordinate at a readable zoom level, with optional overlay offset. */
 export function focusBuildingViewBox(
   building: Pick<CampusBuilding, 'center'>,
-  targetWidth = 480
+  targetWidth = 480,
+  offset?: FocusViewBoxOffset
 ): ViewBoxRect {
   const clampedWidth = Math.min(
     MAX_VIEWBOX_WIDTH,
     Math.max(MIN_VIEWBOX_WIDTH, targetWidth)
   );
   const targetHeight = clampedWidth * VIEWBOX_ASPECT;
+  const rawX = offset?.offsetXRatio ?? 0;
+  const rawY = offset?.offsetYRatio ?? 0;
+  const offsetX = Number.isFinite(rawX) ? Math.min(0.35, Math.max(-0.35, rawX)) : 0;
+  const offsetY = Number.isFinite(rawY) ? Math.min(0.35, Math.max(-0.35, rawY)) : 0;
 
   return clampViewBox({
-    x: building.center.x - clampedWidth / 2,
-    y: building.center.y - targetHeight / 2,
+    x: building.center.x - clampedWidth * (0.5 + offsetX),
+    y: building.center.y - targetHeight * (0.5 + offsetY),
     width: clampedWidth,
     height: targetHeight,
   });
 }
 
-/** Computes a panned viewBox from a pixel drag delta relative to the SVG element rect. */
+/**
+ * Computes a panned viewBox from a pixel drag delta using uniform xMidYMid-meet
+ * scaling so dragging feels 1:1 on both widescreen desktop and portrait mobile viewports.
+ */
 export function computePanViewBox(
   startViewBox: ViewBoxRect,
   dxPx: number,
@@ -246,19 +300,22 @@ export function computePanViewBox(
   if (svgRect.width <= 0 || svgRect.height <= 0) {
     return startViewBox;
   }
-  const scaleX = startViewBox.width / svgRect.width;
-  const scaleY = startViewBox.height / svgRect.height;
+  const unitsPerPx = Math.max(
+    startViewBox.width / svgRect.width,
+    startViewBox.height / svgRect.height
+  );
 
   return clampViewBox({
     ...startViewBox,
-    x: startViewBox.x - dxPx * scaleX,
-    y: startViewBox.y - dyPx * scaleY,
+    x: startViewBox.x - dxPx * unitsPerPx,
+    y: startViewBox.y - dyPx * unitsPerPx,
   });
 }
 
 /**
  * Computes a combined pinch-zoom + pan viewBox keeping the campus point under
- * the initial two-finger midpoint aligned with the current two-finger midpoint.
+ * the initial two-finger midpoint aligned with the current two-finger midpoint,
+ * accounting for uniform xMidYMid-meet letterboxing inside svgRect.
  */
 export function computePinchViewBox(
   startViewBox: ViewBoxRect,
@@ -285,14 +342,23 @@ export function computePinchViewBox(
   );
   const nextHeight = nextWidth * VIEWBOX_ASPECT;
 
+  const pxPerUnit = Math.min(
+    svgRect.width / startViewBox.width,
+    svgRect.height / startViewBox.height
+  );
+  const renderedWidth = startViewBox.width * pxPerUnit;
+  const renderedHeight = startViewBox.height * pxPerUnit;
+  const contentLeft = svgRect.left + (svgRect.width - renderedWidth) / 2;
+  const contentTop = svgRect.top + (svgRect.height - renderedHeight) / 2;
+
   const startMidRelX =
-    ((startP1.x + startP2.x) / 2 - svgRect.left) / svgRect.width;
+    ((startP1.x + startP2.x) / 2 - contentLeft) / renderedWidth;
   const startMidRelY =
-    ((startP1.y + startP2.y) / 2 - svgRect.top) / svgRect.height;
+    ((startP1.y + startP2.y) / 2 - contentTop) / renderedHeight;
   const curMidRelX =
-    ((currentP1.x + currentP2.x) / 2 - svgRect.left) / svgRect.width;
+    ((currentP1.x + currentP2.x) / 2 - contentLeft) / renderedWidth;
   const curMidRelY =
-    ((currentP1.y + currentP2.y) / 2 - svgRect.top) / svgRect.height;
+    ((currentP1.y + currentP2.y) / 2 - contentTop) / renderedHeight;
 
   const anchorWorldX = startViewBox.x + startMidRelX * startViewBox.width;
   const anchorWorldY = startViewBox.y + startMidRelY * startViewBox.height;
@@ -303,6 +369,14 @@ export function computePinchViewBox(
     width: nextWidth,
     height: nextHeight,
   });
+}
+
+const TRAILING_ACRONYM_RE = /\(([^)]+)\)\s*$/;
+
+/** Extracts a concise college code (e.g., "CICT", "CPTEd", "LHS") for compact UI pills. */
+export function getCollegeShortLabel(college: { id: string; name: string }): string {
+  const match = college.name.match(TRAILING_ACRONYM_RE);
+  return match?.[1]?.trim() || college.id.toUpperCase();
 }
 
 const COLLEGE_LOCATION_RE = /^(?:College of |Laboratory High School\b)/i;
@@ -348,4 +422,93 @@ export function partitionBuildingLocations(locations: readonly CampusLocation[])
   });
 
   return { colleges, others };
+}
+
+export interface FloorLocationGroup {
+  floor: string;
+  rank: number;
+  locations: CampusLocation[];
+}
+
+/**
+ * Splits `others` (non-college locations) into ordered floor/sub-location accordion
+ * groups (Ground, 1st..N, named subtitles alphabetically, and "No Location" last).
+ */
+export function groupLocationsByFloor(locations: readonly CampusLocation[]): {
+  floorGroups: FloorLocationGroup[];
+} {
+  const byKey = new Map<string, FloorLocationGroup>();
+
+  for (const loc of locations) {
+    const trimmedFloor = loc.floor?.trim();
+    const label = trimmedFloor || 'No Location';
+    const rank = trimmedFloor
+      ? getFloorRank(trimmedFloor)
+      : Number.POSITIVE_INFINITY;
+    const key =
+      trimmedFloor && rank < Number.POSITIVE_INFINITY
+        ? `rank:${rank}`
+        : trimmedFloor
+          ? `label:${trimmedFloor.toLowerCase()}`
+          : 'no-location';
+
+    const existing = byKey.get(key);
+    if (existing) {
+      existing.locations.push(loc);
+    } else {
+      byKey.set(key, {
+        floor: label,
+        rank,
+        locations: [loc],
+      });
+    }
+  }
+
+  const floorGroups = Array.from(byKey.values()).sort((a, b) => {
+    if (a.rank !== b.rank) return a.rank - b.rank;
+    const aNoLocation = a.floor === 'No Location';
+    const bNoLocation = b.floor === 'No Location';
+    if (aNoLocation !== bNoLocation) return aNoLocation ? 1 : -1;
+    return a.floor.localeCompare(b.floor, 'en', { numeric: true, sensitivity: 'base' });
+  });
+
+  for (const group of floorGroups) {
+    group.locations.sort(compareLocationNames);
+  }
+
+  return { floorGroups };
+}
+
+/**
+ * Infers a concise human-readable type label for a campus location card subtitle.
+ */
+export function getLocationType(loc: CampusLocation): string {
+  const name = loc.name.trim();
+
+  if (/^College of /i.test(name)) return 'College';
+  if (/^Laboratory High School\b/i.test(name)) return 'High School';
+  if (loc.category === 'food-housing') {
+    return /cafeteria/i.test(name) ? 'Cafeteria' : 'Food Stall';
+  }
+  if (/clinic|health services/i.test(name)) return 'Clinic';
+  if (/\b(?:dean's office|office|admissions|registrar|procurement|pdo|r & e|accre)\b/i.test(name)) {
+    return 'Office';
+  }
+  if (/\bfaculty\b/i.test(name)) return 'Faculty Room';
+  if (/\b(?:lab|laboratory|server room)\b/i.test(name)) return 'Laboratory';
+  if (/\blibrary\b|book gallery/i.test(name)) return 'Library';
+  if (/\bavr\b/i.test(name)) return 'Audio-Visual Room';
+  if (/\btheater\b|\bamphitheater\b/i.test(name)) return 'Theater';
+  if (/function hall|multipurpose hall/i.test(name)) return 'Function Hall';
+  if (/lactation|child-minding/i.test(name)) return 'Student Services';
+  if (/^(?:[A-Z]{1,4}[-\s]?\d+[A-Z]?|N\d+|IT \d+|CT \d+|SDL \d+|ACAD \d+|FT-\d+|DT-\d+|FH TL)$/i.test(name)) {
+    return 'Classroom';
+  }
+  if (/\broom\b/i.test(name)) return 'Facility';
+
+  if (loc.category === 'administration') return 'Office';
+  if (loc.category === 'student-services') return 'Student Services';
+  if (loc.category === 'library') return 'Library';
+  if (loc.category === 'sports-events') return 'Event Venue';
+  return 'Room';
 }
