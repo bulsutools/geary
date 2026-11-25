@@ -253,9 +253,17 @@ export interface SearchIndexItem {
 }
 ```
 
+#### `src/routes/corpus.json/+server.ts`
+
+Edge-cached SSR `GET` endpoint exporting the full article corpus (`SW-INT-05`) consumed by the MCP Worker. Each record carries `slug`, `title`, `category`, `categoryLabel`, `subcategory`, ISO `updatedDate`, `preview`, resolved `sources`, and `content` — the raw `.md` file bytes (frontmatter plus body) captured via Vite `import.meta.glob('...', { query: '?raw' })` so `get_article` returns source-identical Markdown. The payload embeds the `CATEGORIES` registry for label resolution.
+
+#### `mcp/` — Read-only MCP Worker (`F-07`)
+
+Optional Cloudflare Worker (`mcp/worker.ts`, configured by `mcp/wrangler.toml`) exposing the handbook to MCP clients over Streamable HTTP JSON-RPC (`SW-INT-06`). It fetches and caches `/corpus.json` once per isolate (`CORPUS_URL`/`SITE_URL` vars, default `https://geary.bulsu.tools`), then serves four read-only tools — `search_articles`, `get_article`, `list_categories`, `get_freshness` — implemented as pure functions in `mcp/corpus.ts`. No auth, no state, no site-code imports.
+
 ### 5.3 External runtime integrations
 
-Geary's core information portal has no external runtime dependencies: no databases, hosted search SaaS, LLM APIs, authentication services, or third-party tracking scripts. The `/contribute` page embeds a Google Form as an optional community submission surface; it is a documented governance exception that requires a team scope decision before expansion.
+Geary's core information portal has no external runtime dependencies: no databases, hosted search SaaS, LLM APIs, authentication services, or third-party tracking scripts. The optional `mcp/` Cloudflare Worker is a separate read-only deployable that serves only the `/corpus.json` endpoint; it is not part of the site route tree and holds no credentials. The `/contribute` page embeds a Google Form as an optional community submission surface; it is a documented governance exception that requires a team scope decision before expansion.
 
 ## 6. Project directory structure
 
@@ -302,10 +310,15 @@ geary/
 │   │   ├── calendar.test.ts         # AY 2026-2027 calendar dataset, filtering & month grouping
 │   │   ├── content.test.ts          # Zod frontmatter validation & Markdown compilation + headings
 │   │   ├── map-search.test.ts       # Campus map search, directory integrity & viewBox math
+│   │   ├── mcp.test.ts              # MCP corpus tools & JSON-RPC dispatch (F-07)
 │   │   ├── search.test.ts           # Query scoring & pure buildSearchIndex() contract (< 100 KB)
 │   │   └── seo.test.ts              # JSON-LD builders & XSS-safe serialization
 │   └── e2e/
 │       └── smoke.spec.ts            # Playwright + Axe smoke, SEO, TOC, overflow, dark mode & 404 tests
+├── mcp/                             # Optional read-only MCP Worker (F-07, SW-INT-06)
+│   ├── worker.ts                    #   Streamable HTTP JSON-RPC fetch handler + corpus cache
+│   ├── corpus.ts                    #   Pure tool logic: search/get_article/list_categories/get_freshness
+│   └── wrangler.toml                #   Worker config (geary-mcp, workers.dev, SITE_URL var)
 └── src/
     ├── app.html                     # Root HTML shell with synchronous theme bootstrap
     ├── styles/
@@ -377,6 +390,8 @@ geary/
         │   └── +server.ts           # Edge-cached robots.txt referencing sitemap.xml
         ├── search-index.json/
         │   └── +server.ts           # Edge-cached JSON search payload from buildSearchIndex()
+        ├── corpus.json/
+        │   └── +server.ts           # Edge-cached article corpus payload for the MCP Worker (F-07)
         └── sitemap.xml/
             └── +server.ts           # Edge-cached XML sitemap listing all canonical routes
 ```

@@ -54,7 +54,7 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 | **`M6`: Dark mode (post-MVP)** | Clauses 6.4.5, 6.4.9, and 6.4.11 | Implement Obsidian Slate and Luminous Crimson theme tokens, accessible theme preference menu, persisted preference, and no-flash bootstrap behavior. | Complete: `TC-E2E-08` and `TC-A11Y-03` pass in light and dark themes across representative routes. |
 | **`M7`: SvelteKit SSR architecture migration** | Clauses 6.4.3, 6.4.5, 6.4.7, 6.4.9, and 6.4.11 | Migrate from Astro + React islands to SvelteKit (Svelte 5 runes) + `@sveltejs/adapter-vercel` dynamic SSR with Vite `?raw` glob + `gray-matter` + `marked` + `zod` content loader and CDN `Cache-Control` headers while preserving 100% functional and visual parity. | `bun run check` (`svelte-check`), `bun test`, `bun run build` (`vite build`), and `bun run test:e2e` (Playwright + Axe) pass with `0` failures. |
 
-## 4. Prioritized implementation backlog (`BL-01` to `BL-27`) *(ISO 12207 Clauses 6.3.1 and 6.4.5)*
+## 4. Prioritized implementation backlog (`BL-01` to `BL-28`) *(ISO 12207 Clauses 6.3.1 and 6.4.5)*
 
 ### Milestone `M1`: Toolchain, integrations, and design foundation
 - [x] **`BL-01` (`P0`):** Install project dependencies via Bun (`@astrojs/react`, `react`, `react-dom`, `@types/react`, `@types/react-dom`, `tailwindcss`, `@tailwindcss/vite`, `@astrojs/check`, `typescript`, `@playwright/test`, `@axe-core/playwright`) and verify Chromium Playwright setup ([ARCHITECTURE.md](./ARCHITECTURE.md) §2, `KI-01`).
@@ -94,6 +94,7 @@ Contributors share ownership of milestones and backlog items (`BL-*`) through pu
 - [x] **`BL-25` (`P0`):** Port root layout (`+layout.svelte`), error page (`+error.svelte`), static UI components (`Header`, `ThemeToggle`, `Footer`, `Breadcrumbs`, `CategoryCard`, `ArticleCard`, `TableOfContents`, `ArticleLayout`, `SeoHead`), and all SSR routes (`/`, `/articles`, `/articles/[slug]`, `/categories/[slug]`, `/calendar`, `/map`, `/contribute`, `/privacy`, `/terms`) (`SRS-FUNC-RND-01` to `SRS-FUNC-RND-06`, `SRS-FUNC-UI-01` to `SRS-FUNC-UI-04`).
 - [x] **`BL-26` (`P0`):** Port interactive widgets to Svelte 5 runes (`SearchBar.svelte`, `ExploreSpotlight.svelte`, `AcademicCalendar.svelte`, `CampusMap.svelte` + `campus-map/*`) with SPA-safe `$effect` cleanup (`SRS-FUNC-SRCH-02` to `SRS-FUNC-SRCH-06`, `SRS-FUNC-MAP-01`, `SRS-FUNC-MAP-02`, `RTM-22`, `RTM-23`).
 - [x] **`BL-27` (`P0`):** Run full verification gate (`bun run check`, `bun test`, `bun run build`, `bun run test:e2e`, `bun audit`), confirm zero regressions and valid CDN `Cache-Control` headers, and mark `M7` and all `RTM-*` rows as `[x] Verified`.
+- [x] **`BL-28` (`P1`, Post-MVP):** Implement the read-only MCP server (`F-07`): `src/routes/corpus.json/+server.ts` corpus endpoint (`SW-INT-05`), `mcp/` Cloudflare Worker with Streamable HTTP JSON-RPC and `search_articles`/`get_article`/`list_categories`/`get_freshness` tools (`SW-INT-06`, `SRS-FUNC-MCP-01` to `SRS-FUNC-MCP-04`), and `TC-UNIT-08`/`TC-BLD-03` verification (`REQ-MCP-01` to `REQ-MCP-04`, `RTM-24`).
 
 ## 5. Known issues and technical risks *(ISO/IEC/IEEE 12207 Clause 6.3.4 - Risk Management)*
 

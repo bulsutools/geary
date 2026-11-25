@@ -19,10 +19,24 @@ Set `PUBLIC_SITE_URL` in your deployment environment so canonical links, Open Gr
 | :--- | :--- |
 | `bun run dev` | Start the local SvelteKit dev server at `localhost:5173` |
 | `bun run check` | Run TypeScript and Svelte diagnostics (`svelte-check`) |
-| `bun run build` | Build the SvelteKit SSR bundle for Vercel (`vite build`) |
+| `bun run build` | Build the SvelteKit SSR bundle for Vercel (`vite build`); also emits `/corpus.json` for the MCP Worker |
 | `bun run preview` | Preview the production SvelteKit build locally |
 | `bun test` | Run Bun unit tests in `tests/unit/` (`bun run test:unit`) |
 | `bun run test:e2e` | Run Playwright E2E, SEO, and Axe accessibility tests in `tests/e2e/` |
+
+## MCP server (read-only)
+
+`mcp/` contains an optional Cloudflare Worker that exposes the handbook to MCP clients (Claude, Cursor, Codex) over Streamable HTTP JSON-RPC. It is read-only, unauthenticated, and serves only the public `/corpus.json` build artifact — no auth, no state, no site runtime.
+
+**Tools:** `search_articles(query, category?)`, `get_article(slug)` (verbatim source Markdown), `list_categories()`, `get_freshness()` (oldest `updatedDate` per category).
+
+**Deploy** (from `mcp/`):
+
+```sh
+bunx wrangler deploy
+```
+
+`SITE_URL`/`CORPUS_URL` vars in `mcp/wrangler.toml` point the Worker at the corpus; set `CORPUS_URL` to a preview deploy's `/corpus.json` for testing. Point an MCP client at `https://<worker>.<subdomain>.workers.dev/` (or the custom route once provisioned) — POST JSON-RPC `initialize`, then `tools/list`/`tools/call`.
 
 ## Adding or editing student articles
 

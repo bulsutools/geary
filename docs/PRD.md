@@ -16,7 +16,7 @@
 
 ### 1.2 Purpose
 
-This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to five confirmed capabilities:
+This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to seven confirmed capabilities:
 
 1. Articles and Markdown content (`F-01`)
 2. Categories and purposeful organization (`F-02`)
@@ -24,6 +24,7 @@ This PRD defines the MVP feature set, expected product behavior, release priorit
 4. Low-cognitive-load UI/UX and BulSUan identity (`F-04`)
 5. Interactive 2D campus map (`F-05`)
 6. Interactive Academic Calendar (`F-06`)
+7. Read-only MCP server for AI assistants (`F-07`)
 
 ## 2. Prioritization framework
 
@@ -196,3 +197,26 @@ Visiting an outdated bookmark or broken URL loads the branded `404` page with a 
 
 - `AC-CAL-01` (`REQ-CAL-01`, `REQ-CAL-02`): *Given* `/calendar`, *When* loaded, *Then* AY 2026–2027 events appear chronologically grouped by month with category badges and OSR source attribution.
 - `AC-CAL-02` (`REQ-CAL-03`): *Given* a search query (e.g., `"Mid-term"` or `"Graduation"`) or a category filter selection (e.g., `Holiday` or `College of Law`), *When* applied, *Then* matching events update instantaneously without page reload, and clearing filters restores the full schedule.
+
+### 3.7 Feature 7: Read-only MCP server for AI assistants (`F-07`)
+
+#### Requirements specification
+
+| Req ID | Priority | Requirement statement |
+| :--- | :--- | :--- |
+| `REQ-MCP-01` | `P1` | The system shall expose a public, unauthenticated Cloudflare Worker MCP endpoint speaking JSON-RPC 2.0 over Streamable HTTP (`tools/list` and `tools/call`) with no write tools. |
+| `REQ-MCP-02` | `P1` | The `search_articles` tool shall accept a `query` string and optional `category` filter drawn from the 7 canonical category slugs (`SW-INT-01`) and return ranked matches across article title, subcategory, preview, and Markdown body. |
+| `REQ-MCP-03` | `P1` | The `get_article` tool shall return the complete source Markdown of one article (frontmatter plus body) byte-identical to `src/content/articles/` for a valid `slug`, and shall return a clean tool-level error for unknown slugs. |
+| `REQ-MCP-04` | `P1` | The `list_categories` and `get_freshness` tools shall expose the category/subcategory article tree and the oldest `updatedDate` per category so agents can discover scope and warn about stale content. |
+
+#### Product behavior
+
+- Build-time corpus: the Worker serves a corpus JSON emitted at request time by `src/routes/corpus.json/+server.ts` (SSR endpoint backed by the same validated articles collection), containing every published article's slug, metadata, resolved sources, preview, and raw Markdown. The Worker fetches and caches this dump; it never reads the content collection at runtime.
+- Read-only public surface: all four tools are pure lookups over the static corpus. Unknown slugs, invalid categories, and malformed JSON-RPC payloads return protocol or tool-level errors without crashing the Worker.
+
+#### Acceptance criteria
+
+- `AC-MCP-01` (`REQ-MCP-01`): *Given* an MCP client, *When* it POSTs `initialize`, `tools/list`, and `tools/call` JSON-RPC messages to the Worker endpoint, *Then* it receives spec-shaped responses listing `search_articles`, `get_article`, `list_categories`, and `get_freshness`.
+- `AC-MCP-02` (`REQ-MCP-02`): *Given* a query such as `"TOR request"` with or without a `category` filter, *When* `search_articles` runs, *Then* matching articles rank by title/body relevance and out-of-enum categories are rejected.
+- `AC-MCP-03` (`REQ-MCP-03`): *Given* a published slug, *When* `get_article` runs, *Then* the returned Markdown equals the source file verbatim; *Given* an unknown slug, *Then* a clean error is returned.
+- `AC-MCP-04` (`REQ-MCP-04`): *Given* the corpus, *When* `list_categories` or `get_freshness` runs, *Then* the full 7-category tree with subcategory groupings and per-category oldest `updatedDate` values is returned.

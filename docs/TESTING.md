@@ -61,10 +61,11 @@ Geary runs on SvelteKit (Svelte 5 runes) with Tailwind CSS and `@sveltejs/adapte
 - ISO 25010 characteristic: Functional Suitability (*Completeness*) and Performance Efficiency (*Resource Utilization*)
 - Linked requirements: `REQ-CAT-01`, `REQ-SRCH-01`, `CON-TECH-01`, `SRS-FUNC-RND-01` to `SRS-FUNC-RND-04`, `SRS-FUNC-SRCH-01`, `SRS-NFR-PERF-01`, `SRS-NFR-PERF-03`
 - Inputs: Production SvelteKit build (`bun run build`) and preview server (`vite preview`).
-- Procedure: Verify `vite build` completes with `@sveltejs/adapter-vercel`, and confirm `/`, `/articles`, `/categories/<slug>`, `/articles/<slug>`, `/calendar`, `/map`, `/contribute`, `/terms`, `/privacy`, `/search-index.json`, `/sitemap.xml`, and `/robots.txt` return HTTP `200` with `Cache-Control` headers containing `s-maxage` and `stale-while-revalidate`.
+- Procedure: Verify `vite build` completes with `@sveltejs/adapter-vercel`, and confirm `/`, `/articles`, `/categories/<slug>`, `/articles/<slug>`, `/calendar`, `/map`, `/contribute`, `/terms`, `/privacy`, `/search-index.json`, `/corpus.json`, `/sitemap.xml`, and `/robots.txt` return HTTP `200` with `Cache-Control` headers containing `s-maxage` and `stale-while-revalidate`.
 - Pass criteria:
   - Build succeeds cleanly with zero errors.
   - All canonical routes and endpoints respond with HTTP `200` and CDN `Cache-Control` headers; `/search-index.json` is valid JSON and `< 100 KB`.
+  - `/corpus.json` is valid JSON, its `articles` count matches the published collection count, and every record's `content` field equals the corresponding `src/content/articles/<slug>.md` file bytes.
 
 #### `TC-BLD-04`: Internal link and anchor integrity
 - ISO 25010 characteristic: Reliability (*Availability*)
@@ -123,6 +124,13 @@ Geary runs on SvelteKit (Svelte 5 runes) with Tailwind CSS and `@sveltejs/adapte
 - Inputs: `src/data/academic-calendar.ts` and `src/lib/calendar.ts`.
 - Procedure: Run `tests/unit/calendar.test.ts` to verify dataset completeness, unique IDs, multi-category and token filtering, and chronological month grouping.
 - Pass criteria: All assertions pass with `0` failures.
+
+#### `TC-UNIT-08`: MCP corpus tools and JSON-RPC dispatch
+- ISO 25010 characteristic: Functional Suitability (*Functional Correctness*) and Reliability (*Fault Tolerance*)
+- Linked requirements: `REQ-MCP-01` to `REQ-MCP-04`, `SW-INT-05`, `SW-INT-06`, `SRS-FUNC-MCP-02` to `SRS-FUNC-MCP-04`
+- Inputs: `tests/unit/mcp.test.ts` fixture corpus plus `mcp/corpus.ts` tool functions and `mcp/worker.ts` `handleJsonRpc` dispatcher.
+- Procedure: Assert `initialize`/`tools/list`/`tools/call`/`ping` responses, `search_articles` ranking and `category` filtering, `get_article` verbatim content and clean unknown-slug `isError`, `list_categories` tree shape, `get_freshness` oldest-date computation, and JSON-RPC error codes for malformed payloads, unknown methods, and notifications.
+- Pass criteria: All four tools return spec-shaped results; unknown slugs produce `isError: true` tool results (not thrown exceptions); invalid categories and malformed JSON produce correct JSON-RPC errors; `0` uncaught exceptions.
 
 ### 3.3 Layer 3: Browser E2E smoke and responsive layout suite (`Playwright`)
 
@@ -239,7 +247,7 @@ Tests run in four stages:
 | Script command | Tool | Target verification | Where it runs |
 | :--- | :--- | :--- | :--- |
 | `bun run check` | `svelte-check` | `TC-BLD-01` (TypeScript and Svelte diagnostics) | CI (`.github/workflows/ci.yml`) and local PR prep |
-| `bun test` (`bun run test:unit`) | `bun test` | `TC-BLD-02`, `TC-UNIT-01` to `TC-UNIT-07` (frontmatter Zod schema, Markdown parsing, search scorer, pure `buildSearchIndex()` contract, grouping, map search, academic calendar) | CI (`.github/workflows/ci.yml`) and local PR prep |
+| `bun test` (`bun run test:unit`) | `bun test` | `TC-BLD-02`, `TC-UNIT-01` to `TC-UNIT-08` (frontmatter Zod schema, Markdown parsing, search scorer, pure `buildSearchIndex()` contract, grouping, map search, academic calendar, MCP tools) | CI (`.github/workflows/ci.yml`) and local PR prep |
 | `bun run build` | `vite build` | `TC-BLD-03` (SvelteKit + `@sveltejs/adapter-vercel` SSR build) | CI (`.github/workflows/ci.yml`) and local PR prep |
 | `bun run test:e2e` | `playwright test` | `TC-BLD-03`, `TC-BLD-04`, `TC-E2E-01` to `TC-E2E-08`, `TC-A11Y-01` to `TC-A11Y-03`, `TC-SEC-01` | Local before opening or merging UI, route, or theme PRs |
 | `bun run freshness` | `scripts/content-freshness.ts` | Report-only content audit: source URL status, `updatedDate` age, expiry-prone claim flags (#3) | Local and weekly via `content-freshness.yml` |

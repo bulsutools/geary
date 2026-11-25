@@ -56,6 +56,7 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **RTM-22** | `OBJ-02`, `OBJ-04` | Dark mode design contract (`P1`, post-MVP) | `DESIGN_SYSTEM.md` §2.2; `ThemeToggle.svelte`, `src/app.html` bootstrap, tokenized surfaces and `CampusMap.svelte` | `BL-22`, `BL-25`, `BL-26` | `TC-E2E-08`, `TC-A11Y-03` | `[x] Verified` |
 | **RTM-23** | `OBJ-01`, `OBJ-03` | Interactive Academic Calendar (`P1`, post-MVP) | `src/data/academic-calendar.ts`, `src/lib/calendar.ts`, `AcademicCalendar.svelte`, `src/routes/calendar/+page.svelte`, `DESIGN_SYSTEM.md` §5.10 | `BL-26` | `TC-UNIT-07`, `TC-E2E-04`, `TC-A11Y-01` | `[x] Verified` |
+| **RTM-24** | `OBJ-03`, `OBJ-05` | `REQ-MCP-01` to `REQ-MCP-04` / `AC-MCP-01` to `AC-MCP-04` (`P1`, post-MVP) | `SW-INT-05`, `SW-INT-06`, `SRS-FUNC-MCP-01` to `SRS-FUNC-MCP-04`; `src/routes/corpus.json/+server.ts`, `mcp/worker.ts`, `mcp/corpus.ts` | `BL-28` | `TC-BLD-03`, `TC-UNIT-08` | `[x] Verified` |
 
 ## 3. Non-functional quality requirements traceability matrix (`RTM-NFR-01` to `RTM-NFR-14`) *(ISO 29148 Clause 9.6.3.3 and ISO 25010)*
 

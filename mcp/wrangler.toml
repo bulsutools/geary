@@ -1,0 +1,12 @@
+name = "geary-mcp"
+main = "worker.ts"
+compatibility_date = "2026-06-01"
+workers_dev = true
+
+# Corpus source: the static /corpus.json emitted by `bun run build`.
+# Override CORPUS_URL directly, or point SITE_URL at a preview/staging deploy.
+[vars]
+SITE_URL = "https://geary.bulsu.tools"
+
+# Optional custom domain once DNS is provisioned, e.g.:
+# routes = [ { pattern = "mcp.geary.bulsu.tools", custom_domain = true } ]
