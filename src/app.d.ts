@@ -6,7 +6,14 @@ declare global {
     // interface Locals {}
     // interface PageData {}
     // interface PageState {}
-    // interface Platform {}
+    interface Platform {
+      env?: {
+        /** Cloudflare Workers AI binding (present only on Cloudflare deployments). */
+        AI?: {
+          run(model: string, inputs: Record<string, unknown>): Promise<unknown>;
+        };
+      };
+    }
   }
 }
 
