@@ -242,6 +242,7 @@ Tests run in four stages:
 | `bun test` (`bun run test:unit`) | `bun test` | `TC-BLD-02`, `TC-UNIT-01` to `TC-UNIT-07` (frontmatter Zod schema, Markdown parsing, search scorer, pure `buildSearchIndex()` contract, grouping, map search, academic calendar) | CI (`.github/workflows/ci.yml`) and local PR prep |
 | `bun run build` | `vite build` | `TC-BLD-03` (SvelteKit + `@sveltejs/adapter-vercel` SSR build) | CI (`.github/workflows/ci.yml`) and local PR prep |
 | `bun run test:e2e` | `playwright test` | `TC-BLD-03`, `TC-BLD-04`, `TC-E2E-01` to `TC-E2E-08`, `TC-A11Y-01` to `TC-A11Y-03`, `TC-SEC-01` | Local before opening or merging UI, route, or theme PRs |
+| `bun run freshness` | `scripts/content-freshness.ts` | Report-only content audit: source URL status, `updatedDate` age, expiry-prone claim flags (#3) | Local and weekly via `content-freshness.yml` |
 | `bun audit` | `bun audit` | `TC-SEC-02` (dependency vulnerability check) | Local before merging dependency changes or releases |
 
 `.github/workflows/ci.yml` runs `bun run check`, `bun test`, `bun run build`, and Playwright `e2e` automatically on every pull request. Contributors changing layouts, styles, interactive components, routes, or content schemas should also run `bun run test:e2e` locally before requesting review.
@@ -256,5 +257,6 @@ Following organization standards from `bulsutools/room-tba`, automated checks ru
 | `.github/workflows/dependency-review.yml` | `pull_request` | Audits `bun.lock` via `bun audit --audit-level=high` (blocks high/critical CVEs). |
 | `.github/workflows/codeql.yml` | `pull_request`, `push: [main]`, weekly cron | Static application security testing (SAST) for `javascript-typescript`. |
 | `.github/workflows/deploy-pages.yml` | `push: [main]`, `workflow_dispatch` | Builds with `DEPLOY_TARGET=cloudflare` (`@sveltejs/adapter-cloudflare`) and deploys SSR Worker + static assets via `wrangler deploy`. |
+| `.github/workflows/content-freshness.yml` | weekly cron, `workflow_dispatch` | Runs `bun run freshness` and upserts a single rolling "Content freshness report" issue; report-only, no article edits. |
 
 Full bidirectional mapping between requirements, source artifacts, and `TC-*` test cases lives in [REQUIREMENTS.md](./REQUIREMENTS.md).

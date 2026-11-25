@@ -294,6 +294,8 @@ geary/
 │   ├── googled56ea9e672e7afb1.html
 │   ├── og-image.png
 │   └── santa-hat.png
+├── scripts/                          # Report-only maintenance scripts
+│   └── content-freshness.ts          # Article source/staleness audit (#3); emits Markdown report
 ├── tests/                           # Unit & Playwright E2E/Axe verification suites
 │   ├── unit/
 │   │   ├── articles.test.ts         # Subcategory grouping, previews, daily spotlight & UTC dates
