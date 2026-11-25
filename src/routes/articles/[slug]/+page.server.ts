@@ -2,7 +2,8 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getCategoryBySlug } from '../../../data/categories';
 import { formatArticleDate, resolveArticleSources } from '#lib/articles';
-import { buildArticleJsonLd, buildBreadcrumbJsonLd, resolveRequestOrigin } from '#lib/seo';
+import { buildArticleJsonLd, buildBreadcrumbJsonLd } from '#lib/seo';
+import { requestOrigin } from '#lib/seo-runtime';
 import { getArticleBySlug } from '#lib/server/content';
 
 export const load: PageServerLoad = ({ params, url }) => {
@@ -16,7 +17,7 @@ export const load: PageServerLoad = ({ params, url }) => {
     error(500, `Unknown category slug: ${article.data.category}`);
   }
 
-  const baseOrigin = resolveRequestOrigin(url);
+  const baseOrigin = requestOrigin(url);
   const articleUrl = new URL(`/articles/${article.slug}`, baseOrigin).href;
   const resolvedSources = resolveArticleSources(article.data);
 

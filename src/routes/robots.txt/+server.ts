@@ -1,9 +1,9 @@
 import type { RequestHandler } from './$types';
-import { resolveRequestOrigin } from '#lib/seo';
+import { requestOrigin } from '#lib/seo-runtime';
 import { CACHE_CONTROL_HEADER } from '#lib/server/cache';
 
 export const GET: RequestHandler = ({ url }) => {
-  const baseUrl = resolveRequestOrigin(url ?? new URL('https://geary.bulsu.tools'));
+  const baseUrl = requestOrigin(url ?? new URL('https://geary.bulsu.tools'));
   const sitemapUrl = new URL('sitemap.xml', baseUrl).href;
   const body = `User-agent: *\nAllow: /\n\nSitemap: ${sitemapUrl}\n`;
 

@@ -2,7 +2,8 @@ import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 import { getCategoryBySlug } from '../../../data/categories';
 import { groupArticlesBySubcategory } from '#lib/articles';
-import { buildBreadcrumbJsonLd, resolveRequestOrigin } from '#lib/seo';
+import { buildBreadcrumbJsonLd } from '#lib/seo';
+import { requestOrigin } from '#lib/seo-runtime';
 import { getAllArticles } from '#lib/server/content';
 
 export const load: PageServerLoad = ({ params, url }) => {
@@ -22,7 +23,7 @@ export const load: PageServerLoad = ({ params, url }) => {
     })),
   }));
 
-  const baseOrigin = resolveRequestOrigin(url);
+  const baseOrigin = requestOrigin(url);
   const canonicalUrl = new URL(`/categories/${category.slug}`, baseOrigin).href;
   const breadcrumbJsonLd = buildBreadcrumbJsonLd([
     { name: 'Home', url: new URL('/', baseOrigin).href },

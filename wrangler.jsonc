@@ -4,5 +4,8 @@
   "compatibility_flags": ["nodejs_compat"],
   "assets": {
     "binding": "ASSETS"
+  },
+  "vars": {
+    "PUBLIC_SITE_URL": "https://geary.bulsu.tools"
   }
 }
