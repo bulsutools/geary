@@ -157,7 +157,7 @@ Normal text and meaningful control boundaries must maintain at least `4.5:1` con
 ### 5.1 Global header and Geary brand mark (`Header.svelte`)
 
 - Anatomy: Sticky top `64px` (`h-16`) bar on `bg-[#F8F9FA]/95` with `border-b border-[#DEE2E6]`.
-  - Desktop (`>= 768px`): Geary wordmark + 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring) on the left; `Home` (`/`), `Articles` (`/articles`), `Calendar` (`/calendar`), `Campus Map` (`/map`), and `Contribute` (`/contribute`) links (`md:px-2.5 lg:px-3`); and `<SearchBar variant="header" />` (`md:w-48 lg:w-60`) on the right.
+  - Desktop (`>= 768px`): Geary wordmark + 8-tooth geometric gear SVG (`#8B1538` outer gear, `#D4A017` inner ring) on the left; `Home` (`/`), `Articles` (`/articles`), `Ask` (`/ask`), `Calendar` (`/calendar`), `Campus Map` (`/map`), and `Contribute` (`/contribute`) links (`md:px-2.5 lg:px-3`); and `<SearchBar variant="header" />` (`md:w-48 lg:w-60`) on the right.
   - Mobile (`< 768px`): On Home (`/`), `<SearchBar variant="header" />` is hidden and the gear mark + Geary wordmark sit centered beside the right-aligned drawer toggle. On interior pages, only the gear mark shows on the left (`sr-only md:not-sr-only` wordmark) and `<SearchBar variant="header" />` spans the available space (`flex-1`) between the gear mark and the drawer toggle.
 - Interactive states:
   - Default: `text-[#495057]` navigation links, `min-h-[44px]` mobile tap target.
@@ -222,6 +222,24 @@ Normal text and meaningful control boundaries must maintain at least `4.5:1` con
 
 - Layout: Single-column constrained container (`max-w-5xl`) on `/calendar` with a search input, scrollable category filter chips (`All Events`, `Universal`, `Undergraduate`, `Graduate School`, `Laboratory High School`, `College of Law`, `College of Medicine`, `Holiday`), quick month jump pills, and month-grouped event cards.
 - Category color badges: Each OSR category uses a high-contrast accessible dot + subtle tinted pill (dark-mode aware) matching the OSR color legend (blue for Undergraduate, orange for Graduate School, amber/gold for Laboratory High School, purple for College of Law, emerald/green for College of Medicine, crimson/red for Holiday, neutral ink for All/University-Wide).
+
+### 5.11 Ask-the-Handbook panel (`AskPanel.svelte` on `/ask`)
+
+- Anatomy: Centered `max-w-prose` column matching article readability. A labeled question `<input>` (`h-[52px]`, `bg-surface-card`, `rounded-xl`, crimson `:focus-visible` ring) with an `Ask` submit button (`bg-brand-crimson-solid`, white label, `min-h-[44px]`), optional example-question chips (`rounded-full` pills on `surface-subtle`), and an `aria-live="polite"` answer region below.
+- Answer card: `bg-surface-card border border-border-subtle rounded-xl p-5` containing the answer text (`whitespace-pre-line`, `text-ink-primary`) with inline `[n]` citation markers rendered as compact crimson links (`text-brand-crimson font-semibold`, `aria-label="Source n: <title>"`, keeping visible focus rings), followed by a "Sources" list: each entry links the article title, shows `categoryLabel · subcategory`, and a `Last updated <date>` line in `text-ink-secondary`.
+- Fallback states: Not-covered and service-unavailable variants reuse the search zero-match pattern — calm notice text plus 7 category pills and an `/articles` link. Loading shows a skeleton-free status line (`role="status"`).
+- Interactive states: Submit button disables while a request is in flight; chips and inputs preserve `:focus-visible` outlines; zero horizontal overflow at `375px`.
+
+### 5.12 Document Request Wizard (`ClearanceWizard.svelte` on `/wizard`)
+
+- Anatomy: Two-state island inside the standard `max-w-3xl` content column.
+  - *Picker state:* Grid of request cards (`bg-surface-card border border-border-subtle rounded-xl p-5`, same visual family as `ArticleCard.svelte`) showing request title, summary line, and a `x of y requirements` progress hint; category wizard entry cards reuse the `CategoryCard.svelte` hover/border treatment.
+  - *Checklist state:* Header row with request title, `x of y` progress counter (`aria-live="polite"`), and a text-button reset control; summary rows for office, fee, and processing time as compact `dl` pairs (`text-sm`, labels in `text-ink-secondary`, values in `text-ink-primary`) on a `bg-surface-subtle` panel; ordered checklist of `>= 44px` checkbox rows with optional `note` detail in `text-sm text-ink-secondary`; persistent verify-with-office note styled like `VerificationBanner.svelte` (`bg-surface-subtle border border-border-subtle rounded-xl p-4`); "Read the full guide" link in `text-brand-crimson`.
+- Interactive states:
+  - *Checked row:* Label shifts to `text-ink-secondary`; checkbox uses native `accent-brand-crimson` (`accent-color: #8B1538`) — never color-only state.
+  - *Hover / focus-visible:* Card and row hover shifts border to `brand-crimson`; all controls keep the global `2px solid #8B1538` focus ring.
+  - *Progress complete:* Counter turns `text-brand-crimson font-semibold`; no confetti or celebration motion.
+- Accessibility: Native `<input type="checkbox">` elements inside `<label>` wrappers (full-row tap targets), `aria-live="polite"` progress counter, and picker implemented as a list of buttons/links — zero custom widget ARIA.
 
 ## 6. Interaction principles and accessibility ergonomics
 

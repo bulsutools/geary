@@ -15,7 +15,7 @@
 
 ### 1.2 Purpose and actors
 
-This specification covers Geary's operational modes (`MODE-01` to `MODE-04`), master navigation flow, end-to-end user journeys (`UJ-01` to `UJ-06`), use cases (`UC-01` to `UC-06`), alternative flows (`AF-*`), exception flows (`EF-*`), and off-nominal error scenarios (`ERR-01` to `ERR-09`), including campus map lookup.
+This specification covers Geary's operational modes (`MODE-01` to `MODE-06`), master navigation flow, end-to-end user journeys (`UJ-01` to `UJ-08`), use cases (`UC-01` to `UC-08`), alternative flows (`AF-*`), exception flows (`EF-*`), and off-nominal error scenarios (`ERR-01` to `ERR-13`), including campus map lookup, ask-the-handbook Q&A, and the document request wizard.
 
 Actors are defined in [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) Section 5:
 
@@ -24,7 +24,7 @@ Actors are defined in [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) Section 5:
 - `ACT-03`: Continuing Undergraduate
 - `ACT-04`: Student Maintainer / Contributor (part of the multi-contributor student team reviewing and shipping updates through pull requests)
 
-### 1.3 Operational modes (`MODE-01` to `MODE-04`) (ISO/IEC/IEEE 29148 Clause 9.3.4)
+### 1.3 Operational modes (`MODE-01` to `MODE-06`) (ISO/IEC/IEEE 29148 Clause 9.3.4)
 
 | Mode ID | Operational mode | Activation condition | Expected behavior |
 | :--- | :--- | :--- | :--- |
@@ -32,6 +32,8 @@ Actors are defined in [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) Section 5:
 | `MODE-02` | Interactive client search and map lookup | Student focuses the Search Bar, presses `/` or `Ctrl+K` (`Cmd+K`), or interacts with `/map`. | Client-side search fetches and caches `/search-index.json`, ranks multi-term queries, and supports keyboard navigation; `/map` runs local building search and SVG focus. |
 | `MODE-03` | Degraded / off-nominal recovery | Search returns zero matches, the search index fails to load on weak mobile data, or a student hits a broken URL. | The interface shows recovery options: category quick-jump links, retry guidance, or the branded `404` page. |
 | `MODE-04` | Build-time content authoring and PR validation | A contributor adds or edits a Markdown article and runs the build locally or opens a pull request. | Zod schema validation checks frontmatter, SvelteKit builds cleanly, unit tests validate the search index payload, and CI checks run before merge. |
+| `MODE-05` | Ask-the-handbook Q&A | Student submits a natural-language question on `/ask`. | Client retrieves evidence chunks locally from `/ask-index.json`, then a single `POST /api/ask` call returns a cited answer or a not-covered fallback. |
+| `MODE-06` | Interactive request checklist | Student opens `/wizard` or follows a `#<request-id>` deep link from an article or category card. | Svelte island renders request picker and requirements checklist; checkbox state persists in `localStorage` and URL hash without backend calls. |
 
 ## 2. Master navigation and state transition diagram (ISO/IEC/IEEE 29148 Clause 9.3.4)
 
@@ -54,6 +56,8 @@ flowchart TD
 
     CAT_PAGE -->|"Scan Subcategory Groups"| ART_PAGE
     CAT_PAGE -->|"0 Articles in Category"| CAT_EMPTY["Empty State + Home Link"]
+    CAT_PAGE -->|"Wizard Entry Card"| WIZARD["Document Request Wizard (/wizard)"]
+    ART_PAGE -->|"Check off your requirements link"| WIZARD
 
     HERO_SRCH -->|"Fetch Static Search Index"| MATCH{"Matches Found?"}
     MATCH -->|"Yes (up to 8 ranked)"| ART_PAGE
@@ -74,9 +78,16 @@ flowchart TD
     BAD_URL --> P404["Custom 404 Page (+error.svelte)"]
     P404 -->|"Search or Category Links"| MATCH
     P404 -->|"Back to Home"| HOME
+
+    ASK_PAGE["Ask Page (/ask)"] -->|"Submit question"| RETRIEVE{"Client Retrieval: evidence found?"}
+    RETRIEVE -->|"No / weak evidence"| NOT_COV["Not-Covered Notice + 7 Category Links"]
+    RETRIEVE -->|"Top-k chunks"| API_CALL["POST /api/ask (Workers AI)"]
+    API_CALL -->|"Cited answer"| ANSWER["Answer Card: [n] citations + Sources w/ updatedDate"]
+    API_CALL -->|"NOT_COVERED / error"| NOT_COV
+    ANSWER -->|"Click citation"| ART_PAGE
 ```
 
-## 3. Operational scenarios and end-to-end user journeys (`UJ-01` to `UJ-06`) (ISO/IEC/IEEE 29148 Clause 9.3.5)
+## 3. Operational scenarios and end-to-end user journeys (`UJ-01` to `UJ-08`) (ISO/IEC/IEEE 29148 Clause 9.3.5)
 
 ### `UJ-01`: Urgent search-first lookup (checking `INC` or `TOR`)
 
@@ -170,7 +181,33 @@ sequenceDiagram
   4. The inspector displays the building name and the offices or facilities inside it.
 - Expected outcome: The student identifies the right building without external map tiles or backend API calls.
 
-## 4. Use cases, alternative flows, and exception scenarios (`UC-01` to `UC-06`) (ISO/IEC/IEEE 29148 Clauses 6.2.1.3 and 9.5.3)
+### `UJ-07`: Ask the Handbook a question
+
+- Actor: `ACT-01`, `ACT-02`, or `ACT-03`
+- Trigger: Student phrases a question in plain language (e.g., "how do I apply for a scholarship") instead of guessing search keywords.
+- Operational mode: `MODE-05` (nominal), `MODE-03` (not-covered / service-failure fallback)
+- Steps:
+  1. Student opens `/ask` via the Header `Ask` link or a direct URL.
+  2. Student types a question (or taps an example question) and submits.
+  3. The browser lazily downloads `/ask-index.json` once and retrieves the top matching article passages locally.
+  4. With sufficient evidence, the island posts the question plus retrieved chunks to `/api/ask`; the Workers AI model answers strictly from those excerpts.
+  5. The answer card renders inline `[n]` citations linking to `/articles/[slug]` and a Sources list showing each article's title, category, and *Last updated* date.
+  6. If evidence is weak or the model reports `NOT_COVERED`, the page shows a not-covered notice with links to all seven categories and `/articles`.
+- Expected outcome: Student gets a direct, cited answer in seconds, or a calm pointer to browse — never an invented policy.
+
+### `UJ-08`: Check off document-request requirements (`/wizard`)
+
+- Actor: `ACT-03` (Continuing Undergraduate gathering requirements during enrollment or graduation season)
+- Trigger: Student needs to know exactly what to bring for a TOR, Good Moral Character, ID replacement, or transfer credential request.
+- Operational mode: `MODE-06`
+- Steps:
+  1. Student opens `/wizard` directly, taps a wizard card on the `documents` category page, or follows a "check off your requirements" link inside a guide (`/wizard#<request-id>`).
+  2. The wizard opens the matching request checklist showing office, published fee, processing time, and ordered requirements.
+  3. Student checks off items as they gather documents; progress counter updates and the URL hash mirrors the checked state for sharing.
+  4. Student taps the guide link to read full procedure context, or resets the checklist when starting over.
+- Expected outcome: Student leaves knowing precisely what they have versus what they still need, with progress surviving reloads and shareable via link.
+
+## 4. Use cases, alternative flows, and exception scenarios (`UC-01` to `UC-08`) (ISO/IEC/IEEE 29148 Clauses 6.2.1.3 and 9.5.3)
 
 ### `UC-01`: Search for an article
 
@@ -295,6 +332,57 @@ Main success scenario:
 3. Search results pair each matching location with its parent building (for example, `Office of the University Registrar - Flores Hall`).
 4. Selecting a result or building highlights that building on the map, pans and focuses to it, and updates the inspector with its floors, offices, contact hints, and linked Geary articles.
 
+### `UC-07`: Ask the Handbook a question (`/ask`)
+
+| Field | Details |
+| :--- | :--- |
+| Actors | `ACT-01`, `ACT-02`, `ACT-03` |
+| Operational modes | `MODE-05` (nominal), `MODE-03` (not-covered / service-failure fallback) |
+| Preconditions | Site built with `/ask-index.json`; `/api/ask` endpoint deployed with a Workers AI `AI` binding. |
+| Postconditions | Student reads a cited answer or reaches the guides-index fallback; nothing is stored server-side. |
+
+Main success scenario:
+1. Student opens `/ask` and submits a natural-language question.
+2. `<AskPanel />` lazily fetches and caches `/ask-index.json`, then retrieves ranked evidence chunks entirely in the browser.
+3. The island `POST`s `{ query, sources }` to `/api/ask`; the endpoint validates the payload and calls Workers AI with a grounded prompt.
+4. The model answers using only the supplied excerpts with inline `[n]` citations, or returns `NOT_COVERED`.
+5. The answer card renders citations as links to `/articles/<slug>` plus a Sources list with title, category, and *Last updated* date per article.
+
+Alternative flows:
+- `AF-07A` (example question chips): student taps a suggested question (e.g., "How do I request a TOR?") to prefill and submit without typing.
+- `AF-07B` (direct citation navigation): student clicks an inline `[n]` marker or a Sources entry to open the full article for complete steps and official-office verification.
+
+Exception / off-nominal scenarios:
+- `EF-07A` (insufficient evidence): retrieved chunks fall below the evidence threshold, so no `/api/ask` call is made; the not-covered notice with 7 category pills and `/articles` link renders.
+- `EF-07B` (model reports not covered): endpoint returns the `NOT_COVERED` sentinel, producing the same not-covered UI with no invented content.
+- `EF-07C` (ask service unavailable): `/ask-index.json` fails to load or `/api/ask` returns non-OK (including missing `AI` binding), producing a calm service-unavailable notice with retry and category links.
+- `EF-07D` (malformed model output): out-of-range or malformed `[n]` markers render as literal text; the answer remains readable.
+
+### `UC-08`: Track document-request requirements in the wizard
+
+| Field | Details |
+| :--- | :--- |
+| Actors | `ACT-01`, `ACT-02`, `ACT-03` |
+| Operational modes | `MODE-06` (nominal), `MODE-03` (malformed hash/storage fallback) |
+| Preconditions | At least one article declares `wizard` frontmatter; client browser supports JavaScript and `localStorage`. |
+| Postconditions | Checklist progress persists locally and can be shared via URL hash; full context remains one click away in the source guide. |
+
+Main success scenario:
+1. Student opens `/wizard` (directly, via a category wizard card, or via an article's "check off your requirements" link).
+2. Picker lists every declared request type with its source guide.
+3. Student selects a request; summary rows show office, fee, and processing time where published.
+4. Student toggles requirement checkboxes; progress (`x of y`) and URL hash update; state saves to `localStorage`.
+5. Student follows the guide link to `/articles/<slug>` for full procedure detail.
+
+Alternative flows:
+- `AF-08A` (shared link): Student opens `/wizard#<request-id>:<indices>` shared by a classmate; wizard selects that request with the shared checks applied on top of local state.
+- `AF-08B` (reset checklist): Student taps reset to clear all checked items for the active request only.
+- `AF-08C` (switch request): Student returns to the picker and selects a different request; each request keeps independent checklist state.
+
+Exception / off-nominal scenarios:
+- `EF-08A` (unknown request in hash): Hash references a request `id` no article declares → wizard falls back to the picker view without errors (`ERR-13`).
+- `EF-08B` (corrupt or blocked storage): `localStorage` unavailable or holds invalid JSON → wizard starts from an empty checklist and keeps working (`ERR-13`).
+
 ## 5. Off-nominal, exception, and error scenario matrix (ISO/IEC/IEEE 29148 Clause 9.3.5)
 
 | Error ID | Scenario | Operational mode | Trigger condition | Expected system behavior | User recovery path |
@@ -308,3 +396,7 @@ Main success scenario:
 | `ERR-07` | Wide table / long URL on mobile | `MODE-01` | Multi-column table or long URL on `375px` screen | Scroll table horizontally inside its container; wrap long URLs | Swipe horizontally inside table only |
 | `ERR-08` | Nonexistent / broken route | `MODE-03` | Mistyped or outdated bookmark URL | Serve the branded HTTP `404` page (`+error.svelte`) with Search Bar and 7 category links | Search or navigate to Home / Category |
 | `ERR-09` | Invalid Markdown frontmatter | `MODE-04` | Missing/invalid metadata or unrecognized category slug | Abort local build and PR CI check immediately with validation diagnostic | Fix frontmatter and re-run build |
+| `ERR-10` | Ask corpus fetch failure | `MODE-03` | `/ask-index.json` fails to download | Catch error safely; show service-unavailable notice + retry + 7 category links | Retry or browse categories |
+| `ERR-11` | Question not covered by corpus | `MODE-03` | Weak retrieval evidence or model `NOT_COVERED` | Show not-covered notice + 7 category pills + `/articles` link; zero invented claims | Refine question or browse guides |
+| `ERR-12` | Answer service error | `MODE-03` | `/api/ask` returns non-OK or times out | Show calm unavailable notice + retry; no partial/fabricated answer | Retry or use Search/articles |
+| `ERR-13` | Corrupt wizard hash or storage | `MODE-06` | Malformed `#` hash, unknown request id, or invalid `localStorage` JSON | Fall back to picker/empty checklist with zero errors | Re-select request or re-check items |

@@ -16,7 +16,7 @@
 
 ### 1.2 Purpose
 
-This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to six confirmed capabilities:
+This PRD defines the MVP feature set, expected product behavior, release priorities, and acceptance criteria for Geary so contributors across engineering, design, and writing work from the same contract. Scope is bounded to nine confirmed capabilities:
 
 1. Articles and Markdown content (`F-01`)
 2. Categories and purposeful organization (`F-02`)
@@ -24,6 +24,9 @@ This PRD defines the MVP feature set, expected product behavior, release priorit
 4. Low-cognitive-load UI/UX and BulSUan identity (`F-04`)
 5. Interactive 2D campus map (`F-05`)
 6. Interactive Academic Calendar (`F-06`)
+7. Read-only MCP server for AI assistants (`F-07`)
+8. Ask-the-Handbook Q&A (`F-08`)
+9. Interactive Document Request Wizard (`F-09`) *(approved post-MVP enhancement)*
 
 ## 2. Prioritization framework
 
@@ -33,7 +36,7 @@ Every requirement in this PRD carries a release priority:
 | :--- | :--- | :--- |
 | `P0` (Must-Have / Core MVP) | Required for Geary to work as a centralized, searchable student information portal. | Mandatory for MVP launch; release is blocked if any `P0` acceptance criterion fails. |
 | `P1` (Should-Have / MVP UX Polish) | Usability, orientation, and skimming features included in the MVP baseline. | Included in the MVP target release to keep cognitive load low and discovery fast. |
-| `Won't Have` (Out of Scope) | Capabilities excluded under [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) (AI chatbot, user accounts, databases, official SIS integration). | Excluded from the MVP. |
+| `Won't Have` (Out of Scope) | Capabilities excluded under [PROJECT_CHARTER.md](./PROJECT_CHARTER.md) (general-purpose AI chatbot, user accounts, databases, official SIS integration). | Excluded from the MVP. |
 
 ## 3. Features, product behavior, and acceptance criteria
 
@@ -196,3 +199,79 @@ Visiting an outdated bookmark or broken URL loads the branded `404` page with a 
 
 - `AC-CAL-01` (`REQ-CAL-01`, `REQ-CAL-02`): *Given* `/calendar`, *When* loaded, *Then* AY 2026–2027 events appear chronologically grouped by month with category badges and OSR source attribution.
 - `AC-CAL-02` (`REQ-CAL-03`): *Given* a search query (e.g., `"Mid-term"` or `"Graduation"`) or a category filter selection (e.g., `Holiday` or `College of Law`), *When* applied, *Then* matching events update instantaneously without page reload, and clearing filters restores the full schedule.
+
+### 3.7 Feature 7: Read-only MCP server for AI assistants (`F-07`)
+
+#### Requirements specification
+
+| Req ID | Priority | Requirement statement |
+| :--- | :--- | :--- |
+| `REQ-MCP-01` | `P1` | The system shall expose a public, unauthenticated Cloudflare Worker MCP endpoint speaking JSON-RPC 2.0 over Streamable HTTP (`tools/list` and `tools/call`) with no write tools. |
+| `REQ-MCP-02` | `P1` | The `search_articles` tool shall accept a `query` string and optional `category` filter drawn from the 7 canonical category slugs (`SW-INT-01`) and return ranked matches across article title, subcategory, preview, and Markdown body. |
+| `REQ-MCP-03` | `P1` | The `get_article` tool shall return the complete source Markdown of one article (frontmatter plus body) byte-identical to `src/content/articles/` for a valid `slug`, and shall return a clean tool-level error for unknown slugs. |
+| `REQ-MCP-04` | `P1` | The `list_categories` and `get_freshness` tools shall expose the category/subcategory article tree and the oldest `updatedDate` per category so agents can discover scope and warn about stale content. |
+
+#### Product behavior
+
+- Build-time corpus: the Worker serves a corpus JSON emitted at request time by `src/routes/corpus.json/+server.ts` (SSR endpoint backed by the same validated articles collection), containing every published article's slug, metadata, resolved sources, preview, and raw Markdown. The Worker fetches and caches this dump; it never reads the content collection at runtime.
+- Read-only public surface: all four tools are pure lookups over the static corpus. Unknown slugs, invalid categories, and malformed JSON-RPC payloads return protocol or tool-level errors without crashing the Worker.
+
+#### Acceptance criteria
+
+- `AC-MCP-01` (`REQ-MCP-01`): *Given* an MCP client, *When* it POSTs `initialize`, `tools/list`, and `tools/call` JSON-RPC messages to the Worker endpoint, *Then* it receives spec-shaped responses listing `search_articles`, `get_article`, `list_categories`, and `get_freshness`.
+- `AC-MCP-02` (`REQ-MCP-02`): *Given* a query such as `"TOR request"` with or without a `category` filter, *When* `search_articles` runs, *Then* matching articles rank by title/body relevance and out-of-enum categories are rejected.
+- `AC-MCP-03` (`REQ-MCP-03`): *Given* a published slug, *When* `get_article` runs, *Then* the returned Markdown equals the source file verbatim; *Given* an unknown slug, *Then* a clean error is returned.
+- `AC-MCP-04` (`REQ-MCP-04`): *Given* the corpus, *When* `list_categories` or `get_freshness` runs, *Then* the full 7-category tree with subcategory groupings and per-category oldest `updatedDate` values is returned.
+
+### 3.8 Feature 8: Ask-the-Handbook Q&A (`/ask`) (`F-08`)
+
+#### Requirements specification
+
+| Req ID | Priority | Requirement statement |
+| :--- | :--- | :--- |
+| `REQ-ASK-01` | `P0` | The system shall compile a static ask corpus (`/ask-index.json`) containing every published article's slug, title, excerpt, category metadata, subcategory, section headings, `updatedDate`, article URL, and body text chunked into retrievable passages. |
+| `REQ-ASK-02` | `P0` | The `/ask` page shall provide an interactive question input that retrieves the top-k most relevant corpus chunks client-side before any network answer call, ranking by weighted literal token matching consistent with site search. |
+| `REQ-ASK-03` | `P0` | When sufficient retrieved evidence exists, the system shall send only the question and retrieved chunks to a single stateless `/api/ask` endpoint backed by Cloudflare Workers AI, and render the answer with inline `[n]` citations linking to the cited article URLs plus a sources list showing each article's title, category, and last-updated date. |
+| `REQ-ASK-04` | `P0` | The system shall answer strictly from retrieved chunks: questions below the evidence threshold, or answers the model marks as not covered, shall return the guides index (category links and article directory) instead of invented content. |
+| `REQ-ASK-05` | `P1` | Answers shall surface `updatedDate` freshness for time-sensitive topics (fees, schedules, deadlines), and the feature shall keep queries ephemeral: retrieval runs in the browser and only the answer request leaves the client, with nothing stored server-side. |
+
+#### Product behavior
+
+- Question-first answers: a student types a natural-language question (e.g., "how do I apply for a scholarship") on `/ask`. The browser downloads the static ask corpus once, retrieves the best-matching passages locally, and only then calls the answer endpoint.
+- Grounded, cited responses: the model sees only the retrieved passages plus their metadata. Every factual claim carries an inline `[n]` citation that links to the matching `/articles/[slug]` page; a "Sources" list beneath the answer repeats each article title with its *Last updated* date so students can judge freshness before trusting fees or deadlines.
+- Honest fallbacks: when retrieval finds too little evidence, or the model reports the corpus does not cover the question, the page shows a calm not-covered notice with links to all seven categories and the article directory — never a fabricated answer.
+- Privacy posture: search-style retrieval stays client-side; the only data transmitted is the single answer request containing the question and public article text. Geary stores nothing.
+
+#### Acceptance criteria
+
+- `AC-ASK-01` (`REQ-ASK-01`): *Given* a completed build, *When* fetching `/ask-index.json`, *Then* every published article appears with slug, title, excerpt, category, subcategory, headings, ISO `updatedDate`, URL, and at least one non-empty text chunk.
+- `AC-ASK-02` (`REQ-ASK-02`): *Given* the `/ask` page, *When* a student submits "how do I apply for a scholarship", *Then* the client retrieves chunks locally (the answer endpoint is not called when evidence is insufficient) and ranked sources correspond to real indexed articles.
+- `AC-ASK-03` (`REQ-ASK-03`): *Given* a covered question, *When* the answer returns, *Then* the response renders as text with inline `[n]` markers converted to links pointing at `/articles/<slug>` URLs, followed by a sources list showing title, category, and formatted last-updated date for each cited article.
+- `AC-ASK-04` (`REQ-ASK-04`): *Given* a question with no corpus coverage (e.g., unrelated trivia) *or* a model `NOT_COVERED` response, *When* rendered, *Then* the page shows the not-covered state with links to all seven categories and `/articles`, and contains no invented procedural claims.
+- `AC-ASK-05` (`REQ-ASK-05`): *Given* a time-sensitive question about fees, schedules, or deadlines, *When* the answer and sources render, *Then* each listed source displays its `updatedDate` and the answer prompt contract requires freshness cues; *Given* network inspection, *Then* no request other than `POST /api/ask` transmits the question text.
+
+### 3.9 Feature 9: Interactive Document Request Wizard (`/wizard`) (`F-09`)
+
+#### Requirements specification
+
+| Req ID | Priority | Requirement statement |
+| :--- | :--- | :--- |
+| `REQ-WIZ-01` | `P0` | The system shall publish a `/wizard` page presenting a picker of document-request types (TOR, Certificate of Grades, CAV, CTC, duplicate diploma, Good Moral Character, student ID replacement, transfer credentials, and other requests declared by articles). |
+| `REQ-WIZ-02` | `P0` | Each wizard request shall display a step-by-step requirements checklist plus published fee, issuing office, and processing time where the source guide records them, and shall link back to the full source guide. |
+| `REQ-WIZ-03` | `P0` | Wizard request content shall be single-sourced: requirements data shall live in validated article frontmatter and compile at request time, never in a parallel hand-maintained copy. |
+| `REQ-WIZ-04` | `P1` | Checked checklist state shall persist in the visitor's `localStorage` and shall be shareable through the page URL hash (`#<request-id>` plus checked item indices) without any backend. |
+| `REQ-WIZ-05` | `P1` | Category pages containing wizard-backed guides shall surface a wizard entry card, and article bodies shall link readers to the matching wizard checklist ("check off your requirements"). |
+
+#### Product behavior
+
+- **Single-Source Content:** Maintainers declare each request's requirements inside the relevant article's frontmatter (`wizard` field). The content loader validates the schema, the wizard page serializes every declared request, and the article remains the canonical prose guide. Content drift between guide and wizard is impossible by construction.
+- **Checklist Workflow:** A student picks a request type, sees office/fee/processing-time summary rows, and checks off each requirement as they gather documents. Progress ("3 of 7") stays visible, a reset control clears the list, and the hash updates so the current request and checked items can be shared in a group chat.
+- **Verification Discipline:** Fees and processing times carry the same unofficial-tool caveats as article prose, with a persistent "verify with the office" note and a link to the full guide for context.
+
+#### Acceptance criteria
+
+- `AC-WIZ-01` (`REQ-WIZ-01`): *Given* articles declaring `wizard` frontmatter, *When* the site serves `/wizard`, *Then* the picker lists every declared request type.
+- `AC-WIZ-02` (`REQ-WIZ-02`): *Given* a selected request, *When* the checklist renders, *Then* it shows every declared requirement, the published fee/office/processing time where present, and a working link to the source article.
+- `AC-WIZ-03` (`REQ-WIZ-03`): *Given* a malformed `wizard` frontmatter block (missing label, bad id, empty requirements), *When* the site builds or loads, *Then* validation fails with a clear diagnostic identifying the offending file and field.
+- `AC-WIZ-04` (`REQ-WIZ-04`): *Given* checked items on one request, *When* the student reloads or revisits `/wizard`, *Then* prior checks restore from `localStorage`; *When* the URL contains a valid hash, *Then* the matching request opens with its shared checked items applied.
+- `AC-WIZ-05` (`REQ-WIZ-05`): *Given* the `documents` category page and a wizard-backed article, *When* rendered, *Then* the category page shows a wizard entry card and the article body contains a "check off your requirements" link resolving to the matching wizard checklist.

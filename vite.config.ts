@@ -1,5 +1,6 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import cloudflare from '@sveltejs/adapter-cloudflare';
 import vercel from '@sveltejs/adapter-vercel';
 import type { Adapter } from '@sveltejs/kit';
 import { sveltekit } from '@sveltejs/kit/vite';
@@ -11,7 +12,7 @@ const vercelAdapter = vercel({
   runtime: 'nodejs22.x',
 });
 
-const adapter: Adapter = {
+const safeVercelAdapter: Adapter = {
   name: vercelAdapter.name,
   supports: vercelAdapter.supports,
   async adapt(builder) {
@@ -37,6 +38,9 @@ const adapter: Adapter = {
     }
   },
 };
+
+const adapter: Adapter =
+  process.env.DEPLOY_TARGET === 'cloudflare' ? cloudflare() : safeVercelAdapter;
 
 function validateArticlesPlugin(): Plugin {
   return {

@@ -1,0 +1,18 @@
+{
+  "name": "geary",
+  "workers_dev": true,
+  "compatibility_date": "2026-11-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "binding": "ASSETS"
+  },
+  "routes": [
+    {
+      "pattern": "geary.bulsu.tools",
+      "custom_domain": true
+    }
+  ],
+  "vars": {
+    "PUBLIC_SITE_URL": "https://geary.bulsu.tools"
+  }
+}

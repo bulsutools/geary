@@ -56,8 +56,11 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **RTM-22** | `OBJ-02`, `OBJ-04` | Dark mode design contract (`P1`, post-MVP) | `DESIGN_SYSTEM.md` §2.2; `ThemeToggle.svelte`, `src/app.html` bootstrap, tokenized surfaces and `CampusMap.svelte` | `BL-22`, `BL-25`, `BL-26` | `TC-E2E-08`, `TC-A11Y-03` | `[x] Verified` |
 | **RTM-23** | `OBJ-01`, `OBJ-03` | Interactive Academic Calendar (`P1`, post-MVP) | `src/data/academic-calendar.ts`, `src/lib/calendar.ts`, `AcademicCalendar.svelte`, `src/routes/calendar/+page.svelte`, `DESIGN_SYSTEM.md` §5.10 | `BL-26` | `TC-UNIT-07`, `TC-E2E-04`, `TC-A11Y-01` | `[x] Verified` |
+| **RTM-24** | `OBJ-03`, `OBJ-05` | `REQ-MCP-01` to `REQ-MCP-04` / `AC-MCP-01` to `AC-MCP-04` (`P1`, post-MVP) | `SW-INT-05`, `SW-INT-06`, `SRS-FUNC-MCP-01` to `SRS-FUNC-MCP-04`; `src/routes/corpus.json/+server.ts`, `mcp/worker.ts`, `mcp/corpus.ts` | `BL-28` | `TC-BLD-03`, `TC-UNIT-08` | `[x] Verified` |
+| **RTM-25** | `OBJ-01`, `OBJ-03`, `OBJ-05` | `REQ-ASK-01` to `REQ-ASK-05` / `AC-ASK-01` to `AC-ASK-05` (`P0`/`P1`) | `CON-DATA-03`, `SW-INT-07`, `SW-INT-08`, `SRS-FUNC-ASK-01` to `SRS-FUNC-ASK-05`, `SRS-FUNC-UI-01` | `UJ-07`, `UC-07`, `EF-07A` to `EF-07D`, `ERR-10` to `ERR-12` | `src/lib/ask.ts`, `src/routes/ask-index.json/+server.ts`, `src/routes/ask/+page.svelte`, `src/lib/components/AskPanel.svelte`, `src/routes/api/ask/+server.ts`, `Header.svelte`, `DESIGN_SYSTEM.md` §5.11 | `BL-29` to `BL-33` | `TC-BLD-03`, `TC-UNIT-09`, `TC-E2E-09` | `[~] Implemented` |
+| **RTM-26** | `OBJ-02`, `OBJ-03` | `REQ-WIZ-01` to `REQ-WIZ-05` / `AC-WIZ-01` to `AC-WIZ-05` (`P0`/`P1`, post-MVP) | `SW-INT-02`, `SW-INT-09`, `UI-INT-01`, `SRS-FUNC-WIZ-01` to `SRS-FUNC-WIZ-05`, `SRS-NFR-SEC-04`; `src/lib/content-schema.ts` (`wizard` schema), `src/lib/wizard.ts`, `ClearanceWizard.svelte`, `src/routes/wizard/+page.server.ts` + `+page.svelte`, `src/routes/categories/[slug]/+page.server.ts` + `+page.svelte`, `src/content/articles/*.md`, `DESIGN_SYSTEM.md` §5.12; `UJ-08`, `UC-08`, `AF-08A` to `AF-08C`, `EF-08A` to `EF-08B`, `ERR-09`, `ERR-13`, `MODE-06` | `BL-34` | `TC-UNIT-10`, `TC-E2E-10`, `TC-BLD-03` | `[x] Verified` |
 
-## 3. Non-functional quality requirements traceability matrix (`RTM-NFR-01` to `RTM-NFR-14`) *(ISO 29148 Clause 9.6.3.3 and ISO 25010)*
+## 3. Non-functional quality requirements traceability matrix (`RTM-NFR-01` to `RTM-NFR-17`) *(ISO 29148 Clause 9.6.3.3 and ISO 25010)*
 
 | RTM NFR ID | Charter Obj | SRS NFR ID | ISO 25010 Quality Characteristic | Target Implementation / Artifact | Backlog ID | Test Case IDs | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -75,6 +78,9 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | **RTM-NFR-12** | `OBJ-05` | `SRS-NFR-MAINT-02` | Portability (*Adaptability*) | Adapter isolated strictly to `vite.config.ts` with zero vendor APIs in app logic | `BL-23`, `BL-27` | `TC-BLD-03` | `[x] Verified` |
 | **RTM-NFR-13** | `OBJ-03` | `SRS-NFR-SEC-01` | Security (*Integrity*) | Standard Svelte text interpolation inside `SearchBar.svelte` | `BL-26` | `TC-SEC-01`, `TC-UNIT-02` | `[x] Verified` |
 | **RTM-NFR-14** | `OBJ-05` | `SRS-NFR-SEC-02` | Security (*Confidentiality and Integrity*) | Zero secrets or PII, dependency audit hygiene (`bun.lock`) | `BL-23`, `BL-27` | `TC-SEC-02` | `[x] Verified` |
+| **RTM-NFR-15** | `OBJ-03`, `OBJ-05` | `SRS-NFR-PERF-05` | Performance Efficiency (*Resource Utilization*) | `src/routes/ask-index.json/+server.ts` (`< 400 KB`, lazy-loaded on `/ask` only) | `BL-30` | `TC-BLD-03` | `[~] Implemented` |
+| **RTM-NFR-16** | `OBJ-03` | `SRS-NFR-REL-03`, `SRS-NFR-SEC-03` | Reliability (*Fault Tolerance*) and Security (*Confidentiality*) | `AskPanel.svelte` fetch/error fallbacks; stateless `src/routes/api/ask/+server.ts` (no storage, no cookies) | `BL-31`, `BL-32` | `TC-E2E-09` | `[~] Implemented` |
+| **RTM-NFR-17** | `OBJ-03` | `SRS-NFR-SEC-04` | Security (*Confidentiality*) | `ClearanceWizard.svelte` + `src/lib/wizard.ts` (`localStorage`/hash only, zero transmission) | `BL-34` | `TC-UNIT-10`, `TC-E2E-10` | `[x] Verified` |
 
 ## 4. System constraints and off-nominal error traceability matrix *(ISO 29148 Clauses 9.3.5 and 9.6.2)*
 
@@ -82,18 +88,19 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 
 | Constraint ID | Charter Ref | Architectural Enforcement Mechanism | Backlog ID | Verification Gate | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **`CON-TECH-01`** | §7.2 | `vite.config.ts` configured with `@sveltejs/adapter-vercel` SSR and CDN `Cache-Control` headers. | `BL-23`, `BL-25` | `TC-BLD-03` | `[x] Verified` |
+| **`CON-TECH-01`** | §7.2 | `vite.config.ts` configured with `@sveltejs/adapter-vercel` SSR and CDN `Cache-Control` headers; single permitted additional runtime endpoint is `src/routes/api/ask/+server.ts`. | `BL-23`, `BL-25`, `BL-32` | `TC-BLD-03` | `[~] Implemented` |
 | **`CON-TECH-02`** | §7.2 | Styling via `@tailwindcss/vite` and `src/styles/global.css`. | `BL-04`, `BL-23` | `TC-BLD-03`, `TC-A11Y-01` | `[x] Verified` |
-| **`CON-TECH-03`** | §7.2 | Native Svelte 5 runes components with zero React runtime dependencies. | `BL-23`, `BL-25`, `BL-26` | `TC-BLD-01`, `TC-E2E-01` | `[x] Verified` |
+| **`CON-TECH-03`** | §7.2 | Native Svelte 5 runes components (`SearchBar`, `ExploreSpotlight`, `AcademicCalendar`, `CampusMap`, `AskPanel`, `ClearanceWizard`) with zero React runtime dependencies. | `BL-23`, `BL-25`, `BL-26`, `BL-31`, `BL-34` | `TC-BLD-01`, `TC-E2E-01`, `TC-E2E-09`, `TC-E2E-10` | `[~] Implemented` |
 | **`CON-TECH-04`** | §7.2 | `tsconfig.json` strict TS (`svelte-check`) and Zod validation in `src/lib/content-schema.ts`. | `BL-23`, `BL-24` | `TC-BLD-01`, `TC-BLD-02` | `[x] Verified` |
 | **`CON-FIN-01`** | `OBJ-05`, §7.1 | Vercel free-tier SSR with edge caching (`$0.00/month`). | `BL-23`, `BL-27` | `TC-BLD-03` | `[x] Verified` |
-| **`CON-FIN-02`** | `OBJ-05`, §7.1 | Zero managed databases, CMS subscriptions, or paid third-party APIs. | `BL-23`, `BL-24` | `TC-BLD-03` | `[x] Verified` |
+| **`CON-FIN-02`** | `OBJ-05`, §7.1 | Zero managed databases, CMS subscriptions, or paid third-party APIs; sole permitted inference call is Workers AI via `/api/ask` within the included allocation. | `BL-23`, `BL-24`, `BL-32` | `TC-BLD-03` | `[~] Implemented` |
 | **`CON-DATA-01`** | `OBJ-01` | UTF-8 Markdown articles managed under `src/content/articles/` in Git. | `BL-09`, `BL-24` | `TC-BLD-02` | `[x] Verified` |
 | **`CON-DATA-02`** | `OBJ-03`, `OBJ-05` | Pure `buildSearchIndex()` served via edge-cached `src/routes/search-index.json/+server.ts`. | `BL-24` | `TC-BLD-03`, `TC-UNIT-05` | `[x] Verified` |
-| **`CON-GOV-01`** | §6.2, §7.3 | Strict MVP feature lock (no AI/RAG chatbot, user accounts, comments, or SIS integrations). | `BL-01` to `BL-27` | Scope Audit (§5) | `[x] Verified` |
+| **`CON-DATA-03`** | `OBJ-03` | Ask corpus emitted by `src/routes/ask-index.json/+server.ts`; no server-side vector store. | `BL-30` | `TC-BLD-03`, `TC-UNIT-09` | `[~] Implemented` |
+| **`CON-GOV-01`** | §6.2, §7.3 | Strict feature lock covering the nine approved capabilities (no general-purpose AI chatbot, user accounts, comments, or SIS integrations; `/ask` Q&A is the approved citation-grounded exception). | `BL-01` to `BL-34` | Scope Audit (§5) | `[~] Implemented` |
 | **`CON-GOV-02`** | §7.4 | Unofficial BulSU student information portal disclaimers in `ArticleLayout.svelte` and `Footer.svelte`. | `BL-25` | `TC-BLD-03`, `TC-A11Y-02` | `[x] Verified` |
 
-### 4.2 Off-nominal and error scenarios (`ERR-01` to `ERR-09`)
+### 4.2 Off-nominal and error scenarios (`ERR-01` to `ERR-13`)
 
 | Error ID | Linked PRD / SRS IDs | Handling Component / Module | Backlog ID | Verification Gate | Status |
 | :--- | :--- | :--- | :--- | :--- | :--- |
@@ -106,6 +113,10 @@ This matrix is the shared traceability ledger for all contributors working on Ge
 | **`ERR-07`** | `SRS-FUNC-UI-04`, `SRS-NFR-USAB-04` | `src/styles/global.css`, `ArticleLayout.svelte` | `BL-04`, `BL-25` | `TC-E2E-04` | `[x] Verified` |
 | **`ERR-08`** | `REQ-UI-05`, `SRS-FUNC-RND-06` | `src/routes/+error.svelte` | `BL-25` | `TC-E2E-05`, `TC-A11Y-01` | `[x] Verified` |
 | **`ERR-09`** | `REQ-ART-01`, `SRS-FUNC-CNT-01`, `SRS-FUNC-CNT-02` | `src/lib/content-schema.ts`, `src/lib/server/content.ts` | `BL-24` | `TC-BLD-02` | `[x] Verified` |
+| **`ERR-10`** | `REQ-ASK-04`, `SRS-FUNC-ASK-05`, `SRS-NFR-REL-03` | `src/lib/components/AskPanel.svelte` | `BL-31` | `TC-E2E-09` | `[~] Implemented` |
+| **`ERR-11`** | `REQ-ASK-04`, `SRS-FUNC-ASK-02`, `SRS-FUNC-ASK-05` | `src/lib/ask.ts`, `AskPanel.svelte` | `BL-30`, `BL-31` | `TC-UNIT-09`, `TC-E2E-09` | `[~] Implemented` |
+| **`ERR-12`** | `REQ-ASK-04`, `SRS-FUNC-ASK-03`, `SRS-FUNC-ASK-05`, `SRS-NFR-REL-03` | `src/routes/api/ask/+server.ts`, `AskPanel.svelte` | `BL-32`, `BL-31` | `TC-E2E-09` | `[~] Implemented` |
+| **`ERR-13`** | `REQ-WIZ-04`, `SRS-FUNC-WIZ-02` to `SRS-FUNC-WIZ-04` | `src/lib/wizard.ts`, `src/lib/components/ClearanceWizard.svelte` | `BL-34` | `TC-UNIT-10`, `TC-E2E-10` | `[x] Verified` |
 
 ## 5. Release and PR traceability audit checklist
 

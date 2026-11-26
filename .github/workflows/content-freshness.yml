@@ -1,0 +1,50 @@
+name: Content freshness
+
+on:
+  schedule:
+    # Weekly, Monday 03:00 UTC.
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: content-freshness
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    name: Audit article sources and staleness
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.4.4
+
+      - name: Install dependencies
+        run: mkdir -p node_modules && bun install --frozen-lockfile
+
+      - name: Generate freshness report
+        run: bun run freshness -- --out freshness-report.md
+
+      - name: Upsert rolling freshness issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="Content freshness report"
+          LABEL="content-freshness"
+          gh label create "$LABEL" --color ededed --description "Automated content freshness audit reports" 2>/dev/null || true
+          NUMBER=$(gh issue list --label "$LABEL" --state open --json number --jq '.[0].number // empty')
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ -n "$NUMBER" ]; then
+            gh issue edit "$NUMBER" --title "$TITLE" --body-file freshness-report.md
+            gh issue comment "$NUMBER" --body "Freshness audit re-run: ${RUN_URL}"
+          else
+            gh issue create --title "$TITLE" --label "$LABEL" --body-file freshness-report.md
+          fi

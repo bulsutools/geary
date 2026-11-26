@@ -55,7 +55,7 @@ Geary is an unofficial, student-run information portal for Bulacan State Univers
 
 ## 6. Project scope (MVP baseline)
 
-### 6.1 In scope (six confirmed MVP capabilities)
+### 6.1 In scope (nine confirmed MVP capabilities)
 
 1. Articles and Markdown authoring: publishing structured procedural how-to articles, handbook summaries, and campus life articles written in Markdown.
 2. Categories and purposeful organization: grouping all articles under seven student-intent categories (*Enrollment*, *Academics*, *Documents*, *Scholarships*, *Policies*, *Organizations*, and *Campus*) with sub-topic headings and reading orientation aids.
@@ -63,20 +63,23 @@ Geary is an unofficial, student-run information portal for Bulacan State Univers
 4. Low-cognitive-load UI/UX and BulSUan identity: a calm, mobile-first reading layout and consistent navigation built for BulSU students.
 5. Interactive 2D campus map and location finder: an SVG schematic of the BulSU Malolos Main Campus (`/map`) with clickable buildings, indoor office listings, and instant location search with no backend dependencies.
 6. Interactive academic calendar: a searchable, category-filtered BulSU Academic Calendar (`/calendar`) sourced from Office of the Student Regent advisories with zero external runtime APIs.
+7. Ask-the-handbook Q&A (`/ask`): plain-language answers drawn strictly from published articles, rendered with inline citations to source articles and per-source last-updated dates.
+8. Read-only MCP server for AI assistants (`F-07`): a separate optional Cloudflare Worker exposing the published article corpus to MCP-compatible assistants through read-only search and retrieval tools.
+9. Interactive document request wizard (`F-09`, approved post-MVP enhancement): a guided checklist that aggregates a student's document requirements and tracks completion locally.
 
 ### 6.2 Out of scope (excluded from MVP)
 
-- AI or RAG chatbot: an AI chatbot over the Student Handbook PDF is excluded from the MVP to avoid API costs, rate limits, and policy hallucinations.
+- General-purpose AI chatbot: a free-form AI chatbot is excluded from the MVP. The single approved exception is the citation-grounded `/ask` Q&A feature, which answers only from the published article corpus, cites its sources, and declines questions the corpus does not cover.
 - User accounts and authentication: no student logins, profiles, or user sessions.
-- Managed databases and user-generated backends: no managed databases, comment sections, voting systems, or persistent write APIs.
+- Managed databases and user-generated backends: no managed databases, comment sections, voting systems, or persistent write APIs. The single `/api/ask` answer endpoint (stateless, ephemeral, no storage) is the approved exception for the `/ask` Q&A feature.
 - Official portal integration: no connection to official BulSU enrollment portals, SIS, or administrative systems.
-- Unapproved auxiliary features: anything outside the six confirmed MVP capabilities is deferred until after the MVP ships.
+- Unapproved auxiliary features: anything outside the nine confirmed MVP capabilities is deferred until after the MVP ships.
 
 ## 7. Project constraints
 
 ### 7.1 Financial constraints
 
-Total recurring costs for hosting, storage, search, and delivery must stay at `$0.00/month`, deploying cleanly to Vercel's free tier with CDN edge caching.
+Total recurring costs for hosting, storage, search, and delivery must stay at `$0.00/month`, deploying cleanly to Vercel's free tier with CDN edge caching. The `/ask` answer endpoint uses Cloudflare Workers AI within the account's included free allocation; no paid API plan is permitted.
 
 ### 7.2 Technical baseline constraint
 
@@ -84,7 +87,7 @@ The site is built with SvelteKit (Svelte 5 runes), Tailwind CSS, and `@sveltejs/
 
 ### 7.3 Scope and UX constraints
 
-- Development stays strictly within the six confirmed MVP capabilities.
+- Development stays strictly within the nine confirmed MVP capabilities.
 - Layout, styling, and navigation must keep reading friction and visual distraction low.
 
 ### 7.4 Operational, team, and legal constraints
